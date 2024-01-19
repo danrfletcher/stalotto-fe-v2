@@ -4,6 +4,7 @@ import { Swiper, SwiperSlide } from 'swiper/react';
 import { Pagination, A11y, Autoplay } from 'swiper';
 import { displayMoney } from '../../utils/currency';
 import productsData from '../../data/productsData';
+import featuredCreatorsData from '../../data/featuredCreatorsData';
 
 import 'swiper/scss';
 import 'swiper/scss/autoplay';
@@ -12,8 +13,7 @@ import 'swiper/scss/pagination';
 
 const HeroSlider = () => {
 
-    const heroProducts = productsData.filter(item => item.tag === 'hero-product');
-
+    const heroProducts = featuredCreatorsData;
 
     return (
         <Swiper
@@ -30,23 +30,27 @@ const HeroSlider = () => {
         >
             {
                 heroProducts.map((item, i) => {
-                    const { id, title, tagline, heroImage, finalPrice, originalPrice, path } = item;
+                    const { id, title, tagline, heroImage, heroVideo, finalPrice, originalPrice, path } = item;
                     const newPrice = displayMoney(finalPrice);
                     const oldPrice = displayMoney(originalPrice);
-
                     return (
                         <SwiperSlide
                             key={id}
                             className={`wrapper hero_wrapper hero_slide-${i}`}
                         >
+                            <div className="hero_video">
+                                <video className="video_content" autoPlay muted playsinline loop>
+                                    <source src={heroVideo} type="video/mp4" />
+                                </video>
+                            </div>
                             <div className="hero_item_txt">
                                 <h3>{title}</h3>
                                 <h1>{tagline}</h1>
-                                <h2 className="hero_price">
-                                    {newPrice} &nbsp;
+                                <h4 className="hero_price">
+                                    Tickets From {newPrice} &nbsp;
                                     <small><del>{oldPrice}</del></small>
-                                </h2>
-                                <Link to={`${path}${id}`} className="btn">Shop Now</Link>
+                                </h4>
+                                <Link to={path} className="btn">Browse Competitions</Link>
                             </div>
                             <figure className="hero_item_img">
                                 <img src={heroImage} alt="product-img" />
