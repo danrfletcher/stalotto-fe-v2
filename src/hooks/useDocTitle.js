@@ -3,9 +3,9 @@ import { useEffect } from 'react';
 const useDocTitle = (title) => {
     useEffect(() => {
         if (title) {
-            document.title = `${title} - X-Beat`;
+            document.title = `${title} | Stalotto`;
         } else {
-            document.title = 'X-Beat | The Perfect Audio Store';
+            document.title = 'Stalotto | Competitions by your favourite creators & brnads';
         }
     }, [title]);
 
