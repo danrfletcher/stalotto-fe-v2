@@ -11,17 +11,17 @@ const usersData = [
         originalPrice: 10,
         path: "/u/scottyfairno",
     },
-    {
-        id: 2,
-        tag: "featured-creator",
-        tagline: "Win exclusive Raiments products & more",
-        heroImage: "/images/users/connalsraiments.png",
-        heroVideo: "/videos/users/connalsraiments.mp4",
-        title: "conallsraiments",
-        finalPrice: 0.5,
-        originalPrice: 5,
-        path: "/u/connalsraiments",
-    },
+    // {
+    //     id: 2,
+    //     tag: "featured-creator",
+    //     tagline: "Win exclusive Raiments products & more",
+    //     heroImage: "/images/users/connalsraiments.png",
+    //     heroVideo: "/videos/users/connalsraiments.mp4",
+    //     title: "conallsraiments",
+    //     finalPrice: 0.5,
+    //     originalPrice: 5,
+    //     path: "/u/connalsraiments",
+    // },
 ]
 
 export default usersData;

@@ -1,4 +1,4 @@
-import { FaFacebookF, FaTwitter, FaInstagram, FaLinkedinIn } from 'react-icons/fa';
+import { FaFacebookF, FaTwitter, FaInstagram, FaLinkedinIn, FaTiktok } from 'react-icons/fa';
 
 export const footMenu = [
     {
@@ -12,22 +12,12 @@ export const footMenu = [
             },
             {
                 id: 2,
-                link: "Track Order",
+                link: "Check Winning Tickets",
                 path: "/"
             },
             {
                 id: 3,
                 link: "Cancel Order",
-                path: "/"
-            },
-            {
-                id: 4,
-                link: "Return Order",
-                path: "/"
-            },
-            {
-                id: 5,
-                link: "Warranty Info",
                 path: "/"
             },
         ]
@@ -38,7 +28,7 @@ export const footMenu = [
         menu: [
             {
                 id: 1,
-                link: "Return Policy",
+                link: "Cancellation Policy",
                 path: "/"
             },
             {
@@ -61,6 +51,11 @@ export const footMenu = [
                 link: "Terms & Conditions",
                 path: "/"
             },
+            {
+                id: 6,
+                link: "Postal Entry Route",
+                path: "/"
+            },
         ]
     },
     {
@@ -80,16 +75,6 @@ export const footMenu = [
             {
                 id: 3,
                 link: "Service Centres",
-                path: "/"
-            },
-            {
-                id: 4,
-                link: "Careers",
-                path: "/"
-            },
-            {
-                id: 5,
-                link: "Affiliates",
                 path: "/"
             },
         ]
@@ -117,4 +102,9 @@ export const footSocial = [
         icon: <FaLinkedinIn />,
         path: "/",
     },
+    {
+        id: 5,
+        icon: <FaTiktok />,
+        path: "/",
+    }
 ];

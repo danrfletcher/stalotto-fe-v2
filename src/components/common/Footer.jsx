@@ -21,11 +21,14 @@ const Footer = () => {
             <div className="container">
                 <div className="wrapper footer_wrapper">
                     <div className="foot_about">
-                        <h2>
-                            <Link to="/">X-Beat</Link>
-                        </h2>
+                        <div className="footer_logo">
+                            <Link className="footer_logo" to="/">
+                                <img className="footer_logo" src="/logo.png" />
+                                <h2>Stalotto</h2>
+                            </Link>
+                        </div>
                         <div className="foot_subs">
-                            <p>Subscribe to our Email alerts to receive early discount offers, and new products info.</p>
+                            <p>Subscribe to our Email alerts to receive early competition entry offers, and info on new competitions from influencers you subscribe to.</p>
                             <form onSubmit={handleSubmit}>
                                 <input
                                     type="email"
@@ -72,8 +75,7 @@ const Footer = () => {
                     <div className="sub_footer_wrapper">
                         <div className="foot_copyright">
                             <p>
-                                {currYear} | XBeat. All Rights Reserved.
-                                Built by | <a href="https://gulshansongara.netlify.app/">Gulshan Songara</a>
+                                {currYear} | Stalotto. All Rights Reserved.
                             </p>
                         </div>
                         <div className="foot_social">
