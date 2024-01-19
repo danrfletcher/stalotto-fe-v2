@@ -1,3 +1,6 @@
+const today = new Date(Date.now());
+export const sevenDaysLater = new Date(today.setDate(today.getDate() + 7));
+
 const productsData = [
     {
         id: 1,
@@ -27,23 +30,26 @@ const productsData = [
         id: 2,
         tag: "featured-product",
         images: [
-            "/images/products/boat518-1.png",
+            "/images/products/volvo-940-black-1.png",
             "/images/products/boat518-2.png",
             "/images/products/boat518-3.png",
             "/images/products/boat518-4.png"
         ],
         brand: "boAt",
-        title: "boAt Rockerz 518",
+        title: "Volvo 940",
         info: "On-Ear Wireless Headphones",
         category: "Headphones",
         type: "On Ear",
         connectivity: "Wireless",
-        finalPrice: 1299,
-        originalPrice: 3990,
+        finalPrice: 1.90,
+        originalPrice: 10,
         quantity: 1,
         ratings: 1321,
         rateCount: 5,
         path: "/product-details/",
+        totalTickets: 1000,
+        ticketsRemaining: 542,
+        closes: sevenDaysLater
     },
     {
         id: 3,
@@ -160,27 +166,29 @@ const productsData = [
         id: 8,
         tag: "featured-product",
         images: [
-            "/images/products/jbl760nc-1.png",
+            "/images/products/defender-ambulance.png",
             "/images/products/jbl760nc-2.png",
             "/images/products/jbl760nc-3.png",
             "/images/products/jbl760nc-4.png",
         ],
         brand: "JBL",
-        title: "JBL Tune 760NC",
+        title: "Land Rover Defender Ambulance",
         info: "Wireless Over-Ear NC Headphones",
         category: "Headphones",
         type: "Over Ear",
         connectivity: "Wireless",
-        finalPrice: 5999,
-        originalPrice: 7999,
+        finalPrice: 10,
+        originalPrice: 10,
         quantity: 1,
         ratings: 755,
         rateCount: 4,
         path: "/product-details/",
+        totalTickets: 1000,
+        ticketsRemaining: 0,
+        closes: sevenDaysLater
     },
     {
         id: 9,
-        tag: "featured-product",
         images: [
             "/images/products/boat255r-1.png",
             "/images/products/boat255r-2.png",
@@ -265,7 +273,6 @@ const productsData = [
     },
     {
         id: 13,
-        tag: "featured-product",
         images: [
             "/images/products/jbl-endu-1.png",
             "/images/products/jbl-endu-2.png",
@@ -287,7 +294,6 @@ const productsData = [
     },
     {
         id: 14,
-        tag: "featured-product",
         images: [
             "/images/products/boat203-1.png",
             "/images/products/boat203-2.png",

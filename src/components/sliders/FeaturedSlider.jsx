@@ -9,7 +9,8 @@ import 'swiper/scss';
 import 'swiper/scss/autoplay';
 import 'swiper/scss/pagination';
 import "swiper/scss/effect-coverflow";
-
+import { CountdownTimer } from './CountdownTimer';
+import { TicketSoldBar } from './TicketSoldBar';
 
 const FeaturedSlider = () => {
 
@@ -51,9 +52,12 @@ const FeaturedSlider = () => {
         >
             {
                 featuredProducts.map((item) => {
-                    const { id, images, title, finalPrice, originalPrice, path } = item;
+                    const { id, images, title, finalPrice, originalPrice, path, totalTickets, ticketsRemaining, closes } = item;
                     const newPrice = displayMoney(finalPrice);
                     const oldPrice = displayMoney(originalPrice);
+
+                    const fractionOfTicketsSold = (totalTickets - ticketsRemaining) / totalTickets;
+                    const percentageSold = Math.round(fractionOfTicketsSold * 100)
 
                     return (
                         <SwiperSlide key={id} className="featured_slides">
@@ -64,9 +68,13 @@ const FeaturedSlider = () => {
                                 </Link>
                             </figure>
                             <h2 className="products_price">
-                                {newPrice} &nbsp;
-                                <small><del>{oldPrice}</del></small>
+                                {newPrice} <span>/Ticket</span>&nbsp; 
+                                {oldPrice > newPrice ? (<small><del>{oldPrice}</del></small>) : null }
                             </h2>
+                            <TicketSoldBar progress={1 - fractionOfTicketsSold} />
+                            <h5 className="percent_tickets_sold">{`${percentageSold}% of tickets sold`}</h5>
+                            <br />
+                            <CountdownTimer closes={closes} />
                         </SwiperSlide>
                     );
                 })

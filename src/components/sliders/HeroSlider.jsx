@@ -39,7 +39,7 @@ const HeroSlider = () => {
                             className={`wrapper hero_wrapper hero_slide-${i}`}
                         >
                             <div className="hero_video">
-                                <video className="video_content" autoPlay muted playsinline loop>
+                                <video className="video_content" autoPlay muted playsInline loop>
                                     <source src={heroVideo} type="video/mp4" />
                                 </video>
                             </div>

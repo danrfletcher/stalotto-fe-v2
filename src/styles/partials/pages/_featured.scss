@@ -23,3 +23,19 @@
         @include img-fit;
     }
 }
+
+.countdown_timer {
+    font-size: 0.75rem;
+}
+
+.progressbar-text {
+    display: none !important;
+}
+
+.products_price,.percent_tickets_sold {
+    text-align: left;
+}
+
+.products_price > span {
+    font-size: 0.6em;
+}
