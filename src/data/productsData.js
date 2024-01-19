@@ -16,7 +16,7 @@ const productsData = [
         category: "Headphones",
         type: "Over Ear",
         connectivity: "Wireless",
-        finalPrice: 9999,
+        finalPrice: 69420,
         originalPrice: 14999,
         quantity: 1,
         ratings: 1234,

@@ -1,6 +1,7 @@
 const featuredCreatorsData = [
     {
         id: 1,
+        tag: "featured-creator",
         tagline: "Win veg oil burning vehicles & more",
         heroImage: "/images/featuredCreators/scottyfairno.png",
         heroVideo: "/videos/featuredCreators/scottyfairno.mp4",
@@ -12,6 +13,7 @@ const featuredCreatorsData = [
     },
     {
         id: 2,
+        tag: "featured-creator",
         tagline: "Win exclusive Raiments products & more",
         heroImage: "/images/featuredCreators/connalsraiments.png",
         heroVideo: "/videos/featuredCreators/connalsraiments.mp4",
