@@ -1,14 +1,17 @@
 
-// Display Money in Indian Format
+// Display Money in local Format
 export const displayMoney = (n) => {
-    const numFormat = new Intl.NumberFormat('en-IN', {
+    const isInteger = Number.isInteger(n);
+
+    const numFormat = new Intl.NumberFormat('en-GB', {
         style: 'currency',
-        currency: 'INR',
+        currency: 'GBP',
+        minimumFractionDigits: isInteger ? 0 : 2,
+        maximumFractionDigits: isInteger ? 0 : 2
     });
 
-    return numFormat.format(n).split('.', 1);
+    return numFormat.format(n);
 };
-
 
 // Calculate Discount Percentage
 export const calculateDiscount = (discountedPrice, originalPrice) => {
