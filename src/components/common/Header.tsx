@@ -33,7 +33,10 @@ const Header = () => {
                 <div className="container">
                     <div className="navbar">
                         <h2 className="nav_logo">
-                            <Link to="/">Stalotto</Link>
+                            <Link to="/">
+                                <img src="/logo.png" />
+                                <h4>Stalotto</h4>
+                            </Link>
                         </h2>
                         <NavPages />
                         <nav className="nav_actions">

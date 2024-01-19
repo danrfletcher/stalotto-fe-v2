@@ -16,9 +16,13 @@
     @include flexbox(space-between, center);
 }
 
-.nav_logo {
+.nav_logo, .nav_logo * {
+    max-height: 2.5rem;
+    display: flex;
+    align-items: center;
     @include devices(xs) {
         font-size: 1.2rem;
+        max-height: 2rem;
     }
 }
 
