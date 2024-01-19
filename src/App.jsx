@@ -1,6 +1,6 @@
 import { CommonProvider } from './contexts/common/commonContext';
 import { CartProvider } from './contexts/cart/cartContext';
-import Header from './components/common/Header';
+import Header from './components/common/Header.tsx';
 import RouterRoutes from './routes/RouterRoutes';
 import Footer from './components/common/Footer';
 import BackTop from './components/common/BackTop';

@@ -1,7 +1,7 @@
 import React, { useContext } from 'react';
 import filtersContext from '../../contexts/filters/filtersContext.jsx';
 import { sortMenu } from '../../data/filterBarData';
-import { displayMoney } from '../../helpers/utils';
+import { displayMoney } from '../../utils/currency.js';
 
 
 const FilterBarOptions = () => {

@@ -1,6 +1,6 @@
 import React, { useContext } from 'react';
 import { BsCartX } from 'react-icons/bs';
-import { calculateTotal, displayMoney } from '../helpers/utils';
+import { calculateTotal, displayMoney } from '../utils/currency.js';
 import useDocTitle from '../hooks/useDocTitle';
 import cartContext from '../contexts/cart/cartContext.jsx';
 import CartItem from '../components/cart/CartItem';

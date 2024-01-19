@@ -1,19 +1,18 @@
-import React, { useContext, useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { AiOutlineSearch, AiOutlineShoppingCart, AiOutlineUser } from 'react-icons/ai';
-import { dropdownMenu } from '../../data/headerData';
+import { dropdownMenu } from '../../data/headerData.js';
 import commonContext from '../../contexts/common/commonContext.jsx';
 import cartContext from '../../contexts/cart/cartContext.jsx';
-import AccountForm from '../form/AccountForm';
-import SearchBar from './SearchBar';
-
+import AccountForm from '../form/AccountForm.jsx';
+import SearchBar from './SearchBar.jsx';
+import { NavPages } from './NavPages.js';
 
 const Header = () => {
 
     const { formUserInfo, toggleForm, toggleSearch } = useContext(commonContext);
     const { cartItems } = useContext(cartContext);
     const [isSticky, setIsSticky] = useState(false);
-
 
     // handle the sticky-header
     useEffect(() => {
@@ -26,9 +25,7 @@ const Header = () => {
         };
     }, [isSticky]);
 
-
     const cartQuantity = cartItems.length;
-
 
     return (
         <>
@@ -36,8 +33,9 @@ const Header = () => {
                 <div className="container">
                     <div className="navbar">
                         <h2 className="nav_logo">
-                            <Link to="/">X-Beat</Link>
+                            <Link to="/">Stalotto</Link>
                         </h2>
+                        <NavPages />
                         <nav className="nav_actions">
                             <div className="search_action">
                                 <span onClick={() => toggleSearch(true)}>

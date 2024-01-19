@@ -1,7 +1,7 @@
 import React, { useContext } from 'react';
 import { TbTrash } from 'react-icons/tb';
 import { Link } from 'react-router-dom';
-import { displayMoney } from '../../helpers/utils';
+import { displayMoney } from '../../utils/currency.js';
 import cartContext from '../../contexts/cart/cartContext.jsx';
 import QuantityBox from '../common/QuantityBox';
 

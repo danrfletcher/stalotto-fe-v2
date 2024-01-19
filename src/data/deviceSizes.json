@@ -1,0 +1,56 @@
+{
+    "mobile": {
+      "portrait": {
+        "mediaQuery": "(max-width: 767px) and (orientation: portrait)",
+        "minPixels": "null",
+        "maxPixels": "767",
+        "axis": "x"
+      },
+      "landscape": {
+        "mediaQuery": "(max-height: 767px) and (orientation: landscape)",
+        "minPixels": "null",
+        "maxPixels": "767",
+        "axis": "y"
+      }
+    },
+    "tablet": {
+      "portrait": {
+        "mediaQuery": "(min-width: 768px) and (max-width: 1023px) and (orientation: portrait)",
+        "minPixels": "768",
+        "maxPixels": "1023",
+        "axis": "x"
+      },
+      "landscape": {
+        "mediaQuery": "(min-height: 768px) and (max-height: 1023px) and (orientation: landscape)",
+        "minPixels": "768",
+        "maxPixels": "1023",
+        "axis": "y"
+      }
+    },
+    "desktop": {
+      "portrait": {
+        "mediaQuery": "(min-width: 1024px) and (orientation: portrait)",
+        "minPixels": "1024",
+        "maxPixels": "null",
+        "axis": "x"
+      },
+      "landscape": {
+        "mediaQuery": "(min-height: 1024px) and (orientation: landscape)",
+        "minPixels": "1024",
+        "maxPixels": "null",
+        "axis": "x"
+      }
+    },
+    "small": {
+        "minWidth": 0,
+        "maxWidth": 767
+    },
+    "medium": {
+        "minWidth": 768,
+        "maxWidth": 1023
+    },
+    "large": {
+        "minWidth": 1024,
+        "maxWidth": null
+    }
+  }
