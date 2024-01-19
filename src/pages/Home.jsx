@@ -16,7 +16,7 @@ const Home = () => {
 
             <section id="featured" className="section">
                 <div className="container">
-                    <SectionsHead heading="Featured Products" />
+                    <SectionsHead heading="Featured Competitions" />
                     <FeaturedSlider />
                 </div>
             </section>

@@ -4,7 +4,7 @@ import { Swiper, SwiperSlide } from 'swiper/react';
 import { Pagination, A11y, Autoplay } from 'swiper';
 import { displayMoney } from '../../utils/currency';
 import productsData from '../../data/productsData';
-import featuredCreatorsData from '../../data/featuredCreatorsData';
+import creatorsData from '../../data/creatorsData';
 
 import 'swiper/scss';
 import 'swiper/scss/autoplay';
@@ -13,7 +13,7 @@ import 'swiper/scss/pagination';
 
 const HeroSlider = () => {
 
-    const heroProducts = featuredCreatorsData;
+    const creators = creatorsData.filter(creator => creator.tag === 'featured-creator');
 
     return (
         <Swiper
@@ -29,7 +29,7 @@ const HeroSlider = () => {
             }}
         >
             {
-                heroProducts.map((item, i) => {
+                creators.map((item, i) => {
                     const { id, title, tagline, heroImage, heroVideo, finalPrice, originalPrice, path } = item;
                     const newPrice = displayMoney(finalPrice);
                     const oldPrice = displayMoney(originalPrice);
@@ -39,7 +39,7 @@ const HeroSlider = () => {
                             className={`wrapper hero_wrapper hero_slide-${i}`}
                         >
                             <div className="hero_video">
-                                <video className="video_content" autoPlay muted playsinline loop>
+                                <video className="video_content" autoPlay muted playsInline loop>
                                     <source src={heroVideo} type="video/mp4" />
                                 </video>
                             </div>

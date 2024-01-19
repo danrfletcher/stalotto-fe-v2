@@ -1,9 +1,10 @@
-const featuredCreatorsData = [
+const creatorsData = [
     {
         id: 1,
+        tag: "featured-creator",
         tagline: "Win veg oil burning vehicles & more",
-        heroImage: "/images/featuredCreators/scottyfairno.png",
-        heroVideo: "/videos/featuredCreators/scottyfairno.mp4",
+        heroImage: "/images/creators/scottyfairno.png",
+        heroVideo: "/videos/creators/scottyfairno.mp4",
         title: "scottyfairno",
         connectivity: "Wireless",
         finalPrice: 1.90,
@@ -12,9 +13,10 @@ const featuredCreatorsData = [
     },
     {
         id: 2,
+        tag: "featured-creator",
         tagline: "Win exclusive Raiments products & more",
-        heroImage: "/images/featuredCreators/connalsraiments.png",
-        heroVideo: "/videos/featuredCreators/connalsraiments.mp4",
+        heroImage: "/images/creators/connalsraiments.png",
+        heroVideo: "/videos/creators/connalsraiments.mp4",
         title: "conallsraiments",
         finalPrice: 0.5,
         originalPrice: 5,
@@ -22,4 +24,4 @@ const featuredCreatorsData = [
     },
 ]
 
-export default featuredCreatorsData;
+export default creatorsData;
