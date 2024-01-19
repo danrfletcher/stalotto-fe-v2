@@ -2,30 +2,30 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { BsArrowRight } from 'react-icons/bs';
 import useActive from '../../hooks/useActive';
-import productsData from '../../data/productsData';
+import competitionsData from '../../data/competitionData';
 import ProductCard from './ProductCard';
 
 
 const TopProducts = () => {
 
-    const [products, setProducts] = useState(productsData);
+    const [products, setProducts] = useState(competitionsData);
     const { activeClass, handleActive } = useActive(0);
 
     // making a unique set of product's category
     const productsCategory = [
-        'All',
-        ...new Set(productsData.map(item => item.category))
+        'Latest',
+        ...new Set(competitionsData.map(item => item.state))
     ];
 
     // handling product's filtering
     const handleProducts = (category, i) => {
-        if (category === 'All') {
-            setProducts(productsData);
+        if (category === 'Latest') {
+            setProducts(competitionsData);
             handleActive(i);
             return;
         }
 
-        const filteredProducts = productsData.filter(item => item.category === category);
+        const filteredProducts = competitionsData.filter(item => item.state === category);
         setProducts(filteredProducts);
         handleActive(i);
     };
@@ -58,8 +58,8 @@ const TopProducts = () => {
                     ))
                 }
                 <div className="card products_card browse_card">
-                    <Link to="/all-products">
-                        Browse All <br /> Products <BsArrowRight />
+                    <Link to="/competitions">
+                        Browse All <br /> Competitions <BsArrowRight />
                     </Link>
                 </div>
             </div>
