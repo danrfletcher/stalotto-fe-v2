@@ -23,7 +23,7 @@ const Home = () => {
 
             <section id="products" className="section">
                 <div className="container">
-                    <SectionsHead heading="Top Products" />
+                    <SectionsHead heading="All Competitions" />
                     <TopProducts />
                 </div>
             </section>

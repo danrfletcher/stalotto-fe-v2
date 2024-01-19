@@ -8,7 +8,7 @@ import useActive from '../../hooks/useActive';
 
 const ProductCard = (props) => {
 
-    const { id, images, title, info, finalPrice, originalPrice, rateCount, path } = props;
+    const { id, images, title, info, finalPrice, originalPrice, rateCount, path, state, winningTicketId } = props;
 
     const { addItem } = useContext(cartContext);
     const { active, handleActive, activeClass } = useActive(false);
@@ -39,11 +39,7 @@ const ProductCard = (props) => {
                     </Link>
                 </figure>
                 <div className="products_details">
-                    <span className="rating_star">
-                        {
-                            [...Array(rateCount)].map((_, i) => <IoMdStar key={i} />)
-                        }
-                    </span>
+                    {state === 'Winners' ? `Winning Ticket: #${winningTicketId}` : null}
                     <h3 className="products_title">
                         <Link to={`${path}${id}`}>{title}</Link>
                     </h3>

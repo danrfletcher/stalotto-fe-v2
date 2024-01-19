@@ -4,7 +4,7 @@ import { Swiper, SwiperSlide } from 'swiper/react';
 import { Pagination, A11y, Autoplay } from 'swiper';
 import { displayMoney } from '../../utils/currency';
 import productsData from '../../data/productsData';
-import creatorsData from '../../data/creatorsData';
+import usersData from '../../data/usersData';
 
 import 'swiper/scss';
 import 'swiper/scss/autoplay';
@@ -13,7 +13,7 @@ import 'swiper/scss/pagination';
 
 const HeroSlider = () => {
 
-    const creators = creatorsData.filter(creator => creator.tag === 'featured-creator');
+    const creators = usersData.filter(creator => creator.tag === 'featured-creator');
 
     return (
         <Swiper

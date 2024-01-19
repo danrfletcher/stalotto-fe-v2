@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { EffectCoverflow, Pagination, A11y, Autoplay } from 'swiper';
 import { displayMoney } from '../../utils/currency';
-import productsData from '../../data/productsData';
+import competitionData from '../../data/competitionData';
 
 import 'swiper/scss';
 import 'swiper/scss/autoplay';
@@ -14,7 +14,7 @@ import { TicketSoldBar } from './TicketSoldBar';
 
 const FeaturedSlider = () => {
 
-    const featuredProducts = productsData.filter(item => item.tag === 'featured-product');
+    const featuredProducts = competitionData.filter(item => item.tag === 'featured-product');
 
 
     return (
