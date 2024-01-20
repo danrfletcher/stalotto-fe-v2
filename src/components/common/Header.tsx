@@ -10,7 +10,7 @@ import { NavPages } from './NavPages.js';
 
 const Header = () => {
 
-    const { formUserInfo, toggleForm, toggleSearch } = useContext(commonContext);
+    const { formUserInfo, toggleForm, toggleSearch, setCurrentHash, currentHash } = useContext(commonContext);
     const { cartItems } = useContext(cartContext);
     const [isSticky, setIsSticky] = useState(false);
 
@@ -25,11 +25,21 @@ const Header = () => {
         };
     }, [isSticky]);
 
+    // handling smooth navigation to new hash on same page
+    const handleHashChange = () => {
+        setCurrentHash(window.location.hash);
+    };
+
+    useEffect(() => {
+        handleHashChange();
+        console.log("currentHash:", currentHash);
+    },[currentHash])
+
     const cartQuantity = cartItems.length;
 
     return (
         <>
-            <header id="header" className={isSticky ? 'sticky' : ''}>
+            <header onClick={handleHashChange} id="header" className={isSticky ? 'sticky' : ''}>
                 <div className="container">
                     <div className="navbar">
                         <h2 className="nav_logo">
