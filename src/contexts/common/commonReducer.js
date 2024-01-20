@@ -28,6 +28,11 @@ const commonReducer = (state, action) => {
                 searchResults: action.payload.results
             };
 
+        case 'SET_HASH':
+            return {
+                ...state,
+                currentHash: action.payload.hash
+            };
 
         default:
             return state;

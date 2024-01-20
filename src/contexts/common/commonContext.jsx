@@ -9,7 +9,8 @@ const initialState = {
     isFormOpen: false,
     formUserInfo: '',
     isSearchOpen: false,
-    searchResults: []
+    searchResults: [],
+    currentHash: ''
 };
 
 // Common-Provider Component
@@ -47,13 +48,22 @@ const CommonProvider = ({ children }) => {
         });
     };
 
+    // Set page hash for smooth navigation on same page
+    const setCurrentHash = (hash) => {
+        return dispatch({
+            type: 'SET_HASH',
+            payload: { hash }
+        });
+    };
+
     // Context values
     const values = {
         ...state,
         toggleForm,
         setFormUserInfo,
         toggleSearch,
-        setSearchResults
+        setSearchResults,
+        setCurrentHash
     };
 
     return (
