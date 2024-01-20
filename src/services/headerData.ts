@@ -34,7 +34,7 @@ export const navPages = [
     },
     {
         name: "Winners",
-        path: "/winners",
+        path: "/#comp-winners",
         children: []
     },
     {
