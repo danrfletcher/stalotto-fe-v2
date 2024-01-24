@@ -1,9 +1,10 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { EffectCoverflow, Pagination, A11y, Autoplay } from 'swiper';
 import { displayMoney } from '../../utils/currency';
-import competitionData from '../../data/competitionData';
+import competitionData from '../../data/competitionData.tsx';
+import { getFeaturedCompetitionData } from '../../services/competitionsApi.ts'
 
 import 'swiper/scss';
 import 'swiper/scss/autoplay';
@@ -13,6 +14,10 @@ import { CountdownTimer } from './CountdownTimer';
 import { TicketSoldBar } from './TicketSoldBar';
 
 const FeaturedSlider = () => {
+
+    useEffect(() => {
+        getFeaturedCompetitionData()
+    },[])
 
     const featuredProducts = competitionData.filter(item => item.tag === 'featured-product');
 
@@ -52,7 +57,7 @@ const FeaturedSlider = () => {
         >
             {
                 featuredProducts.map((item) => {
-                    const { id, images, title, finalPrice, originalPrice, path, totalTickets, ticketsRemaining, closes } = item;
+                    const { id, images, title, finalPrice, originalPrice, totalTickets, ticketsRemaining, closes } = item;
                     const newPrice = displayMoney(finalPrice);
                     const oldPrice = displayMoney(originalPrice);
 
@@ -63,7 +68,7 @@ const FeaturedSlider = () => {
                         <SwiperSlide key={id} className="featured_slides">
                             <div className="featured_title">{title}</div>
                             <figure className="featured_img">
-                                <Link to={`${path}${id}`}>
+                                <Link to={`/competition-details/${id}`}>
                                     <img src={images[0]} alt="" />
                                 </Link>
                             </figure>
@@ -74,7 +79,7 @@ const FeaturedSlider = () => {
                             <TicketSoldBar progress={1 - fractionOfTicketsSold} />
                             <h5 className="percent_tickets_sold">{`${percentageSold}% of tickets sold`}</h5>
                             <br />
-                            <CountdownTimer closes={closes} />
+                            <CountdownTimer closes={closes} passStyle="countdown_timer" />
                         </SwiperSlide>
                     );
                 })
