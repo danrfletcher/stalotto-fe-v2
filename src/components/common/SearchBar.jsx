@@ -1,9 +1,9 @@
 import React, { useContext, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import commonContext from '../../contexts/common/commonContext.jsx';
-import productsData from '../../data/productsData';
 import useOutsideClose from '../../hooks/useOutsideClose';
 import useScrollDisable from '../../hooks/useScrollDisable';
+import competitionsData from '../../data/competitionData.tsx';
 // import { AiOutlineSearch } from 'react-icons/ai';
 
 
@@ -28,7 +28,7 @@ const SearchBar = () => {
     const handleSearching = (e) => {
         const searchedTerm = e.target.value.toLowerCase().trim();
 
-        const updatedSearchResults = productsData.filter(item => item.title.toLowerCase().includes(searchedTerm));
+        const updatedSearchResults = competitionsData.filter(item => item.title.toLowerCase().includes(searchedTerm));
 
         searchedTerm === '' ? setSearchResults([]) : setSearchResults(updatedSearchResults);
     };

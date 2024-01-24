@@ -2,17 +2,20 @@ import React, { useContext, useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { IoMdStar, IoMdCheckmark } from 'react-icons/io';
 import { calculateDiscount, displayMoney } from '../utils/currency.js';
-import useDocTitle from '../hooks/useDocTitle';
-import useActive from '../hooks/useActive';
+import useDocTitle from '../hooks/useDocTitle.js';
+import useActive from '../hooks/useActive.js';
 import cartContext from '../contexts/cart/cartContext.jsx';
-import productsData from '../data/productsData';
-import SectionsHead from '../components/common/SectionsHead';
-import RelatedSlider from '../components/sliders/RelatedSlider';
-import ProductSummary from '../components/product/ProductSummary';
-import Services from '../components/common/Services';
+import competitionsData from '../data/competitionData.tsx';
+import SectionsHead from '../components/common/SectionsHead.jsx';
+import RelatedSlider from '../components/sliders/RelatedSlider.jsx';
+import ProductSummary from '../components/product/ProductSummary.jsx';
+import Services from '../components/common/Services.jsx';
+import { CountdownTimer } from '../components/sliders/CountdownTimer.tsx';
+import { offersData } from '../data/offersData.ts';
+import { OffersList } from './OffersList.tsx';
 
 
-const ProductDetails = () => {
+const CompetitionDetails = () => {
 
     useDocTitle('Product Details');
 
@@ -26,9 +29,26 @@ const ProductDetails = () => {
     const prodId = parseInt(productId);
 
     // showing the Product based on the received 'id'
-    const product = productsData.find(item => item.id === prodId);
+    const product = competitionsData.find(item => item.id === prodId);
 
-    const { images, title, info, category, finalPrice, originalPrice, ratings, rateCount } = product;
+    const { 
+        images, 
+        title, 
+        creator, 
+        category, 
+        finalPrice, 
+        originalPrice, 
+        ratings, 
+        rateCount,
+        totalTickets,
+        ticketsRemaining,
+        closes,
+        offers,
+        description,
+        specifications,
+        comments,
+        totalComments,
+    } = product;
 
     const [previewImg, setPreviewImg] = useState(images[0]);
 
@@ -61,6 +81,8 @@ const ProductDetails = () => {
     const savedPrice = displayMoney(discountedPrice);
     const savedDiscount = calculateDiscount(discountedPrice, originalPrice);
 
+    const fractionOfTicketsSold = (totalTickets - ticketsRemaining) / totalTickets;
+    const percentageSold = Math.round(fractionOfTicketsSold * 100)
 
     return (
         <>
@@ -91,17 +113,7 @@ const ProductDetails = () => {
                         {/*=== Product Details Right-content ===*/}
                         <div className="prod_details_right_col">
                             <h1 className="prod_details_title">{title}</h1>
-                            <h4 className="prod_details_info">{info}</h4>
-
-                            <div className="prod_details_ratings">
-                                <span className="rating_star">
-                                    {
-                                        [...Array(rateCount)].map((_, i) => <IoMdStar key={i} />)
-                                    }
-                                </span>
-                                <span>|</span>
-                                <Link to="*">{ratings} Ratings</Link>
-                            </div>
+                            <h5 className="prod_details_creator">{creator}</h5>
 
                             <div className="separator"></div>
 
@@ -116,17 +128,19 @@ const ProductDetails = () => {
                                 </div>
 
                                 <div className="badge">
-                                    <span><IoMdCheckmark /> In Stock</span>
+                                    <span><IoMdCheckmark /> {100 - percentageSold}% of Tickets Remaining</span>
                                 </div>
                             </div>
-
+                                <br />
+                                <div className="draws_in">
+                                    <CountdownTimer passStyle="comp_countdown" closes={closes} text="Winner will be announced in" />
+                                </div>
                             <div className="separator"></div>
 
                             <div className="prod_details_offers">
-                                <h4>Offers and Discounts</h4>
+                                <h4>Exclusive Offers</h4>
                                 <ul>
-                                    <li>No Cost EMI on Credit Card</li>
-                                    <li>Pay Later & Avail Cashback</li>
+                                    <OffersList offers={offers} />
                                 </ul>
                             </div>
 
@@ -161,4 +175,4 @@ const ProductDetails = () => {
     );
 };
 
-export default ProductDetails;
+export default CompetitionDetails;

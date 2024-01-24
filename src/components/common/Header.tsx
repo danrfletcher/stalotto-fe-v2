@@ -32,7 +32,6 @@ const Header = () => {
 
     useEffect(() => {
         handleHashChange();
-        console.log("currentHash:", currentHash);
     },[currentHash])
 
     const cartQuantity = cartItems.length;

@@ -1,5 +1,5 @@
 import { createContext, useEffect, useReducer } from 'react';
-import productsData from '../../data/productsData';
+import competitionsData from '../../data/competitionData.tsx';
 import { brandsMenu, categoryMenu } from '../../data/filterBarData';
 import filtersReducer from './filtersReducer';
 
@@ -35,7 +35,7 @@ const FiltersProvider = ({ children }) => {
     useEffect(() => {
 
         // making a shallow copy of the original products data, because we should never mutate the orginal data.
-        const products = [...productsData];
+        const products = [...competitionsData];
 
         // finding the Max and Min Price, & setting them into the state.
         const priceArr = products.map(item => item.finalPrice);
@@ -53,7 +53,7 @@ const FiltersProvider = ({ children }) => {
     /* function for applying Filters - (sorting & filtering) */
     const applyFilters = () => {
 
-        let updatedProducts = [...productsData];
+        let updatedProducts = [...competitionsData];
 
         /*==== Sorting ====*/
         if (state.sortedValue) {

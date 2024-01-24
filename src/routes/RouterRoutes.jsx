@@ -4,7 +4,7 @@ import useScrollRestore from '../hooks/useScrollRestore';
 import AllProducts from '../pages/AllProducts';
 import Cart from '../pages/Cart';
 import Home from '../pages/Home';
-import ProductDetails from '../pages/ProductDetails';
+import CompetitionDetails from '../pages/CompetitionDetails';
 import ErrorPage from '../pages/ErrorPage';
 
 const RouterRoutes = () => {
@@ -17,7 +17,7 @@ const RouterRoutes = () => {
                 <Route path="/" element={<Home />} />
                 <Route path="/cart" element={<Cart />} />
                 <Route path="/competitions" element={<AllProducts />} />
-                <Route path="/product-details/:productId" element={<ProductDetails />} />
+                <Route path="/competition-details/:productId" element={<CompetitionDetails />} />
                 <Route path="*" element={<ErrorPage />} />
             </Routes>
         </>

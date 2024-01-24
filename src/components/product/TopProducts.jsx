@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { BsArrowRight } from 'react-icons/bs';
 import useActive from '../../hooks/useActive';
-import competitionsData from '../../data/competitionData';
+import competitionsData from '../../data/competitionData.tsx';
 import ProductCard from './ProductCard';
 import commonContext from '../../contexts/common/commonContext';
 
@@ -34,7 +34,6 @@ const TopProducts = () => {
 
     // handle smooth scrolling to elements on the page
     useEffect(() => {
-        console.log("currentHash:", currentHash.slice(1));
         if (currentHash.startsWith('#comp-')) {
             const hashCategory = currentHash.replace('#comp-', '').toLowerCase();
             const encodedProductsCategory = productsCategory.map(category => category.toLowerCase().split(' ').join('-'));

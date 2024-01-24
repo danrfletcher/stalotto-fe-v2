@@ -34,14 +34,14 @@ const ProductCard = (props) => {
         <>
             <div className="card products_card">
                 <figure className="products_img">
-                    <Link to={`${path}${id}`}>
+                    <Link to={`/competition-details/${id}`}>
                         <img src={images[0]} alt="product-img" />
                     </Link>
                 </figure>
                 <div className="products_details">
                     {state === 'Winners' ? `Winning Ticket: #${winningTicketId}` : null}
                     <h3 className="products_title">
-                        <Link to={`${path}${id}`}>{title}</Link>
+                        <Link to={`/competition-details/${id}`}>{title}</Link>
                     </h3>
                     <h5 className="products_info">{info}</h5>
                     <div className="separator"></div>

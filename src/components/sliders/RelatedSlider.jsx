@@ -1,8 +1,8 @@
 import React from 'react';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Pagination, A11y } from 'swiper';
-import productsData from '../../data/productsData';
 import ProductCard from '../product/ProductCard';
+import competitionsData from '../../data/competitionData.tsx';
 
 import 'swiper/scss';
 import 'swiper/scss/pagination';
@@ -12,7 +12,7 @@ const RelatedSlider = (props) => {
 
     const { category } = props;
 
-    const relatedProduct = productsData.filter(item => item.category === category);
+    const relatedProduct = competitionsData.filter(item => item.category === category);
 
     return (
         <Swiper

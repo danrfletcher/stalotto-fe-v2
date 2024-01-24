@@ -27,7 +27,7 @@ const CartItem = (props) => {
                 <div className="cart_item_info">
                     <div className="cart_item_head">
                         <h4 className="cart_item_title">
-                            <Link to={`/product-details/${id}`}>{title} {info}</Link>
+                            <Link to={`/competition-details/${id}`}>{title} {info}</Link>
                         </h4>
                         <div className="cart_item_del">
                             <span onClick={() => removeItem(id)}>
