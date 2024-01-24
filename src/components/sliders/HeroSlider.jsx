@@ -3,7 +3,6 @@ import { Link } from 'react-router-dom';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Pagination, A11y, Autoplay } from 'swiper';
 import { displayMoney } from '../../utils/currency';
-import productsData from '../../data/productsData';
 import usersData from '../../data/usersData';
 
 import 'swiper/scss';
@@ -29,8 +28,8 @@ const HeroSlider = () => {
             }}
         >
             {
-                creators.map((item, i) => {
-                    const { id, title, tagline, heroImage, heroVideo, finalPrice, originalPrice, path } = item;
+                creators.map((creator, i) => {
+                    const { id, username, tagline, heroImage, heroVideo, finalPrice, originalPrice } = creator;
                     const newPrice = displayMoney(finalPrice);
                     const oldPrice = displayMoney(originalPrice);
                     return (
@@ -44,13 +43,13 @@ const HeroSlider = () => {
                                 </video>
                             </div>
                             <div className="hero_item_txt">
-                                <h3>{title}</h3>
+                                <h3>{username}</h3>
                                 <h1>{tagline}</h1>
                                 <h4 className="hero_price">
                                     Tickets From {newPrice} &nbsp;
                                     <small><del>{oldPrice}</del></small>
                                 </h4>
-                                <Link to={path} className="btn">Browse Competitions</Link>
+                                <Link to={`/u/${username}`} className="btn">Browse Competitions</Link>
                             </div>
                             <figure className="hero_item_img">
                                 <img src={heroImage} alt="product-img" />
