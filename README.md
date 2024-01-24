@@ -1,41 +1,21 @@
-## X-Beat | React eCommerce Web App
+## Stalotto | Front-End
+[![Stack](https://skillicons.dev/icons?i=react,graphql,git,github,aws)](https://skillicons.dev)
 
-### [Demo Link](https://x-beat.netlify.app/) 🔗
-
-Audio Store eCommerce Website, built with **React JS**. <br/>
-State management using Context API.
-<br/>
-
-## Features:
-
-- #### Add Product to the Cart
-- #### Remove Product from the Cart
-- #### Increment / Decrement the Product's Quantity
-- #### Product's Total Price / Discount Calculations
-- #### Filters - Sort by / Filter by Options
-- #### Custom Hooks
-- #### Local Storage
-- #### Fully Responsive
-- #### Dark Theme
-- #### Multi Pages
-- #### ...and much more
+Stalotto is an e-commerce platform where influencers & brands can host competitions & giveaways.
 
 <br/>
 
 ## Technologies used:
 
 - #### **React JS**
-- #### **React Router**
-- #### **React Swiper**
+  - #### **React Router**
+  - #### **React Swiper**
+- #### **TypeScript**
 - #### **SASS**
+- #### **GraphQL**
 
 <br/>
 
-## Author:
-
-- **Gulshan Songara** - **[Portfolio Website](https://gulshansongara.netlify.app)**, **[Linkedin](https://www.linkedin.com/in/gulshan-songara/)**
-
-<br/>
 
 ## Available Scripts:
 
@@ -46,6 +26,26 @@ State management using Context API.
 #### `npm run build`
 
 #### `npm run eject`
+
+<br/>
+
+## Setup
+
+### Environment Variables
+The project uses the following environment variables for development & production:
+- VITE_API_BASE_URL - used to connect to your development or production API.
+- VITE_MKCERT_KEY - used for SSL certification in development.
+- VITE_MKCERT_CERT - used for SSL certification in development.
+
+Create files .env.development & .env.production in the route directory & add these environemnt variables.
+
+<br />
+
+## Special Thanks:
+
+- **Gulshan Songara** - templating & styling.
+  - **[Portfolio Website](https://gulshansongara.netlify.app)**
+  - **[Linkedin](https://www.linkedin.com/in/gulshan-songara/)**
 
 <br/>
 
