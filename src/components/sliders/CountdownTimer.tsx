@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react"
 import { getTimeDifference } from "../../utils/Times";
 
-export const CountdownTimer = ({ closes }) => {
+export const CountdownTimer = ({ closes, passStyle, text }) => {
     const [timeUntil, setTimeUntil] = useState<string>("");
 
     useEffect(() => {
@@ -26,6 +26,6 @@ export const CountdownTimer = ({ closes }) => {
     }, [closes]);
 
     return (
-        <p className="countdown_timer">{timeUntil}</p>
+        <p className={passStyle}>{`${text ? `${text} ` : ""}${timeUntil}`}</p>
     )
 }
