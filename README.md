@@ -39,6 +39,9 @@ The project uses the following environment variables for development & productio
 
 Create files .env.development & .env.production in the route directory & add these environemnt variables.
 
+### SSL Certificates
+Self-signed certificates for development purposes can be created using a utility such as mkcert. Create a certificate & key & add the .pem files to the route directory, then update the environment variables VITE_MKCERT_KEY & VITE_MKCERT_CERT to reflect these files.
+
 <br />
 
 ## Special Thanks:
