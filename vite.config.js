@@ -10,11 +10,15 @@ export default ({ mode }) => {
   return defineConfig({
     plugins: [react()],
     server: {
+      proxy: {
+        '/graphql': process.env.VITE_API_BASE_URL
+      },
       host: 'stalotto.test',
       https: {
         key: process.env.VITE_MKCERT_KEY,
         cert: process.env.VITE_MKCERT_CERT
       },
+      //port: 443,
     },
   })
 };
