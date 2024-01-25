@@ -3,7 +3,9 @@ version: '3'
 services:
   reactwebapp: # Service name
     build: .
-    container_name: fe-stalotto-reactwebapp
+    container_name: fe-stalotto-reactwebapp_dev
+    extra_hosts:
+      - "stalotto.test:127.0.0.1"
     volumes:
       - .:/app # Mirror project directory to container
       - /app/node_modules # Preserve node_modules in container to prevent overwrite from host
