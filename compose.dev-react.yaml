@@ -1,9 +1,12 @@
+#Use this file to run the Vite development server
 version: '3'
 
 services:
   reactwebapp: # Service name
-    build: .
-    container_name: fe-stalotto-reactwebapp_dev
+    build:
+      context: .
+      dockerfile: Dockerfile.dev-react
+    container_name: stalotto-fe.dev-react
     extra_hosts:
       - "stalotto.test:127.0.0.1"
     volumes:

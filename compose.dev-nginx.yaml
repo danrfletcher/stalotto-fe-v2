@@ -1,0 +1,13 @@
+#Use this file to run the nginx server in development mode
+version: '3'
+
+services:
+  nginx:
+    container_name: stalotto-fe.dev-nginx
+    build: .
+    image: stalotto-fe-nginx:latest
+    ports:
+      - "80:80"
+    #volumes:
+    #  - ./nginx/html:/usr/share/nginx/html #bind mount for static website files
+    #  - ./nginx/config:/etc/nginx #bind mount for nginx configs
