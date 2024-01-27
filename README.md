@@ -1,4 +1,4 @@
-## Stalotto | Front-End
+# Stalotto | Front-End
 [![Stack](https://skillicons.dev/icons?i=react,graphql,git,github,aws)](https://skillicons.dev)
 
 Stalotto is an e-commerce platform where influencers & brands can host competitions & giveaways.
@@ -17,16 +17,26 @@ Stalotto is an e-commerce platform where influencers & brands can host competiti
 <br/>
 
 
-## Available Scripts:
+## Tabulated List of CLI Helper Commands:
 
-#### `npm run dev`
+### Quick References
+- Start Vite Development Server: `make start dev vite`
+- Start Production Server: `make start prod`
 
-#### `npm run test`
-
-#### `npm run build`
-
-#### `npm run eject`
-
+| Command | Argument 1 | Argument 2 | Argument 3 | Argument 4 | Command | Function |
+| ---- | ---- | ---- | ---- | ---- | ---- | ---- |
+| make | start | dev | vite |  | docker-compose -f ./compose/compose.dev-vite.yaml up -d | starts running vite development server |
+| make | start | dev | vite | build | docker-compose -f ./compose/compose.dev-vite.yaml up -d –build | starts running vite development server & rebuilds images |
+| make | start | dev | nginx |  | docker-compose -f ./compose/compose.dev-nginx.yaml up -d | starts running nginx development server |
+| make | start | dev | nginx | build | docker-compose -f ./compose/compose.dev-nginx.yaml up -d –build | starts running nginx development server & rebuilds images |
+| make | start | prod |  |  | docker-compose -f ./compose/docker-compose.yaml up -d | starts running production nginx server |
+| make | start | prod | build |  | docker-compose -f ./compose/docker-compose.yaml up -d –build | starts running production server & rebuilds containers |
+| make | stop | dev | vite |  | docker-compose -f ./compose/compose.dev-vite.yaml stop | stops running vite development server |
+| make | stop | dev | nginx |  | docker-compose -f ./compose/compose.dev-nginx.yaml stop | stops running nginx development server |
+| make | stop | prod |  |  | docker-compose -f ./compose/docker-compose.yaml stop | stops running nginx production server |
+| make | remove | dev | vite |  | docker-compose -f ./compose/compose.dev-vite.yaml down | stops running vite development server & removes containers in group |
+| make | remove | dev | nginx |  | docker-compose -f ./compose/compose.dev-nginx.yaml down | stops running nginx development server & removes containers in group |
+| make | remove | prod |  |  | docker-compose -f ./compose/docker-compose.yaml down | stops running production server & removes containers in group |
 <br/>
 
 ## Setup
