@@ -1,0 +1,100 @@
+#!/usr/bin/env bash
+: '
+This function starts, stops, or removes the front-end containers based on the provided arguments.
+Arguments:
+- Argument 1: Action to perform (start, stop, remove)
+- Argument 2: Environment (dev or prod)
+- Argument 3: Development server (vite or nginx) or build flag if the environment is prod
+- Argument 4: build flag for development mode (if not already specified as Argument 3)
+'
+
+# Function to get environment input
+get_environment_input() {
+    while true; do
+        read -p "Enter the environment (dev or prod): " env
+        case $env in
+            dev|prod) break;;
+            *) echo "Invalid input. Please enter 'dev' or 'prod'.";;
+        esac
+    done
+    echo $env
+}
+
+# Function to get development server input
+get_dev_server_input() {
+    while true; do
+        read -p "Enter the development server (vite or nginx): " dev_server
+        case $dev_server in
+            vite|nginx) break;;
+            *) echo "Invalid input. Please enter 'vite' or 'nginx'.";;
+        esac
+    done
+    echo $dev_server
+}
+
+# Initialize build flag as empty
+build_flag=""
+action=$1
+environment=$2
+dev_server=$3
+build_flag_arg=$4
+
+# If build is provided as Argument 3 for dev environment, shift it to Argument 4
+if [ "$environment" = "prod" ] && [ "$dev_server" = "build" ]; then
+    build_flag_arg="build"
+fi
+
+# Set build flag if build is provided as Argument 3 or 4
+if [ "$build_flag_arg" = "build" ]; then
+    build_flag="--build"
+fi
+
+# Run the appropriate Docker Compose command
+case $action in
+    start)
+        if [ "$environment" = "prod" ]; then
+            echo "Starting production environment..."
+            echo "docker-compose -f ./compose/docker-compose.yaml up -d $build_flag"
+            docker-compose -f ./compose/docker-compose.yaml up -d $build_flag
+        elif [ "$environment" = "dev" ]; then
+            if [ "$dev_server" = "vite" ]; then
+                echo "Starting development environment with Vite..."
+                docker-compose -f ./compose/compose.dev-vite.yaml up -d $build_flag
+            elif [ "$dev_server" = "nginx" ]; then
+                echo "Starting development environment with Nginx..."
+                docker-compose -f ./compose/compose.dev-nginx.yaml up -d $build_flag
+            fi
+        fi
+        ;;
+    stop)
+        if [ "$environment" = "prod" ]; then
+            echo "Stopping production environment..."
+            docker-compose -f ./compose/docker-compose.yaml stop
+        elif [ "$environment" = "dev" ]; then
+            if [ "$dev_server" = "vite" ]; then
+                echo "Stopping development environment with Vite..."
+                docker-compose -f ./compose/compose.dev-vite.yaml stop
+            elif [ "$dev_server" = "nginx" ]; then
+                echo "Stopping development environment with Nginx..."
+                docker-compose -f ./compose/compose.dev-nginx.yaml stop
+            fi
+        fi
+        ;;
+    remove)
+        if [ "$environment" = "prod" ]; then
+            echo "Removing production environment containers..."
+            docker-compose -f ./compose/docker-compose.yaml down
+        elif [ "$environment" = "dev" ]; then
+            if [ "$dev_server" = "vite" ]; then
+                echo "Removing development environment containers with Vite..."
+                docker-compose -f ./compose/compose.dev-vite.yaml down
+            elif [ "$dev_server" = "nginx" ]; then
+                echo "Removing development environment containers with Nginx..."
+                docker-compose -f ./compose/compose.dev-nginx.yaml down
+            fi
+        fi
+        ;;
+    *)
+        echo "Invalid action. Please use 'start', 'stop', or 'remove'."
+        ;;
+esac
