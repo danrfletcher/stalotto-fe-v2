@@ -1,5 +1,5 @@
 # Stalotto | Front-End
-[![Stack](https://skillicons.dev/icons?i=react,graphql,git,github,aws)](https://skillicons.dev)
+[![Stack](https://skillicons.dev/icons?i=react,graphql,git,github,aws,docker)](https://skillicons.dev)
 
 Stalotto is an e-commerce platform where influencers & brands can host competitions & giveaways.
 
