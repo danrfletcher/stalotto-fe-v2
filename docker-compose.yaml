@@ -4,7 +4,7 @@ version: '3'
 services:
   nginx:
     container_name: stalotto-fe
-    build: ../
+    build: .
     image: stalotto-fe-nginx:latest
     ports:
       - "80:80"

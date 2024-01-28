@@ -1,8 +1,10 @@
 #Build stage for React webapp
 FROM node:20-alpine as stalotto-fe-buildstage
 WORKDIR /app
-COPY package*.json ./
-RUN npm install
+COPY package.json ./
+COPY pnpm-lock.yaml ./
+RUN npm i pnpm -g
+RUN pnpm i
 COPY . .
 RUN npm run build
 

@@ -4,16 +4,16 @@ version: '3'
 services:
   reactwebapp: # Service name
     build:
-      context: ../
+      context: .
       dockerfile: Dockerfile.dev-vite
     container_name: stalotto-fe.dev-vite
     extra_hosts:
       - "stalotto.test:127.0.0.1"
     volumes:
-      - ../:/app # Mirror project directory to container
+      - .:/app # Mirror project directory to container
       - /app/node_modules # Preserve node_modules in container to prevent overwrite from host
     environment:
       - NODE_ENV=development # Set environment variable for development
-    command: npm run dev # Override default command to run development server
+    command: pnpm run dev # Override default command to run development server
     ports:
       - "5173:5173" # Expose port for Vite development server

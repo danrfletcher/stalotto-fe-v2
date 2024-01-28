@@ -54,43 +54,43 @@ case $action in
     start)
         if [ "$environment" = "prod" ]; then
             echo "Starting production environment..."
-            echo "docker-compose -f ./compose/docker-compose.yaml up -d $build_flag"
-            docker-compose -f ./compose/docker-compose.yaml up -d $build_flag
+            echo "docker-compose -f docker-compose.yaml up -d $build_flag"
+            docker-compose -f docker-compose.yaml up -d $build_flag
         elif [ "$environment" = "dev" ]; then
             if [ "$dev_server" = "vite" ]; then
                 echo "Starting development environment with Vite..."
-                docker-compose -f ./compose/compose.dev-vite.yaml up -d $build_flag
+                docker-compose -f compose.dev-vite.yaml up -d $build_flag
             elif [ "$dev_server" = "nginx" ]; then
                 echo "Starting development environment with Nginx..."
-                docker-compose -f ./compose/compose.dev-nginx.yaml up -d $build_flag
+                docker-compose -f compose.dev-nginx.yaml up -d $build_flag
             fi
         fi
         ;;
     stop)
         if [ "$environment" = "prod" ]; then
             echo "Stopping production environment..."
-            docker-compose -f ./compose/docker-compose.yaml stop
+            docker-compose -f docker-compose.yaml stop
         elif [ "$environment" = "dev" ]; then
             if [ "$dev_server" = "vite" ]; then
                 echo "Stopping development environment with Vite..."
-                docker-compose -f ./compose/compose.dev-vite.yaml stop
+                docker-compose -f compose.dev-vite.yaml stop
             elif [ "$dev_server" = "nginx" ]; then
                 echo "Stopping development environment with Nginx..."
-                docker-compose -f ./compose/compose.dev-nginx.yaml stop
+                docker-compose -f compose.dev-nginx.yaml stop
             fi
         fi
         ;;
     remove)
         if [ "$environment" = "prod" ]; then
             echo "Removing production environment containers..."
-            docker-compose -f ./compose/docker-compose.yaml down
+            docker-compose -f docker-compose.yaml down
         elif [ "$environment" = "dev" ]; then
             if [ "$dev_server" = "vite" ]; then
                 echo "Removing development environment containers with Vite..."
-                docker-compose -f ./compose/compose.dev-vite.yaml down
+                docker-compose -f compose.dev-vite.yaml down
             elif [ "$dev_server" = "nginx" ]; then
                 echo "Removing development environment containers with Nginx..."
-                docker-compose -f ./compose/compose.dev-nginx.yaml down
+                docker-compose -f compose.dev-nginx.yaml down
             fi
         fi
         ;;
