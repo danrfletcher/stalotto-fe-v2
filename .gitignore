@@ -27,3 +27,7 @@ yarn-error.log*
 
 #SSL certificates for development
 *.pem
+
+*.png
+*.mp4
+*.jpg
