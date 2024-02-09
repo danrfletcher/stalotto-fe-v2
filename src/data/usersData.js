@@ -5,7 +5,7 @@ const usersData = [
         username: "scottyfairno",
         profileImg: "/images/users/scottyfairno-p.jpeg",
         tag: "featured-creator",
-        tagline: "Win veg oil burning vehicles & more",
+        tagline: "Win veg oil powered vehicles & more",
         heroImage: "/images/users/scottyfairno.png",
         heroVideo: "/videos/users/scottyfairno.mp4",
         finalPrice: 1.90,

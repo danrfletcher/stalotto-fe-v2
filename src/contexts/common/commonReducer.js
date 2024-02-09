@@ -34,6 +34,13 @@ const commonReducer = (state, action) => {
                 currentHash: action.payload.hash
             };
 
+        //Home page data actions
+        case 'SET_FEATURED_COMPETITIONS':
+            return {
+                ...state,
+                featuredCompetitions: action.payload.featuredCompetitions,
+            };
+
         default:
             return state;
     }

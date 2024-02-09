@@ -6,6 +6,8 @@ import TopProducts from '../components/product/TopProducts';
 import Services from '../components/common/Services';
 import { BounceLoader } from 'react-spinners';
 import loadingContext from '../contexts/loading/loadingContext';
+import commonContext from '../contexts/common/commonContext';
+import { getFeaturedCompetitionData } from '../services/competitionsApi';
 
 
 const Home = () => {
@@ -25,7 +27,7 @@ const Home = () => {
 
 
     //page data
-    const [featuredCompetitions, setFeaturedCompetitions] = useState(null);
+    const { featuredCompetitions, setFeaturedCompetitions } = useContext(commonContext);
 
 
     //fetching data & setting component loading states

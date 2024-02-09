@@ -1,21 +1,22 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { Link } from 'react-router-dom';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { EffectCoverflow, Pagination, A11y, Autoplay } from 'swiper';
 import { displayMoney } from '../../utils/currency';
-import competitionData from '../../data/competitionData.tsx';
 import { getFeaturedCompetitionData } from '../../services/competitionsApi.ts'
-
 import 'swiper/scss';
 import 'swiper/scss/autoplay';
 import 'swiper/scss/pagination';
 import "swiper/scss/effect-coverflow";
 import { CountdownTimer } from './CountdownTimer';
 import { TicketSoldBar } from './TicketSoldBar';
+import commonContext from '../../contexts/common/commonContext';
 
 const FeaturedSlider = () => {
-
-    const featuredProducts = competitionData.filter(item => item.tag === 'featured-product');
+    
+    //component data
+    const { featuredCompetitions, setFeaturedCompetitions } = useContext(commonContext);
+    
 
     return (
         <Swiper
@@ -51,20 +52,27 @@ const FeaturedSlider = () => {
             className="featured_swiper"
         >
             {
-                featuredProducts.map((item) => {
-                    const { id, images, title, finalPrice, originalPrice, totalTickets, ticketsRemaining, closes } = item;
-                    const newPrice = displayMoney(finalPrice);
-                    const oldPrice = displayMoney(originalPrice);
+                featuredCompetitions.map((item) => {
+                    const { id, creator, name, original_price } = item;
+                    
+                    const thumbnail_src = item.thumbnail.url;
+                    const final_price = item.price_range.minimum_price.final_price.value;
+                    const total_tickets = item.starting_ticket_qtd;
+                    const tickets_remaining = item.only_x_left_in_stock;
+                    const closes = new Date(item.competition_closes_on);
+                    
+                    const newPrice = displayMoney(final_price);
+                    const oldPrice = displayMoney(original_price);
 
-                    const fractionOfTicketsSold = (totalTickets - ticketsRemaining) / totalTickets;
+                    const fractionOfTicketsSold = (total_tickets - tickets_remaining) / total_tickets;
                     const percentageSold = Math.round(fractionOfTicketsSold * 100)
 
                     return (
                         <SwiperSlide key={id} className="featured_slides">
-                            <div className="featured_title">{title}</div>
+                            <div className="featured_title">{name}</div>
                             <figure className="featured_img">
                                 <Link to={`/competition-details/${id}`}>
-                                    <img src={images[0]} alt="" />
+                                    <img src={thumbnail_src} alt="" />
                                 </Link>
                             </figure>
                             <h2 className="products_price">

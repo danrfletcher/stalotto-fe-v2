@@ -1,34 +1,34 @@
 const today = new Date(Date.now());
 export const sevenDaysLater = new Date(today.setDate(today.getDate() + 7));
 
-interface OfferParameters {
+interface Offer {
     category: string,
     offerId: number,
     parameters: (string | number)[]
 }
 
-interface SpecificationParameters {
+interface Specification {
     specificationId: number,
     text: string,
     value: string
 }
 
-export interface CommentReplyParameters {
+export interface CommentReply {
     commentId: number,
     username: string,
     comment: string,
     userProfileImg: string
 }
 
-interface CommentParameters {
+interface Comment {
     commentId: number,
     username: string,
     comment: string,
     userProfileImg: string,
-    replies: CommentReplyParameters[]
+    replies: CommentReply[]
 }
 
-interface CompetitionParameters {
+interface Competition {
     id: number,
     tag: string,
     images: string[],
@@ -42,15 +42,15 @@ interface CompetitionParameters {
     ticketsRemaining: number,
     closes: Date,
     state: string,
-    offers: OfferParameters[],
-    specifications: SpecificationParameters[],
+    offers: Offer[],
+    specifications: Specification[],
     totalComments: number,
-    comments: CommentParameters[],
+    comments: Comment[],
     winningTicketId: number | null,
     description: JSX.Element
 }
 
-const competitionsData: CompetitionParameters[] = [
+const competitionsData: Competition[] = [
     {
         id: 1,
         tag: "featured-product",

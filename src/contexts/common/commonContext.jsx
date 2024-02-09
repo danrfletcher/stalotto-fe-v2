@@ -10,7 +10,10 @@ const initialState = {
     formUserInfo: '',
     isSearchOpen: false,
     searchResults: [],
-    currentHash: ''
+    currentHash: '',
+
+    //Home page data
+    featuredCompetitions: null,
 };
 
 // Common-Provider Component
@@ -56,6 +59,14 @@ const CommonProvider = ({ children }) => {
         });
     };
 
+    // Home page data actions
+    const setFeaturedCompetitions = (featuredCompetitions) => {
+        return dispatch({
+            type: 'SET_FEATURED_COMPETITIONS',
+            payload: { featuredCompetitions }
+        });
+    };
+
     // Context values
     const values = {
         ...state,
@@ -63,7 +74,10 @@ const CommonProvider = ({ children }) => {
         setFormUserInfo,
         toggleSearch,
         setSearchResults,
-        setCurrentHash
+        setCurrentHash,
+
+        // Home page data actions
+        setFeaturedCompetitions
     };
 
     return (
