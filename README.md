@@ -1,5 +1,4 @@
 # Stalotto | Front-End
-
 Stalotto is an e-commerce platform where influencers & brands can host competitions & giveaways.
 
 ## Stack
