@@ -1,25 +1,24 @@
-import { CommonProvider } from './contexts/common/commonContext';
-import { CartProvider } from './contexts/cart/cartContext';
 import Header from './components/common/Header.tsx';
 import RouterRoutes from './routes/RouterRoutes';
 import Footer from './components/common/Footer';
 import BackTop from './components/common/BackTop';
-import { FiltersProvider } from './contexts/filters/filtersContext';
+import loadingContext from './contexts/loading/loadingContext.jsx';
+import { useContext } from 'react';
 
 
 const App = () => {
+  const { isFirstLoad } = useContext(loadingContext);
+
   return (
     <>
-      <CommonProvider>
-        <FiltersProvider>
-          <CartProvider>
-            <Header />
-            <RouterRoutes />
-            <Footer />
-            <BackTop />
-          </CartProvider>
-        </FiltersProvider>
-      </CommonProvider>
+      {isFirstLoad ? null : <Header />}
+      <RouterRoutes />
+      {isFirstLoad ? null : (
+        <>
+          <Footer />
+          <BackTop />
+        </>
+      )}
     </>
   );
 };

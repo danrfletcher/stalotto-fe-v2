@@ -195,3 +195,13 @@
 .swiper-pagination-bullet-active {
     background: var(--main-color) !important;
 }
+
+.loading-spinner {
+    position: fixed;
+    left: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100dvw;
+    height: 100dvh;
+}

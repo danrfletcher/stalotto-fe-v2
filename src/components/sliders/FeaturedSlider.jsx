@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { Link } from 'react-router-dom';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { EffectCoverflow, Pagination, A11y, Autoplay } from 'swiper';
@@ -15,12 +15,7 @@ import { TicketSoldBar } from './TicketSoldBar';
 
 const FeaturedSlider = () => {
 
-    useEffect(() => {
-        getFeaturedCompetitionData()
-    },[])
-
     const featuredProducts = competitionData.filter(item => item.tag === 'featured-product');
-
 
     return (
         <Swiper
@@ -85,7 +80,7 @@ const FeaturedSlider = () => {
                 })
             }
         </Swiper>
-    );
+    )
 };
 
 export default FeaturedSlider;

@@ -11,7 +11,6 @@ import 'swiper/scss/pagination';
 
 
 const HeroSlider = () => {
-
     const creators = usersData.filter(creator => creator.tag === 'featured-creator');
 
     return (

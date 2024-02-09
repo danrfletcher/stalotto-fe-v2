@@ -5,11 +5,24 @@ import App from './App';
 import './styles/style.scss';
 import reportWebVitals from './reportWebVitals';
 
+import { CommonProvider } from './contexts/common/commonContext';
+import { CartProvider } from './contexts/cart/cartContext';
+import { FiltersProvider } from './contexts/filters/filtersContext';
+import { LoadingProvider } from './contexts/loading/loadingContext.jsx';
+
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
     <BrowserRouter>
-      <App />
+      <LoadingProvider>
+      <CommonProvider>
+      <FiltersProvider>
+      <CartProvider>
+        <App />
+      </CartProvider>
+      </FiltersProvider>
+      </CommonProvider>
+      </LoadingProvider>
     </BrowserRouter>
   </React.StrictMode>
 );

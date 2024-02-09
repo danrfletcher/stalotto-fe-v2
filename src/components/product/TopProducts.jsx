@@ -9,6 +9,7 @@ import commonContext from '../../contexts/common/commonContext';
 
 const TopProducts = () => {
 
+    //displaying product groups & categories business logic
     const { setCurrentHash, currentHash } = useContext(commonContext);
     const [products, setProducts] = useState(competitionsData);
     const { activeClass, handleActive } = useActive(0);
