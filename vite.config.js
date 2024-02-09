@@ -9,9 +9,14 @@ export default ({ mode }) => {
     plugins: [react()],
     server: {
       proxy: {
-        '/graphql': process.env.VITE_API_BASE_URL
+        '/graphql': {
+          target: process.env.VITE_API_PROXY_URL,
+          changeOrigin: true,
+          secure: false,
+          rewrite: (path) => path.replace(/^\/api/, "/api"),
+        }
       },
-      host: '0.0.0.0',
+      host: 'stalotto.test',
       https: {
         key: process.env.VITE_MKCERT_KEY,
         cert: process.env.VITE_MKCERT_CERT
