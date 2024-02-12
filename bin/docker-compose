@@ -64,6 +64,8 @@ case $action in
                 echo "Starting development environment with Nginx..."
                 docker-compose -f compose.dev-nginx.yaml up -d $build_flag
             fi
+        elif [ -z "$environment" ]; then
+            pnpm run dev
         fi
         ;;
     stop)
