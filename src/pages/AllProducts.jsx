@@ -6,6 +6,13 @@ import ProductCard from '../components/product/ProductCard';
 import Services from '../components/common/Services';
 import filtersContext from '../contexts/filters/filtersContext.jsx';
 import EmptyView from '../components/common/EmptyView';
+import commonContext from '../contexts/common/commonContext.jsx';
+import { useState } from 'react';
+import { useEffect } from 'react';
+import loadingContext from '../contexts/loading/loadingContext.jsx';
+import { getFilteredCompetitionData } from '../services/competitionsApi';
+import { BounceLoader, PulseLoader } from 'react-spinners';
+
 
 
 const AllProducts = () => {
@@ -13,38 +20,70 @@ const AllProducts = () => {
     useDocTitle('All Products');
 
     const { allProducts } = useContext(filtersContext);
+    const { isFirstLoad, toggleIsFirstLoad } = useContext(loadingContext);
+
+    const { filteredCompetitions, setFilteredCompetitions } = useContext(commonContext);
+    const [initialLoad, setInitialLoad] = useState(true);
+    const [initialCompetitionData, setInitialCompetitionData] = useState([]);
+
+    useEffect(() => {
+        const fetchTopProducts = async () => {
+            try {
+                //fetch data
+                const data = await getFilteredCompetitionData();
+                setFilteredCompetitions(data);
+
+                //set context state for this component to loaded after data is received
+                setInitialLoad(false);
+                if (isFirstLoad) {
+                    toggleIsFirstLoad()
+                }
+            } catch (err) {
+                setInitialLoad(false);
+            }
+        }
+        fetchTopProducts();
+    },[])
 
 
     return (
-        <>
-            <section id="all_products" className="section">
-                <FilterBar />
+        isFirstLoad ? (
+            <div className="loading-spinner">
+                <BounceLoader color="#a9afc3" />
+            </div>
+        ) : (
+            filteredCompetitions === null ? <PulseLoader color="#a9afc3" className="centered_pulse_loader" /> :
+            typeof filteredCompetitions === "string" ? <p>{filteredCompetitions}</p> : (
+                <>
+                    <section id="all_products" className="section">
+                        <FilterBar />
 
-                <div className="container">
-                    {
-                        allProducts.length ? (
-                            <div className="wrapper products_wrapper">
-                                {
-                                    allProducts.map(item => (
-                                        <ProductCard
-                                            key={item.id}
-                                            {...item}
-                                        />
-                                    ))
-                                }
-                            </div>
-                        ) : (
-                            <EmptyView
-                                icon={<BsExclamationCircle />}
-                                msg="No Results Found"
-                            />
-                        )
-                    }
-                </div>
-            </section>
-
-            <Services />
-        </>
+                        <div className="container">
+                            {
+                                Array.isArray(filteredCompetitions) && filteredCompetitions.length > 0 ? (
+                                    <div className="wrapper products_wrapper">
+                                        {
+                                            filteredCompetitions.map(item => (
+                                                <ProductCard
+                                                    key={item.id}
+                                                    {...item}
+                                                />
+                                            ))
+                                        }
+                                    </div>
+                                ) : (
+                                    <EmptyView
+                                        icon={<BsExclamationCircle />}
+                                        msg="No Results Found"
+                                    />
+                                )
+                            }
+                        </div>
+                    </section>
+                    <Services />
+                </>
+            )
+        )
     );
 };
 

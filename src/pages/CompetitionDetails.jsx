@@ -108,95 +108,90 @@ const CompetitionDetails = () => {
                         <div className="container">
                             <div className="wrapper prod_details_wrapper">
 
-                                {isCompetitionLoaded ? (
-                                    /*=== Product Details Left-content ===*/
-                                    <div className="prod_details_left_col">
-                                        <div className="prod_details_tabs">
-                                            {
-                                                images.map((img, i) => (
-                                                    <div
-                                                        key={i}
-                                                        className={`tabs_item ${activeClass(i)}`}
-                                                        onClick={() => handlePreviewImg(i, img.src)}
-                                                    >
-                                                        <img src={img.src} alt="product-img" />
-                                                    </div>
-                                                ))
-                                            }
-                                        </div>
-                                        {images.length > 1 ? (
-                                            <figure className="prod_details_img">
-                                                <img src={previewImg} alt="product-img" />
-                                            </figure>
-                                        ) : ""}
-                                    </div>
-                                ) : (
+                                {!isCompetitionLoaded ? (
                                     <div>
                                         <PulseLoader color="#a9afc3" className="centered_pulse_loader" />
                                     </div>
-                                )}
-            
-            
-                                {/*=== Product Details Right-content ===*/}
-                                {isCompetitionLoaded ? (
-                                    <div className="prod_details_right_col">
-                                        <h1 className="prod_details_title">{title}</h1>
-                                        <h5 className="prod_details_creator">{creator}</h5>
-                
-                                        <div className="separator"></div>
-                
-                                        <div className="prod_details_price">
-                                                {closes < new Date() ? <h2 className="price">Competition Now Closed</h2> : (
-                                                    <>
-                                                        <div className="price_box">
-                                                            <h2 className="price">
-                                                                {newPrice} &nbsp;
-                                                                {originalPrice ? <small className="del_price"><del>{oldPrice}</del></small> : ""}
-                                                            </h2>
-                                                            {originalPrice ? <p className="saved_price">You save: {savedPrice} ({savedDiscount}%)</p> : ""}
-                                                            <span className="tax_txt">(Inclusive of all taxes)</span>
-                                                        </div>
-                                                        <div className="badge">
-                                                            <span><IoMdCheckmark /> {100 - percentageSold}% of Tickets Remaining</span>
-                                                        </div>
-                                                    </>
-                                                )}
-                
-                                        </div>
-                                            <br />
-                                            <div className="draws_in">
-                                                {closes < new Date() ? (
-                                                    <>
-                                                        <br />
-                                                        <p>{winningTicketIDs ? (`Winning Ticket${winningTicketIDs.length > 1 ? `s` : ``}: #${winningTicketIDs.join(", #")}`) : `Draw is pending`}</p>
-                                                    </>
-                                                ) : <CountdownTimer passStyle="comp_countdown" closes={closes} text="Winner will be announced in" />}
+                                ) : (
+                                    /*=== Product Details Left-content ===*/
+                                    typeof competition === "string" ? <p>{competition}</p> :
+                                    (
+                                        <>
+                                            <div className="prod_details_left_col">
+                                                <div className="prod_details_tabs">
+                                                    {
+                                                        images.length > 1 ? (
+                                                            images.map((img, i) => (
+                                                                <div
+                                                                    key={i}
+                                                                    className={`tabs_item ${activeClass(i)}`}
+                                                                    onClick={() => handlePreviewImg(i, img.src)}
+                                                                >
+                                                                    <img src={img.src} alt="product-img" />
+                                                                </div>
+                                                            ))
+                                                        ) : ""
+                                                    }
+                                                </div>
+                                                    <figure className="prod_details_img">
+                                                        <img src={previewImg} alt="product-img" />
+                                                    </figure>
                                             </div>
-                                        <div className="separator"></div>
-                
-                                        {/* <div className="prod_details_offers">
-                                            <h4>Exclusive Offers</h4>
-                                            <ul>
-                                                <OffersList offers={offers} />
-                                                Offers are currently disabled
-                                            </ul>
-                                        </div> 
-                
-                                        <div className="separator"></div>*/}
-                
-                                        <div className="prod_details_buy_btn">
-                                            {closes < new Date() ? "" : (
-                                                <button
-                                                    type="button"
-                                                    className="btn"
-                                                    onClick={handleAddItem}
-                                                >
-                                                    Add tickets to cart
-                                                </button>
-                                            )}
-                                        </div>
-                                    </div>
-                                ) : ""}
+                                            {/*=== Product Details Right-content ===*/}
+                                            <div className="prod_details_right_col">
+                                                <h1 className="prod_details_title">{title}</h1>
+                                                <h5 className="prod_details_creator">{creator}</h5>
+                                                <div className="separator"></div>
+                                                <div className="prod_details_price">
+                                                        {closes < new Date() ? <h2 className="price">Competition Now Closed</h2> : (
+                                                            <>
+                                                                <div className="price_box">
+                                                                    <h2 className="price">
+                                                                        {newPrice} &nbsp;
+                                                                        {originalPrice ? <small className="del_price"><del>{oldPrice}</del></small> : ""}
+                                                                    </h2>
+                                                                    {originalPrice ? <p className="saved_price">You save: {savedPrice} ({savedDiscount}%)</p> : ""}
+                                                                    <span className="tax_txt">(Inclusive of all taxes)</span>
+                                                                </div>
+                                                                <div className="badge">
+                                                                    <span><IoMdCheckmark /> {100 - percentageSold}% of Tickets Remaining</span>
+                                                                </div>
+                                                            </>
+                                                        )}
+                                                </div>
+                                                    <br />
+                                                    <div className="draws_in">
+                                                        {closes < new Date() ? (
+                                                            <>
+                                                                <br />
+                                                                <p>{winningTicketIDs ? (`Winning Ticket${winningTicketIDs.length > 1 ? `s` : ``}: #${winningTicketIDs.join(", #")}`) : `Draw is pending`}</p>
+                                                            </>
+                                                        ) : <CountdownTimer passStyle="comp_countdown" closes={closes} text="Winner will be announced in" />}
+                                                    </div>
+                                                <div className="separator"></div>
+                                                {/* <div className="prod_details_offers">
+                                                    <h4>Exclusive Offers</h4>
+                                                    <ul>
+                                                        <OffersList offers={offers} />
+                                                        Offers are currently disabled
+                                                    </ul>
+                                                </div>
+                                                <div className="separator"></div>*/}
+                                                <div className="prod_details_buy_btn">
+                                                    {closes < new Date() ? "" : (
+                                                        <button
+                                                            type="button"
+                                                            className="btn"
+                                                            onClick={handleAddItem}
+                                                        >
+                                                            Add tickets to cart
+                                                        </button>
+                                                    )}
+                                                </div>
+                                            </div>
+                                        </>
+                                    )
+                                )}
                             </div>
                         </div>
                     </section>

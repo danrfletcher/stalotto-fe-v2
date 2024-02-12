@@ -5,7 +5,7 @@ import FilterBarOptions from './FilterBarOptions';
 
 
 const FilterBar = () => {
-
+    //Sort & filter is currently disabled
     const { handleMobSortVisibility, handleMobFilterVisibility } = useContext(filtersContext);
 
 
@@ -14,14 +14,14 @@ const FilterBar = () => {
             {/*===== Filterbar-default =====*/}
             <aside id="filterbar">
                 <div className="filterbar_wrapper">
-                    <FilterBarOptions />
+                    {/* <FilterBarOptions /> */}
                 </div>
             </aside>
 
             {/*===== Filterbar-mobile =====*/}
-            <div id="filterbar_mob">
+            {/*<div id="filterbar_mob">
                 <div className="filterbar_mob_wrapper">
-                    <h3
+                     <h3
                         className="title"
                         onClick={() => handleMobSortVisibility(true)}
                     >
@@ -35,10 +35,10 @@ const FilterBar = () => {
                     >
                         <BiFilterAlt />
                         <span>Filter</span>
-                    </h3>
+                    </h3> 
                 </div>
                 <FilterBarOptions />
-            </div>
+            </div> */}
         </>
     );
 };
