@@ -3,7 +3,6 @@ import { Link } from 'react-router-dom';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { EffectCoverflow, Pagination, A11y, Autoplay } from 'swiper';
 import { displayMoney } from '../../utils/currency';
-import { getFeaturedCompetitionData } from '../../services/competitionsApi.ts'
 import 'swiper/scss';
 import 'swiper/scss/autoplay';
 import 'swiper/scss/pagination';
@@ -11,14 +10,17 @@ import "swiper/scss/effect-coverflow";
 import { CountdownTimer } from './CountdownTimer';
 import { TicketSoldBar } from './TicketSoldBar';
 import commonContext from '../../contexts/common/commonContext';
+import { PulseLoader } from 'react-spinners';
 
 const FeaturedSlider = () => {
     
     //component data
-    const { featuredCompetitions, setFeaturedCompetitions } = useContext(commonContext);
-    
+    const { featuredCompetitions } = useContext(commonContext);
 
-    return (
+    return featuredCompetitions === null ? <PulseLoader color="#a9afc3" className="centered_pulse_loader" /> :
+
+        typeof featuredCompetitions === "string" ? <p className="comp_placeholder">{featuredCompetitions}</p> : (
+
         <Swiper
             modules={[EffectCoverflow, Pagination, A11y, Autoplay]}
             loop={true}
@@ -53,26 +55,21 @@ const FeaturedSlider = () => {
         >
             {
                 featuredCompetitions.map((item) => {
-                    const { id, creator, name, original_price } = item;
-                    
-                    const thumbnail_src = item.thumbnail.url;
-                    const final_price = item.price_range.minimum_price.final_price.value;
-                    const total_tickets = item.starting_ticket_qtd;
-                    const tickets_remaining = item.only_x_left_in_stock;
-                    const closes = new Date(item.competition_closes_on);
-                    
-                    const newPrice = displayMoney(final_price);
-                    const oldPrice = displayMoney(original_price);
+                    const { id, thumbnail, title, finalPrice, originalPrice, totalTickets, ticketsRemaining, closes, creator, urlKey, sku } = item;
+                    const { src, label } = thumbnail;
 
-                    const fractionOfTicketsSold = (total_tickets - tickets_remaining) / total_tickets;
+                    const newPrice = displayMoney(finalPrice);
+                    const oldPrice = displayMoney(originalPrice);
+
+                    const fractionOfTicketsSold = (totalTickets - ticketsRemaining) / totalTickets;
                     const percentageSold = Math.round(fractionOfTicketsSold * 100)
 
                     return (
                         <SwiperSlide key={id} className="featured_slides">
-                            <div className="featured_title">{name}</div>
+                            <div className="featured_title">{title}</div>
                             <figure className="featured_img">
-                                <Link to={`/competition-details/${id}`}>
-                                    <img src={thumbnail_src} alt="" />
+                                <Link to={`/competition/${sku}-${creator}-${urlKey}`}>
+                                    <img src={src} alt={label} />
                                 </Link>
                             </figure>
                             <h2 className="products_price">
@@ -88,7 +85,7 @@ const FeaturedSlider = () => {
                 })
             }
         </Swiper>
-    )
+        )
 };
 
 export default FeaturedSlider;

@@ -7,7 +7,7 @@ import Services from '../components/common/Services';
 import { BounceLoader } from 'react-spinners';
 import loadingContext from '../contexts/loading/loadingContext';
 import commonContext from '../contexts/common/commonContext';
-import { getFeaturedCompetitionData } from '../services/competitionsApi';
+import { getFilteredCompetitionData } from '../services/competitionsApi';
 
 
 const Home = () => {
@@ -27,7 +27,11 @@ const Home = () => {
 
 
     //page data
-    const { featuredCompetitions, setFeaturedCompetitions } = useContext(commonContext);
+    const { 
+        setFeaturedCompetitions, //featured competitions component
+
+        setFilteredCompetitions, //top products component
+    } = useContext(commonContext);
 
 
     //fetching data & setting component loading states
@@ -44,10 +48,10 @@ const Home = () => {
                 toggleIsFeaturedSliderLoaded();
             };
         };
-        const featuredCompetitions = async () => {
+        const fetchFeaturedCompetitions = async () => {
             try {
                 //fetch data
-                const data = await getFeaturedCompetitionData();
+                const data = await getFilteredCompetitionData({tag: "featured"});
                 setFeaturedCompetitions(data);
                 
                 //set context state for this component to loaded after data is received
@@ -56,9 +60,29 @@ const Home = () => {
                 setFeaturedCompetitionsAsLoaded();
             }
         }
-        featuredCompetitions();
+        fetchFeaturedCompetitions();
 
         //top products component - data currently hardcoded
+        const setTopCompetitionsAsLoaded = () => {
+            if (!isTopProductsLoaded) {
+                toggleIsTopProductsLoaded();
+            };
+        };
+        const fetchTopProducts = async () => {
+            try {
+                //fetch data
+                const data = await getFilteredCompetitionData();
+                setFilteredCompetitions(data);
+
+                //set context state for this component to loaded after data is received
+                setTopCompetitionsAsLoaded();
+            } catch (err) {
+                setTopCompetitionsAsLoaded();
+            }
+        }
+        fetchTopProducts();
+
+
         if (!isTopProductsLoaded) {
             toggleIsTopProductsLoaded();
         }

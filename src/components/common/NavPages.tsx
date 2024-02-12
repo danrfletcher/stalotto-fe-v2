@@ -21,7 +21,6 @@ export const NavPages = () => {
                 const data = await getNavPages();
                 setNavPagesList(data);
             } catch (e) {
-                console.log(e);
                 throw new NavPagesError("Unable to get navigation pages");
             }
         })();

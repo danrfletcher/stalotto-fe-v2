@@ -8,11 +8,10 @@ import useActive from '../../hooks/useActive';
 
 const ProductCard = (props) => {
 
-    const { id, images, title, info, finalPrice, originalPrice, rateCount, path, state, winningTicketId } = props;
+    const { id, title, finalPrice, originalPrice, winningTicketIDs, thumbnail, creator, urlKey, sku } = props;
 
     const { addItem } = useContext(cartContext);
     const { active, handleActive, activeClass } = useActive(false);
-
 
     // handling Add-to-cart
     const handleAddItem = () => {
@@ -27,23 +26,26 @@ const ProductCard = (props) => {
     };
 
     const newPrice = displayMoney(finalPrice);
-    const oldPrice = displayMoney(originalPrice);
 
+    let oldPrice; 
+    if (originalPrice) {
+        oldPrice = displayMoney(originalPrice);
+    }
 
     return (
         <>
             <div className="card products_card">
                 <figure className="products_img">
-                    <Link to={`/competition-details/${id}`}>
-                        <img src={images[0]} alt="product-img" />
+                    <Link to={`/competition/${sku}-${creator}-${urlKey}`}>
+                        <img src={thumbnail.src} alt="product-img" />
                     </Link>
                 </figure>
                 <div className="products_details">
-                    {state === 'Winners' ? `Winning Ticket: #${winningTicketId}` : null}
+                    {winningTicketIDs ? `Winning Ticket${winningTicketIDs.length > 1 ? `s` : ``}: #${winningTicketIDs.join(", #")}` : null}
                     <h3 className="products_title">
-                        <Link to={`/competition-details/${id}`}>{title}</Link>
+                        <Link to={`/competition/${sku}-${creator}-${urlKey}`}>{title}</Link>
                     </h3>
-                    <h5 className="products_info">{info}</h5>
+                    <h5 className="products_info">{creator}</h5>
                     <div className="separator"></div>
                     <h2 className="products_price">
                         {newPrice} &nbsp;
@@ -54,7 +56,7 @@ const ProductCard = (props) => {
                         className={`btn products_btn ${activeClass(id)}`}
                         onClick={handleAddItem}
                     >
-                        {active ? 'Added' : 'Add to cart'}
+                        {active ? 'Added' : 'Add tickets to cart'}
                     </button>
                 </div>
             </div>

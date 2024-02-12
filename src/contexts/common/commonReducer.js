@@ -41,6 +41,12 @@ const commonReducer = (state, action) => {
                 featuredCompetitions: action.payload.featuredCompetitions,
             };
 
+        case 'SET_FILTERED_COMPETITIONS':
+            return {
+                ...state,
+                filteredCompetitions: action.payload.filteredCompetitions,
+            };
+
         default:
             return state;
     }

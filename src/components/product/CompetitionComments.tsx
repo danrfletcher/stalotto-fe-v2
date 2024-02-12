@@ -4,10 +4,6 @@ import { PostComment } from "./PostComment";
 const CompetitionComments = (props) => {
     const [postCommentReply, setPostCommentReply] = useState(false);
     const { username, comment, replies, userProfileImg, nestingLevel } = props;
-    
-    useEffect(() => {
-        console.log("⚡ ~ postCommentReply:", postCommentReply)
-    },[postCommentReply])
 
     return (
         <>

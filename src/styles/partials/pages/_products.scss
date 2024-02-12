@@ -106,3 +106,15 @@
         }
     }
 }
+
+.loading_card {
+    border: none !important;
+
+    .tp_loader_container {
+        @include padding-y(5rem, 5rem);
+    
+        .tp_pulse_loader {
+            text-align: center;
+        }
+    }
+}

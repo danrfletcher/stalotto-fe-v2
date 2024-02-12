@@ -14,6 +14,7 @@ const initialState = {
 
     //Home page data
     featuredCompetitions: null,
+    filteredCompetitions: null
 };
 
 // Common-Provider Component
@@ -67,6 +68,13 @@ const CommonProvider = ({ children }) => {
         });
     };
 
+    const setFilteredCompetitions = (filteredCompetitions) => {
+        return dispatch({
+            type: 'SET_FILTERED_COMPETITIONS',
+            payload: { filteredCompetitions }
+        });
+    };
+
     // Context values
     const values = {
         ...state,
@@ -77,7 +85,8 @@ const CommonProvider = ({ children }) => {
         setCurrentHash,
 
         // Home page data actions
-        setFeaturedCompetitions
+        setFeaturedCompetitions,
+        setFilteredCompetitions
     };
 
     return (

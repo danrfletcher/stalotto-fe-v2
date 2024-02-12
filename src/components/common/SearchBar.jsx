@@ -44,7 +44,7 @@ const SearchBar = () => {
                                 <input
                                     type="search"
                                     className="input_field"
-                                    placeholder="Search for product..."
+                                    placeholder="Search competitions & creators..."
                                     onChange={handleSearching}
                                 />
                                 {/* <button

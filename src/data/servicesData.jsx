@@ -7,7 +7,7 @@ const servicesData = [
         id: 1,
         icon: <AiFillLike />,
         title: "4,500 Players",
-        info: "No. 1 for brand based competitions.",
+        info: "No. 1 for competitions led by your favourite content creators & brands.",
     },
     {
         id: 2,

@@ -1,61 +1,145 @@
 import axios, { AxiosError } from 'axios';
-import { featuredCompetitionDataQuery } from './competitionsQueries';
+import { competitionFilters, featuredCompetitionDataQuery, getCompetitionGraphQLQuery } from './competitionsQueries';
 
 const baseURL = import.meta.env.VITE_API_BASE_URL;
+const mediaDirectory = import.meta.env.VITE_API_MEDIA_DIRECTORY;
 
-interface FeaturedCompetition {
-    id: number;
-    thumbnail: string;
-    title: string;
-    finalPrice: number;
-    originalPrice: number;
-    totalTickets: number;
-    ticketsRemaining: number;
-    closes: Date;
+interface ProductImage {
+  src: string,
+  label: string
 }
 
-class GraphQLError extends Error {
-    constructor(message: string) {
-      super(message);
-      this.name = "GraphQLError";
-    }
-  }
+interface Competition {
+  id: number;
+  sku: number;
+  urlKey: string;
+  thumbnail: ProductImage;
+  images?: ProductImage[];
+  title: string;
+  finalPrice: number;
+  originalPrice: number;
+  totalTickets: number;
+  ticketsRemaining: number;
+  closes: Date;
+  creator: string; 
+  winningTicketIDs;
+};
 
-export const getFeaturedCompetitionData = async (): Promise<FeaturedCompetition[] | string> => {
+class GraphQLError extends Error {
+  constructor(message: string) {
+    super(message);
+    this.name = "GraphQLError";
+  }
+};
+
+type tag = "featured" | "none";
+
+export interface CompetitionFilters {
+  tag?: tag;
+  sku?: string | null;
+  baseFilter?: string;
+	pageSize?: number | null;
+	currentPage?: number;
+}
+
+export const getFilteredCompetitionData = async ({tag = "none", sku = null, pageSize = 25, currentPage = 1}: CompetitionFilters = {}): Promise<Competition[] | string> => {
+
+    const noContent = `No ${tag === "featured" ? 'featured' : ""}competitions at the moment!`;
+    const badRequest = `We're having trouble fetching ${tag === "featured" ? 'featured ' : ""}competitions. Try reloading your browser or clearing the browser cache.`;
+    const serverError = `We're having trouble fetching ${tag === "featured" ? 'featured ' : ""}competitions. Please try again later.`;
+
+    const getQuery = (): string | undefined => {
+      switch (tag) {
+        case "featured":
+          return getCompetitionGraphQLQuery({
+            baseFilter: competitionFilters.featured,
+          })
+        default:
+          return getCompetitionGraphQLQuery({
+            pageSize: !sku ? pageSize : null,
+            sku: sku ? sku : null,
+          })
+      };
+    };
+
     try {
         const response = await axios.post(`${baseURL}/graphql`, {
-          query: featuredCompetitionDataQuery,
+          query: getQuery(),
         });
-    
+        
         if (response.data.errors) {
             throw new GraphQLError("GraphQL error");
         }
-    
-        const items = response.data.data.products.items;
+        const items = response.data.data.products.items.map((item) => {
+          const result: Competition = {
+            id: item.id,
+            sku: parseInt(item.sku),
+            urlKey: item.url_key,
+            title: item.name,
+            finalPrice: item.price_range.minimum_price.final_price.value,
+            originalPrice: item.original_price,
+            totalTickets: item.starting_ticket_qtd,
+            ticketsRemaining: item.only_x_left_in_stock,
+            closes: new Date(item.competition_closes_on),
+            creator: item.creator,
+            thumbnail: {
+              src: item.thumbnail.url,
+              label: item.thumbnail.label
+            },
+            winningTicketIDs: function() {
+              if (item.winning_ticket_ids) {
+                let idList: string[] = [];
+                item.winning_ticket_ids.split(",").forEach(ticketId => idList.push(ticketId));
+                return idList;
+              }
+            }(),
+          };
+          
+          if (tag === 'none') {
+            result.images = function() {
+              return item.media_gallery_entries.map((image) => {
+                return (
+                  {
+                    src: `${mediaDirectory}${image.file}`,
+                    label: image.label
+                  }
+                  )
+                })
+              }();
+          };
+          
+          return result;
+        });
+
         if (items.length === 0) {
-          return "No featured competitions at the moment!";
+          return noContent;
         }
+
         return items;
     } catch (err: unknown) {
-        let axiosError = err as AxiosError;
+        console.log(err)
+        let axiosError = err as AxiosError<any>;
 
-    if (err instanceof GraphQLError) {
-      return "Request malformed. We're having trouble fetching featured competitions. Try reloading your browser or clearing the browser cache.";
-    } else if (axios.isAxiosError(axiosError)) {
-      if (axiosError.response?.status === 500 && axiosError.response.data.errors?.some((e: any) => e.extensions?.debugMessage?.includes("not declared in GraphQL schema"))) {
-        return "Request malformed. We're having trouble fetching featured competitions. Try reloading your browser or clearing the browser cache.";
-      }
+        if (err instanceof GraphQLError) {
+          return badRequest;
+        } else if (axios.isAxiosError(axiosError)) {
+          const errors = axiosError.response?.data?.errors;
 
-      switch (axiosError.response?.status) {
-        case 400:
-          return "Request malformed. We're having trouble fetching featured competitions. Try reloading your browser or clearing the browser cache.";
-        case 500:
-          return "We're having trouble fetching featured competitions. Please try again later.";
-        default:
-          return "We're having trouble fetching featured competitions. Please try again later.";
+          if (axiosError.response?.status === 500 && errors?.some((e: any) => e.extensions?.debugMessage?.includes("not declared in GraphQL schema"))) {
+            return badRequest;
+          }
+
+        switch (axiosError.response?.status) {
+          case 400:
+            return badRequest;
+          case 500:
+            return serverError;
+          default:
+            return serverError;
+        }
+      } else {
+        return serverError;
       }
-    } else {
-      return "We're having trouble fetching featured competitions. Please try again later.";
-    }
     }
 };
+

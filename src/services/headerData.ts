@@ -33,11 +33,6 @@ export const navPages = [
         children: []
     },
     {
-        name: "Winners",
-        path: "/#comp-winners",
-        children: []
-    },
-    {
         name: "Help",
         path: "/help",
         children: []

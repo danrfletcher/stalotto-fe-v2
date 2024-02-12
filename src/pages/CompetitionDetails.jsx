@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { Link, useParams } from 'react-router-dom';
-import { IoMdStar, IoMdCheckmark } from 'react-icons/io';
+import { useParams } from 'react-router-dom';
+import { IoMdCheckmark, IoIosCloseCircle } from 'react-icons/io';
 import { calculateDiscount, displayMoney } from '../utils/currency.js';
 import useDocTitle from '../hooks/useDocTitle.js';
 import useActive from '../hooks/useActive.js';
@@ -13,63 +13,75 @@ import Services from '../components/common/Services.jsx';
 import { CountdownTimer } from '../components/sliders/CountdownTimer.tsx';
 import { offersData } from '../data/offersData.ts';
 import { OffersList } from './OffersList.tsx';
+import commonContext from '../contexts/common/commonContext.jsx';
+import { getFilteredCompetitionData } from '../services/competitionsApi.ts';
+import loadingContext from '../contexts/loading/loadingContext.jsx';
+import { BounceLoader, PulseLoader } from 'react-spinners';
 
 
 const CompetitionDetails = () => {
 
-    useDocTitle('Product Details');
+    const { isFirstLoad, toggleIsFirstLoad } = useContext(loadingContext);
+
+    const [competition, setCompetition] = useState({});
+    const [isCompetitionLoaded,setIsCompetitionLoaded] = useState(false);
+    const [compTitle, setCompTitle] = useState('Competition')
+    useDocTitle(compTitle);
 
     const { handleActive, activeClass } = useActive(0);
-
     const { addItem } = useContext(cartContext);
 
-    const { productId } = useParams();
+    const { filteredCompetitions } = useContext(commonContext);
+    const { urlKey } = useParams();
 
-    // here the 'id' received has 'string-type', so converting it to a 'Number'
-    const prodId = parseInt(productId);
+    const sku = parseInt(urlKey.split('-')[0]);
+    const [previewImg, setPreviewImg] = useState(null);
 
     // showing the Product based on the received 'id'
-    const product = competitionsData.find(item => item.id === prodId);
+    useEffect(() => {
+        const fetchCompetition = async () => {
+            try {
+                const data = await getFilteredCompetitionData({ sku });
+                if (data.length === 1) {
+                    setCompetition(data[0]);
+                    setCompTitle(data[0].title);
+                    setPreviewImg(data[0].thumbnail.src);
+                    setIsCompetitionLoaded(true);
+                    if (isFirstLoad) {
+                        toggleIsFirstLoad();
+                    }
+                } else {
+                    throw new Error('Error fetching competition');
+                }
+            } catch (err) {
+                setCompetition("We're having trouble fetching data for this competition. Please try again later.")
+            }
+        };
+    
+        fetchCompetition();
+    }, [filteredCompetitions, sku]);
 
-    const { 
-        images, 
-        title, 
-        creator, 
-        category, 
-        finalPrice, 
-        originalPrice, 
-        ratings, 
-        rateCount,
-        totalTickets,
-        ticketsRemaining,
-        closes,
-        offers,
-        description,
-        specifications,
-        comments,
-        totalComments,
-    } = product;
-
-    const [previewImg, setPreviewImg] = useState(images[0]);
-
+    const { images, title, creator, category, finalPrice, originalPrice, totalTickets, ticketsRemaining, closes, thumbnail, winningTicketIDs } = competition;
 
     // handling Add-to-cart
     const handleAddItem = () => {
-        addItem(product);
+        //addItem(product);
     };
 
 
-    // setting the very-first image on re-render
+    //setting the very-first image on re-render
     useEffect(() => {
-        setPreviewImg(images[0]);
-        handleActive(0);
+        if (images) {
+            setPreviewImg(images[0].src);
+            handleActive(0);
+        }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [images]);
 
 
     // handling Preview image
-    const handlePreviewImg = (i) => {
-        setPreviewImg(images[i]);
+    const handlePreviewImg = (i, src) => {
+        setPreviewImg(src);
         handleActive(i);
     };
 
@@ -86,91 +98,120 @@ const CompetitionDetails = () => {
 
     return (
         <>
-            <section id="product_details" className="section">
-                <div className="container">
-                    <div className="wrapper prod_details_wrapper">
+            {isFirstLoad ? (
+                <div className="loading-spinner">
+                    <BounceLoader color="#a9afc3" />
+                </div>
+            ) : (
+                <>
+                    <section id="product_details" className="section">
+                        <div className="container">
+                            <div className="wrapper prod_details_wrapper">
 
-                        {/*=== Product Details Left-content ===*/}
-                        <div className="prod_details_left_col">
-                            <div className="prod_details_tabs">
-                                {
-                                    images.map((img, i) => (
-                                        <div
-                                            key={i}
-                                            className={`tabs_item ${activeClass(i)}`}
-                                            onClick={() => handlePreviewImg(i)}
-                                        >
-                                            <img src={img} alt="product-img" />
+                                {isCompetitionLoaded ? (
+                                    /*=== Product Details Left-content ===*/
+                                    <div className="prod_details_left_col">
+                                        <div className="prod_details_tabs">
+                                            {
+                                                images.map((img, i) => (
+                                                    <div
+                                                        key={i}
+                                                        className={`tabs_item ${activeClass(i)}`}
+                                                        onClick={() => handlePreviewImg(i, img.src)}
+                                                    >
+                                                        <img src={img.src} alt="product-img" />
+                                                    </div>
+                                                ))
+                                            }
                                         </div>
-                                    ))
-                                }
+                                        {images.length > 1 ? (
+                                            <figure className="prod_details_img">
+                                                <img src={previewImg} alt="product-img" />
+                                            </figure>
+                                        ) : ""}
+                                    </div>
+                                ) : (
+                                    <div>
+                                        <PulseLoader color="#a9afc3" className="centered_pulse_loader" />
+                                    </div>
+                                )}
+            
+            
+                                {/*=== Product Details Right-content ===*/}
+                                {isCompetitionLoaded ? (
+                                    <div className="prod_details_right_col">
+                                        <h1 className="prod_details_title">{title}</h1>
+                                        <h5 className="prod_details_creator">{creator}</h5>
+                
+                                        <div className="separator"></div>
+                
+                                        <div className="prod_details_price">
+                                                {closes < new Date() ? <h2 className="price">Competition Now Closed</h2> : (
+                                                    <>
+                                                        <div className="price_box">
+                                                            <h2 className="price">
+                                                                {newPrice} &nbsp;
+                                                                {originalPrice ? <small className="del_price"><del>{oldPrice}</del></small> : ""}
+                                                            </h2>
+                                                            {originalPrice ? <p className="saved_price">You save: {savedPrice} ({savedDiscount}%)</p> : ""}
+                                                            <span className="tax_txt">(Inclusive of all taxes)</span>
+                                                        </div>
+                                                        <div className="badge">
+                                                            <span><IoMdCheckmark /> {100 - percentageSold}% of Tickets Remaining</span>
+                                                        </div>
+                                                    </>
+                                                )}
+                
+                                        </div>
+                                            <br />
+                                            <div className="draws_in">
+                                                {closes < new Date() ? (
+                                                    <>
+                                                        <br />
+                                                        <p>{winningTicketIDs ? (`Winning Ticket${winningTicketIDs.length > 1 ? `s` : ``}: #${winningTicketIDs.join(", #")}`) : `Draw is pending`}</p>
+                                                    </>
+                                                ) : <CountdownTimer passStyle="comp_countdown" closes={closes} text="Winner will be announced in" />}
+                                            </div>
+                                        <div className="separator"></div>
+                
+                                        {/* <div className="prod_details_offers">
+                                            <h4>Exclusive Offers</h4>
+                                            <ul>
+                                                <OffersList offers={offers} />
+                                                Offers are currently disabled
+                                            </ul>
+                                        </div> 
+                
+                                        <div className="separator"></div>*/}
+                
+                                        <div className="prod_details_buy_btn">
+                                            {closes < new Date() ? "" : (
+                                                <button
+                                                    type="button"
+                                                    className="btn"
+                                                    onClick={handleAddItem}
+                                                >
+                                                    Add tickets to cart
+                                                </button>
+                                            )}
+                                        </div>
+                                    </div>
+                                ) : ""}
                             </div>
-                            <figure className="prod_details_img">
-                                <img src={previewImg} alt="product-img" />
-                            </figure>
                         </div>
-
-                        {/*=== Product Details Right-content ===*/}
-                        <div className="prod_details_right_col">
-                            <h1 className="prod_details_title">{title}</h1>
-                            <h5 className="prod_details_creator">{creator}</h5>
-
-                            <div className="separator"></div>
-
-                            <div className="prod_details_price">
-                                <div className="price_box">
-                                    <h2 className="price">
-                                        {newPrice} &nbsp;
-                                        <small className="del_price"><del>{oldPrice}</del></small>
-                                    </h2>
-                                    <p className="saved_price">You save: {savedPrice} ({savedDiscount}%)</p>
-                                    <span className="tax_txt">(Inclusive of all taxes)</span>
-                                </div>
-
-                                <div className="badge">
-                                    <span><IoMdCheckmark /> {100 - percentageSold}% of Tickets Remaining</span>
-                                </div>
-                            </div>
-                                <br />
-                                <div className="draws_in">
-                                    <CountdownTimer passStyle="comp_countdown" closes={closes} text="Winner will be announced in" />
-                                </div>
-                            <div className="separator"></div>
-
-                            <div className="prod_details_offers">
-                                <h4>Exclusive Offers</h4>
-                                <ul>
-                                    <OffersList offers={offers} />
-                                </ul>
-                            </div>
-
-                            <div className="separator"></div>
-
-                            <div className="prod_details_buy_btn">
-                                <button
-                                    type="button"
-                                    className="btn"
-                                    onClick={handleAddItem}
-                                >
-                                    Add to cart
-                                </button>
-                            </div>
-
-                        </div>
+                    </section>
+        
+                    {/* <ProductSummary {...competition} /> */}
+        
+                    {/* <section id="related_products" className="section">
+                    <div className="container">
+                        <SectionsHead heading="Related Products" />
+                        <RelatedSlider category={category} />
                     </div>
-                </div>
-            </section>
-
-            <ProductSummary {...product} />
-
-            <section id="related_products" className="section">
-                <div className="container">
-                    <SectionsHead heading="Related Products" />
-                    <RelatedSlider category={category} />
-                </div>
-            </section>
-
-            <Services />
+                    </section> */}
+                    <Services />
+                </>
+            )}
         </>
     );
 };

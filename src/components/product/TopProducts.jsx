@@ -2,65 +2,64 @@ import React, { useContext, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { BsArrowRight } from 'react-icons/bs';
 import useActive from '../../hooks/useActive';
-import competitionsData from '../../data/competitionData.tsx';
 import ProductCard from './ProductCard';
 import commonContext from '../../contexts/common/commonContext';
+import { PulseLoader } from 'react-spinners';
+import loadingContext from '../../contexts/loading/loadingContext.jsx';
 
 
 const TopProducts = () => {
 
     //displaying product groups & categories business logic
     const { setCurrentHash, currentHash } = useContext(commonContext);
-    const [products, setProducts] = useState(competitionsData);
+
+    const { filteredCompetitions, setFilteredCompetitions } = useContext(commonContext);
+    const [initialLoad, setInitialLoad] = useState(true);
+    const [initialCompetitionData, setInitialCompetitionData] = useState([]);
+    
+    useEffect(() => {
+        if (initialLoad && Array.isArray(filteredCompetitions)) {
+            if (filteredCompetitions.length > 0) {
+                setInitialCompetitionData(structuredClone(filteredCompetitions));
+                setInitialLoad(false);
+            }
+          }
+    },[filteredCompetitions, initialLoad])
+
     const { activeClass, handleActive } = useActive(0);
 
     // making a unique set of product's category
     const productsCategory = [
         'Latest',
-        ...new Set(competitionsData.map(item => item.state))
+        //'Now Live',
+        //'Winners',
+        //'Pending Draw'
     ];
 
     // handling product's filtering
-    const handleProducts = (category, i) => {
+    const handleProducts = (category, i) => { //latest displays 25 most recent competitions, fetched on page load
         if (category === 'Latest') {
-            setProducts(competitionsData);
+            setFilteredCompetitions(initialCompetitionData);
             handleActive(i);
             return;
-        }
+        } else if (category === 'Now Live') { //now live fetches 25 most recent live competitions
+            setFilteredCompetitions('This section is coming soon! 1');
+            handleActive(i);
+            return; 
+        } else if (category === 'Winners') { //winners fetches 25 most recently won competitions
+            setFilteredCompetitions('This section is coming soon! 2');
+            handleActive(i);
+            return;
+        } else if (category === 'Pending Draw') { //pending draw fetches 25 most recent competitions with no winningTicketID yet
+            setFilteredCompetitions('This section is coming soon! 3');
+            handleActive(i);
+            return;
+        };
 
-        const filteredProducts = competitionsData.filter(item => item.state === category);
-        setProducts(filteredProducts);
-        handleActive(i);
+        //Winner Announced if winningticketId not null
+        //Now live if closes is in the future.
+        //Pending draw if closes is in the past & no winningticketID
     };
-
-    // handle smooth scrolling to elements on the page
-    useEffect(() => {
-        if (currentHash.startsWith('#comp-')) {
-            const hashCategory = currentHash.replace('#comp-', '').toLowerCase();
-            const encodedProductsCategory = productsCategory.map(category => category.toLowerCase().split(' ').join('-'));
-            
-            if (encodedProductsCategory.includes(hashCategory)) {
-                const categoryIndex = encodedProductsCategory.indexOf(hashCategory);
-                handleActive(categoryIndex); // Activate the relevant competition tab
-                const decodedCategory = productsCategory[categoryIndex]; 
-                setProducts(competitionsData.filter(item => item.state === decodedCategory)); // Set the correct products
-
-                //handleProducts(decodedCategory, categoryIndex);
-
-                document.getElementById('comp')?.scrollIntoView({
-                    behavior: 'smooth'
-                });
-            }
-        } else if (currentHash.length === 0) {
-            document.body?.scrollIntoView({
-                behavior: 'smooth'
-              });
-        } else {
-            document.getElementById(currentHash.slice(1))?.scrollIntoView({
-                behavior: 'smooth'
-            });
-        }
-    }, [currentHash]);
 
     return (
         <>
@@ -81,12 +80,24 @@ const TopProducts = () => {
             </div>
             <div className="wrapper products_wrapper">
                 {
-                    products.slice(0, 11).map(item => (
-                        <ProductCard
-                            key={item.id}
-                            {...item}
-                        />
-                    ))
+                    filteredCompetitions === null ? (
+                        <div className="card products_card browse_card loading_card">
+                                <div className="tp_loader_container">
+                                <PulseLoader color="#a9afc3" className="tp_pulse_loader" />
+                            </div>
+                        </div>
+                    ) : typeof filteredCompetitions === 'string' ? (
+                        <div className="card products_card browse_card">
+                            <p className="comp_placeholder">{filteredCompetitions}</p>
+                        </div>
+                    ) : (
+                        filteredCompetitions.slice(0, 22).map(item => (
+                            <ProductCard
+                                key={item.id}
+                                {...item}
+                            />
+                        ))
+                    )
                 }
                 <div className="card products_card browse_card">
                     <Link to="/competitions">
