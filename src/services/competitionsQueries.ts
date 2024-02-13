@@ -57,7 +57,7 @@ export const getCompetitionGraphQLQuery = ({baseFilter, pageSize, currentPage, s
 			}
 			}
 		}
-		`;
+	`;
 
 	return query;
 }

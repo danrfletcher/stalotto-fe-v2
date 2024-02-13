@@ -1,5 +1,5 @@
 import axios, { AxiosError } from 'axios';
-import { competitionFilters, featuredCompetitionDataQuery, getCompetitionGraphQLQuery } from './competitionsQueries';
+import { competitionFilters, getCompetitionGraphQLQuery } from './competitionsQueries';
 
 const baseURL = import.meta.env.VITE_API_BASE_URL;
 const mediaDirectory = import.meta.env.VITE_API_MEDIA_DIRECTORY;
@@ -117,7 +117,6 @@ export const getFilteredCompetitionData = async ({tag = "none", sku = null, page
 
         return items;
     } catch (err: unknown) {
-        console.log(err)
         let axiosError = err as AxiosError<any>;
 
         if (err instanceof GraphQLError) {

@@ -65,7 +65,7 @@ const CompetitionDetails = () => {
 
     // handling Add-to-cart
     const handleAddItem = () => {
-        //addItem(product);
+        addItem(competition);
     };
 
 

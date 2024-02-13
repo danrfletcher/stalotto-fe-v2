@@ -9,11 +9,13 @@ import { CommonProvider } from './contexts/common/commonContext';
 import { CartProvider } from './contexts/cart/cartContext';
 import { FiltersProvider } from './contexts/filters/filtersContext';
 import { LoadingProvider } from './contexts/loading/loadingContext.jsx';
+import { UserProvider } from './contexts/user/userContext.jsx';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
     <BrowserRouter>
+      <UserProvider>
       <LoadingProvider>
       <CommonProvider>
       <FiltersProvider>
@@ -23,6 +25,7 @@ root.render(
       </FiltersProvider>
       </CommonProvider>
       </LoadingProvider>
+      </UserProvider>
     </BrowserRouter>
   </React.StrictMode>
 );

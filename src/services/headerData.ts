@@ -32,11 +32,6 @@ export const navPages = [
         path: "/competitions",
         children: []
     },
-    {
-        name: "Help",
-        path: "/help",
-        children: []
-    },
 ];
 
 interface NavPage {

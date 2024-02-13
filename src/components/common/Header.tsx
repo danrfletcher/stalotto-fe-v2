@@ -7,17 +7,21 @@ import cartContext from '../../contexts/cart/cartContext.jsx';
 import AccountForm from '../form/AccountForm.jsx';
 import SearchBar from './SearchBar.jsx';
 import { NavPages } from './NavPages.js';
+import userContext from '../../contexts/user/userContext.jsx';
 
 const Header = () => {
 
     const { formUserInfo, toggleForm, toggleSearch, setCurrentHash, currentHash } = useContext(commonContext);
+    const { user, isLoggedIn } = useContext(userContext);
+    const { modifyLoginWorkflowState } = useContext(userContext);
     const { cartItems } = useContext(cartContext);
     const [isSticky, setIsSticky] = useState(false);
+
+    const {firstName} = user
 
     // handle the sticky-header
     useEffect(() => {
         const handleIsSticky = () => window.scrollY >= 50 ? setIsSticky(true) : setIsSticky(false);
-
         window.addEventListener('scroll', handleIsSticky);
 
         return () => {
@@ -73,31 +77,44 @@ const Header = () => {
                                     <AiOutlineUser />
                                 </span>
                                 <div className="dropdown_menu">
-                                    <h4>Hello! {formUserInfo && <Link to="*">&nbsp;{formUserInfo}</Link>}</h4>
-                                    <p>Access account and manage orders</p>
+                                    <h4>Hello! {formUserInfo && <Link to="*">&nbsp;{firstName}</Link>}</h4>
+                                    <p>Access account and manage orders. Password reset is coming soon. For now, email admin@stalotto.com for help.</p>
                                     {
                                         !formUserInfo && (
                                             <button
                                                 type="button"
-                                                onClick={() => toggleForm(true)}
+                                                onClick={() => {
+                                                    modifyLoginWorkflowState("None");
+                                                    toggleForm(true);
+                                                }}
                                             >
                                                 Login / Signup
                                             </button>
                                         )
                                     }
-                                    <div className="separator"></div>
-                                    <ul>
-                                        {
-                                            dropdownMenu.map(item => {
-                                                const { id, link, path } = item;
-                                                return (
-                                                    <li key={id}>
-                                                        <Link to={path}>{link}</Link>
-                                                    </li>
-                                                );
-                                            })
-                                        }
-                                    </ul>
+                                    {isLoggedIn ? (
+                                        <>
+                                            <div className="separator"></div>
+                                            <ul>
+                                                {
+                                                    dropdownMenu.map(item => {
+                                                        const { id, link, path } = item;
+                                                        return (
+                                                            <li key={id}>
+                                                                <Link to={path}>{link}</Link>
+                                                            </li>
+                                                        );
+                                                    })
+                                                }
+                                            </ul>
+                                            <div className="separator"></div>
+                                            <ul>
+                                                <li key="1">
+                                                        Logout       
+                                                </li>
+                                            </ul>
+                                        </>
+                                    ) : ""}
                                 </div>
                             </div>
                         </nav>

@@ -17,7 +17,7 @@ const Cart = () => {
 
     // total original price
     const cartTotal = cartItems.map(item => {
-        return item.originalPrice * item.quantity;
+        return item.finalPrice * item.quantity;
     });
 
     const calculateCartTotal = calculateTotal(cartTotal);
@@ -47,7 +47,7 @@ const Cart = () => {
                             <EmptyView
                                 icon={<BsCartX />}
                                 msg="Your Cart is Empty"
-                                link="/all-products"
+                                link="/competitions"
                                 btnText="Start Shopping"
                             />
                         ) : (
@@ -70,7 +70,7 @@ const Cart = () => {
                                             ( {cartQuantity} {cartQuantity > 1 ? 'items' : 'item'} )
                                         </h3>
                                         <div className="order_summary_details">
-                                            <div className="price">
+                                            {/* <div className="price">
                                                 <span>Original Price</span>
                                                 <b>{displayCartTotal}</b>
                                             </div>
@@ -81,7 +81,7 @@ const Cart = () => {
                                             <div className="delivery">
                                                 <span>Delivery</span>
                                                 <b>Free</b>
-                                            </div>
+                                            </div> */}
                                             <div className="separator"></div>
                                             <div className="total_price">
                                                 <b><small>Total Price</small></b>

@@ -18,6 +18,7 @@ const cartReducer = (state, action) => {
                     return item;
                 });
             } else {
+                action.payload.item.quantity = 1;
                 updatedCartItems = [...state.cartItems, action.payload.item];
             }
 

@@ -22,7 +22,7 @@ const LoadingProvider = ({ children }) => {
 
     const [state, dispatch] = useReducer(loadingReducer, initialState);
 
-    //First Load Action
+    // First Load Action
     const toggleIsFirstLoad = () => {
         return dispatch({
             type: 'TOGGLE_IS_FIRST_LOAD_FALSE',
