@@ -1,5 +1,5 @@
 import axios, { AxiosError, AxiosResponse } from 'axios';
-import { createUserAccountQuery, getUserInfoQuery, getUserLoginQuery } from './userAccountQueries';
+import { createUserAccountQuery, getUserInfoQuery, getUserLoginQuery, logoutUserQuery } from './userAccountQueries';
 
 const baseURL = import.meta.env.VITE_API_BASE_URL;
 
@@ -24,7 +24,30 @@ export const loginUser = async ({email, password}: LoginParameters): Promise<str
     };
 };
 
-const logoutUser = async () => {};
+export const logoutUser = async (token) => {
+    try {
+        const response = await axios.post(
+            `${baseURL}/graphql`, 
+            {
+                query: logoutUserQuery
+            },
+            {
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                    'Content-Type': 'application/json',
+                }
+            }
+        );
+
+        if (response.data.data.revokeCustomerToken.result) {
+            return true;
+        } else {
+            return false;
+        };
+    } catch (err) {
+        return false;
+    }
+};
 
 export const getUserInfo = async (token) => {
     try {

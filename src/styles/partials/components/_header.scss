@@ -131,3 +131,13 @@
         @include toggleVisibility(visible, 1);
     }
 }
+
+.logout {
+    display: flex;
+    align-items: baseline;
+    justify-content: left;
+
+    .logout_text {
+        margin-right: 15px;
+    }
+}

@@ -44,4 +44,12 @@ export const createUserAccountQuery = ({firstName, lastName, email, password}) =
         }
     `
     return query
-}
+};
+
+export const logoutUserQuery = `
+    mutation {
+        revokeCustomerToken {
+        result
+        }
+    }
+`

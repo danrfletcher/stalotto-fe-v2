@@ -8,16 +8,20 @@ import AccountForm from '../form/AccountForm.jsx';
 import SearchBar from './SearchBar.jsx';
 import { NavPages } from './NavPages.js';
 import userContext from '../../contexts/user/userContext.jsx';
+import { logoutUser } from '../../services/userAccountApi.js';
+import { BarLoader } from 'react-spinners';
 
 const Header = () => {
 
-    const { formUserInfo, toggleForm, toggleSearch, setCurrentHash, currentHash } = useContext(commonContext);
-    const { user, isLoggedIn } = useContext(userContext);
+    const { formUserInfo, toggleForm, toggleSearch, setCurrentHash, currentHash, setFormUserInfo } = useContext(commonContext);
+    const { user, isLoggedIn, token, setUserDefaults } = useContext(userContext);
     const { modifyLoginWorkflowState } = useContext(userContext);
     const { cartItems } = useContext(cartContext);
     const [isSticky, setIsSticky] = useState(false);
 
-    const {firstName} = user
+    const {firstName} = user;
+
+    const [logoutPending, setLogoutPending] = useState(false);
 
     // handle the sticky-header
     useEffect(() => {
@@ -39,6 +43,26 @@ const Header = () => {
     },[currentHash])
 
     const cartQuantity = cartItems.length;
+
+    const handleLogout = async () => {
+        try {
+            setLogoutPending(true);
+            const logout = await logoutUser(token);
+            if (logout) {
+                setFormUserInfo('');
+                setUserDefaults();
+                setLogoutPending(false);
+            } else {
+                setLogoutPending(false);
+                modifyLoginWorkflowState("ServerError");
+                toggleForm(true);
+            }
+        } catch (err) {
+            setLogoutPending(false);
+            modifyLoginWorkflowState("ServerError");
+            toggleForm(true);
+        }
+    }
 
     return (
         <>
@@ -109,8 +133,13 @@ const Header = () => {
                                             </ul>
                                             <div className="separator"></div>
                                             <ul>
-                                                <li key="1">
-                                                        Logout       
+                                                <li className="logout" key="logout" onClick={handleLogout}>
+                                                        <p className="logout_text">Logout </p>
+                                                        {
+                                                            logoutPending && (
+                                                                <BarLoader color="#a9afc3" /> 
+                                                            )
+                                                        }     
                                                 </li>
                                             </ul>
                                         </>

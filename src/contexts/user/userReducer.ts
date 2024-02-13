@@ -1,3 +1,5 @@
+import { userInitialState } from "./userContext";
+
 const userReducer = (state, action) => {
     switch (action.type) {
 
@@ -33,6 +35,9 @@ const userReducer = (state, action) => {
                 ...state,
                 user: action.payload.user
             }
+        
+        case 'RESET':
+            return userInitialState
         
             default:
                 return state;

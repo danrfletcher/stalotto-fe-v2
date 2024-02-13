@@ -5,7 +5,7 @@ import userReducer from './userReducer';
 const userContext = createContext();
 
 // Initial State
-const initialState = {
+export const userInitialState = {
     isLoggedIn: false,
     token: null,
     loginWorkflowState: "None",
@@ -19,7 +19,7 @@ const initialState = {
 // User-Provider Component
 const UserProvider = ({ children }) => {
 
-    const [state, dispatch] = useReducer(userReducer, initialState);
+    const [state, dispatch] = useReducer(userReducer, userInitialState);
     
     // Actions
     const setToken = (token) => {
@@ -50,13 +50,20 @@ const UserProvider = ({ children }) => {
         })
     };
 
+    const setUserDefaults = () => {
+        return dispatch({
+            type: 'RESET'
+        })
+    }
+
     // Context values
     const values = {
         ...state,
         setToken,
         toggleLoggedIn,
         modifyLoginWorkflowState,
-        modifyUser
+        modifyUser,
+        setUserDefaults
     };
 
     return (

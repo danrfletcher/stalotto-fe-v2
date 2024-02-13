@@ -16,7 +16,6 @@ const AccountForm = () => {
         areAllConditionsSatisfied, setAreAllConditionsSatisfied, 
     } = useForm();
     const { token, isLoggedIn, loginWorkflowState, user } = useContext(userContext);
-    
 
     const formRef = useRef();
 
