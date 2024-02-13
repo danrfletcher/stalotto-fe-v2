@@ -44,7 +44,7 @@ const SearchBar = () => {
                                 <input
                                     type="search"
                                     className="input_field"
-                                    placeholder="Search competitions & creators..."
+                                    placeholder="Search is currently disabled. Available soon..."
                                     onChange={handleSearching}
                                 />
                                 {/* <button
