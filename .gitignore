@@ -31,3 +31,6 @@ yarn-error.log*
 *.png
 *.mp4
 *.jpg
+
+#Production builds
+dist/
