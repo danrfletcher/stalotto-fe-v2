@@ -141,7 +141,7 @@ const competitionsData: Competition[] = [
             },
             {
                 commentId: 5,
-                username: "connalsraiments",
+                username: "connallsraiments",
                 comment: "Can we use it to ram raid the Ralph Lauren HQ before it ends?",
                 userProfileImg: "/images/users/connal-p.jpeg",
                 replies: [
