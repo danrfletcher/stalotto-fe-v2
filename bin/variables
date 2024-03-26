@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+
+EXPORT_SRC_DIRECTORY="../stalotto-src/react"
+SRC_EXPORT_NAME="stalotto-fe"
+
+export EXPORT_SRC_DIRECTORY SRC_EXPORT_NAME

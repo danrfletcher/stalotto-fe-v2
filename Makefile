@@ -33,6 +33,7 @@ help:
 	@echo "$(call format,remove dev vite,'Stop and remove Vite development server containers.')"
 	@echo "$(call format,remove dev nginx,'Stop and remove Nginx development server containers.')"
 	@echo "$(call format,remove prod,'Stop and remove production server containers.')"
+	@echo "$(call format,exportsrcbackup,'Build & export site as zip for import to production web server')"
 
 start:
 	@./bin/docker-compose start $(filter-out $@,$(MAKECMDGOALS))
@@ -40,6 +41,7 @@ stop:
 	@./bin/docker-compose stop $(filter-out $@,$(MAKECMDGOALS))
 remove:
 	@./bin/docker-compose remove $(filter-out $@,$(MAKECMDGOALS))
-	
+exportsrcbackup:
+	@./bin/export-src-backup $(filter-out $@,$(MAKECMDGOALS))	
 .PHONY: start stop remove %
 

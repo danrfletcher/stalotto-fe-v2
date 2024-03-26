@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+
+source ./bin/variables
+
+npm run build
+zip -r $EXPORT_SRC_DIRECTORY/$SRC_EXPORT_NAME.zip dist/
