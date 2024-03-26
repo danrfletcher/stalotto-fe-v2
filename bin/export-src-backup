@@ -3,4 +3,4 @@
 source ./bin/variables
 
 npm run build
-zip -r $EXPORT_SRC_DIRECTORY/$SRC_EXPORT_NAME.zip dist/
+zip -r $EXPORT_SRC_DIRECTORY/$SRC_EXPORT_NAME-$(date +%Y%m%d%H%M%S).zip dist/
