@@ -18,6 +18,7 @@ const Header = () => {
     const { modifyLoginWorkflowState } = useContext(userContext);
     const { cartItems } = useContext(cartContext);
     const [isSticky, setIsSticky] = useState(false);
+    const [cartQuantity, setCartQuantity] = useState(0);
 
     const {firstName} = user;
 
@@ -42,7 +43,11 @@ const Header = () => {
         handleHashChange();
     },[currentHash])
 
-    const cartQuantity = cartItems.length;
+    useEffect(() => {
+        let totalCartQtd = 0
+        const getCartQuantity = cartItems.map(cartItem => totalCartQtd += cartItem.quantity);
+        setCartQuantity(getCartQuantity);
+    },[cartItems])
 
     const handleLogout = async () => {
         try {
