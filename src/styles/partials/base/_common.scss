@@ -205,3 +205,14 @@
     width: 100dvw;
     height: 100dvh;
 }
+
+.app_container {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh; /* Make the app container at least as tall as the viewport */
+  }
+  
+  .main_content {
+    flex: 1; /* Allow the main content to expand and fill available space */
+  }
+  

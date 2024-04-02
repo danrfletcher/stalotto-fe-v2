@@ -10,16 +10,18 @@ const App = () => {
   const { isFirstLoad } = useContext(loadingContext);
 
   return (
-    <>
+    <div className="app_container">
       {isFirstLoad ? null : <Header />}
-      <RouterRoutes />
+      <div className="main_content">
+        <RouterRoutes />
+      </div>
       {isFirstLoad ? null : (
         <>
           <Footer />
           <BackTop />
         </>
       )}
-    </>
+    </div>
   );
 };
 
