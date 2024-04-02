@@ -5,6 +5,8 @@ import useDocTitle from '../hooks/useDocTitle';
 import cartContext from '../contexts/cart/cartContext.jsx';
 import CartItem from '../components/cart/CartItem';
 import EmptyView from '../components/common/EmptyView';
+import { useState } from 'react';
+import { Checkout } from '../components/form/Checkout.tsx';
 
 
 const Cart = () => {
@@ -37,6 +39,7 @@ const Cart = () => {
     const totalAmount = calculateCartTotal - calculateCartDiscount;
     const displayTotalAmount = displayMoney(totalAmount);
 
+    const [displayCheckout, setDisplayCheckout] = useState(false);
 
     return (
         <>
@@ -88,7 +91,8 @@ const Cart = () => {
                                                 <b>{displayTotalAmount}</b>
                                             </div>
                                         </div>
-                                        <button type="button" className="btn checkout_btn">Checkout</button>
+                                        <button type="button" className="btn checkout_btn" onClick={() => {setDisplayCheckout(!displayCheckout)}}>Checkout</button>
+                                        {displayCheckout ? <Checkout /> : ""}
                                     </div>
                                 </div>
                             </div>
