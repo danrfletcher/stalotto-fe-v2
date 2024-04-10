@@ -32,11 +32,6 @@ jobs:
       - name: Zip the build directory
         run: zip -r dist.zip dist
 
-      - name: Setup SSH Agent
-        uses: webfactory/ssh-agent@v0.5.1
-        with:
-          ssh-private-key: ${{ secrets.SSH_KEY }}
-
       - name: Transfer Files
         uses: appleboy/scp-action@master
         with:
