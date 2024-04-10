@@ -44,7 +44,7 @@ jobs:
       - name: Unzip and Move Files
         uses: appleboy/ssh-action@master
         with:
-          host: ${{ secrets.FRONTEND_DOMAIN }}
+          host: ${{ vars.FRONTEND_DOMAIN }}
           username: ${{ secrets.SSH_USER }}
           key: ${{ secrets.SSH_KEY }}
           script: |
