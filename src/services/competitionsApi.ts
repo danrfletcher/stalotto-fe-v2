@@ -2,7 +2,6 @@ import axios, { AxiosError } from 'axios';
 import { competitionFilters, getCompetitionGraphQLQuery } from './competitionsQueries';
 
 const baseURL = import.meta.env.VITE_API_BASE_URL;
-const mediaDirectory = import.meta.env.VITE_API_PRODUCT_MEDIA_DIRECTORY;
 
 interface ProductImage {
   src: string,
