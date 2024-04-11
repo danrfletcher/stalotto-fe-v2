@@ -2,7 +2,7 @@ import axios, { AxiosError } from 'axios';
 import { competitionFilters, getCompetitionGraphQLQuery } from './competitionsQueries';
 
 const baseURL = import.meta.env.VITE_API_BASE_URL;
-const mediaDirectory = import.meta.env.VITE_API_MEDIA_DIRECTORY;
+const mediaDirectory = import.meta.env.VITE_API_PRODUCT_MEDIA_DIRECTORY;
 
 interface ProductImage {
   src: string,
@@ -100,7 +100,7 @@ export const getFilteredCompetitionData = async ({tag = "none", sku = null, page
               return item.media_gallery_entries.map((image) => {
                 return (
                   {
-                    src: `${mediaDirectory}${image.file}`,
+                    src: `${baseURL}/pub/media/catalog/product${image.file}`,
                     label: image.label
                   }
                   )
