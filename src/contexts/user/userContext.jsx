@@ -23,6 +23,9 @@ const UserProvider = ({ children }) => {
     
     // Actions
     const setToken = (token) => {
+
+        localStorage.setItem('userToken', token); //Store token in browser storage to persist logged in state
+
         return dispatch({
             type: 'SET_TOKEN',
             payload: { token }
