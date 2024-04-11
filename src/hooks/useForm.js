@@ -78,7 +78,7 @@ const useForm = () => {
                 };
 
             } catch (err) {
-                console.log(err);
+                modifyLoginWorkflowState("ServerError");
             }
         };
 
