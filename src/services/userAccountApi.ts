@@ -1,4 +1,4 @@
-import axios, { AxiosError, AxiosResponse } from 'axios';
+import axios from 'axios';
 import { createUserAccountQuery, getUserInfoQuery, getUserLoginQuery, logoutUserQuery } from './userAccountQueries';
 
 const baseURL = import.meta.env.VITE_API_BASE_URL;
