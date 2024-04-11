@@ -1,14 +1,9 @@
 export const dropdownMenu = [
     {
         id: 1,
-        link: "Account management is coming soon! Please check your emails for information relating to ticket purchases or email admin@stalotto.com to make changes to your account. ",
+        link: "Please check your emails to find order information. Check back here soon to manage your account!",
         path: ""
     },
-    {
-        id: 2,
-        link: "We are sorry for the inconvenience this may cause.",
-        path: ""
-    }
     // {
     //     id: 1,
     //     link: "Tickets",

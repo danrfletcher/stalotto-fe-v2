@@ -107,7 +107,7 @@ const Header = () => {
                                 </span>
                                 <div className="dropdown_menu">
                                     <h4>Hello! {formUserInfo && <Link to="*">&nbsp;{firstName}</Link>}</h4>
-                                    <p>Access account and manage orders. Password reset is coming soon. For now, email admin@stalotto.com for help.</p>
+                                    <p>Email admin@stalotto.com if you need help.</p>
                                     {
                                         !formUserInfo && (
                                             <button
