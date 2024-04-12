@@ -7,9 +7,13 @@ import { useContext } from 'react';
 import { useEffect } from 'react';
 import useUserAccounts from './hooks/useUserAccounts.js';
 import useCartSync from './hooks/useCartSync.ts';
+import cartContext from './contexts/cart/cartContext.jsx';
+import { createAnonymousCart } from './services/cartApi.ts';
 
 const App = () => {
   const { isFirstLoad, isUserDataLoaded, toggleItemsLoaded } = useContext(loadingContext);
+  const { setNewCartId } = useContext(cartContext);
+
   const { handleUserLogin } = useUserAccounts();
   const { syncCart } = useCartSync();
 
@@ -28,11 +32,21 @@ const App = () => {
         //if cart, update local cart from remote cart
         const retrieveAnonymousCart = await syncCart(localStorage.cartId);
 
+      } else {
+        //initialize a new empty cart
+        const newCart = await createAnonymousCart();
+        if (newCart.cartId) {
+            localStorage.setItem('cartId', newCart.cartId); //add anonymous cart to localStorage
+            await setNewCartId(newCart.cartId); //add to application state
+        } else {
+            throw new Error('Failed to create a new cart for the anonymous user');
+        }
+
       }
       toggleItemsLoaded(['isUserDataLoaded']); //allows page loading to complete
 
     } catch (err) {
-      return;
+      throw err;
     };
   };
 

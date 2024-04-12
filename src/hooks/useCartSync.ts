@@ -54,11 +54,23 @@ const useCartSync = () => {
     
     const handleAddToCart = async (item, qtd = 1) => {
 
-        const addItemToCart = async (item: Competition, qtd: number) => {
+        const addItemToCart = async (item, qtd: number) => {
             try {
-                const oldQtd = cartItems.filter(cartItem => cartItem.id === item.id)[0].quantity
-                const newQtd = oldQtd + qtd;
 
+                let oldQtd;
+                if (cartItems.length === 0) {
+                    oldQtd = 0;
+                } else {
+                    oldQtd = cartItems.filter(cartItem => cartItem.id === item.id)
+                    if (oldQtd.length !== 1) {
+                        oldQtd = 0;
+                    } else {
+                        oldQtd = Number(oldQtd[0].quantity);
+                    };
+                }
+                
+                const newQtd = oldQtd + qtd;
+                
                 setItemQtd(item, newQtd)
                 const remoteCartAction = await addToCart(cartId, token, [item], [{id: item.id, qtdToAdd: qtd}]);
                 if (remoteCartAction) {
@@ -67,31 +79,13 @@ const useCartSync = () => {
                     throw new Error();
                 }
 
-                return true;
             } catch (err) {
                 throw new Error('Failed to add item to the cart');
             };
         };
 
         try {
-            if (localStorage.userToken || localStorage.cartId) { //for logged in users or anonymous users with a saved cart
-
-                return await addItemToCart(item, qtd);
-
-            } else { //for new anonymous users
-
-                //initialize a new empty cart
-                const newCart = await createAnonymousCart()
-                if (newCart.cartId) {
-                    localStorage.setItem('cartId', newCart.cartId); //add anonymous cart to localStorage
-                    setNewCartId(newCart.cartId); //add to application state
-                } else {
-                    throw new Error('Failed to create a new cart for the anonymous user');
-                }
-
-                //add an item to the new cart
-                return await addItemToCart(item, qtd);
-            }
+            return await addItemToCart(item, qtd);
         } catch (err) {
             throw err;
         };
