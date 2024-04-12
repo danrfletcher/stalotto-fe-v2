@@ -106,13 +106,13 @@ const CompetitionDetails = () => {
                 <>
                     <section id="product_details" className="section">
                         <div className="container">
+                            {!isCompetitionLoaded && (
+                                <div>
+                                    <PulseLoader color="#a9afc3" className="centered_pulse_loader" />
+                                </div>
+                            )}
                             <div className="wrapper prod_details_wrapper">
-
-                                {!isCompetitionLoaded ? (
-                                    <div>
-                                        <PulseLoader color="#a9afc3" className="centered_pulse_loader" />
-                                    </div>
-                                ) : (
+                                {isCompetitionLoaded && (
                                     /*=== Product Details Left-content ===*/
                                     typeof competition === "string" ? <p>{competition}</p> :
                                     (
