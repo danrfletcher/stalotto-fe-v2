@@ -20,7 +20,7 @@ const AllProducts = () => {
     useDocTitle('All Products');
 
     const { allProducts } = useContext(filtersContext);
-    const { isFirstLoad, toggleIsFirstLoad } = useContext(loadingContext);
+    const { isFirstLoad, toggleIsFirstLoad, isUserDataLoaded } = useContext(loadingContext);
 
     const { filteredCompetitions, setFilteredCompetitions } = useContext(commonContext);
     const [initialLoad, setInitialLoad] = useState(true);
@@ -47,7 +47,7 @@ const AllProducts = () => {
 
 
     return (
-        isFirstLoad ? (
+        isFirstLoad && !isUserDataLoaded ? (
             <div className="loading-spinner">
                 <BounceLoader color="#a9afc3" />
             </div>
