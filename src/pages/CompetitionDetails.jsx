@@ -17,6 +17,7 @@ import commonContext from '../contexts/common/commonContext.jsx';
 import { getFilteredCompetitionData } from '../services/competitionsApi.ts';
 import loadingContext from '../contexts/loading/loadingContext.jsx';
 import { BounceLoader, PulseLoader } from 'react-spinners';
+import useCartSync from '../hooks/useCartSync.ts';
 
 
 const CompetitionDetails = () => {
@@ -36,6 +37,8 @@ const CompetitionDetails = () => {
 
     const sku = parseInt(urlKey.split('-')[0]);
     const [previewImg, setPreviewImg] = useState(null);
+
+    const { handleAddToCart } = useCartSync();
 
     // showing the Product based on the received 'id'
     useEffect(() => {
@@ -65,7 +68,7 @@ const CompetitionDetails = () => {
 
     // handling Add-to-cart
     const handleAddItem = () => {
-        addItem(competition);
+        handleAddToCart(competition);
     };
 
 

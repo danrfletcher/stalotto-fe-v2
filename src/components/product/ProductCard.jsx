@@ -4,19 +4,20 @@ import { Link } from 'react-router-dom';
 import { displayMoney } from '../../utils/currency.js';
 import cartContext from '../../contexts/cart/cartContext.jsx';
 import useActive from '../../hooks/useActive';
+import useCartSync from '../../hooks/useCartSync.ts'
 
 
 const ProductCard = (props) => {
 
     const { id, title, finalPrice, originalPrice, winningTicketIDs, thumbnail, creator, urlKey, sku } = props;
 
-    const { addItem } = useContext(cartContext);
     const { active, handleActive, activeClass } = useActive(false);
+    const { handleAddToCart } = useCartSync();
 
     // handling Add-to-cart
     const handleAddItem = () => {
         const item = { ...props };
-        addItem(item);
+        handleAddToCart(item);
 
         handleActive(id);
 
