@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useRef, useState, useCallback } from 'react';
 import { Link } from 'react-router-dom';
 import commonContext from '../../contexts/common/commonContext.jsx';
-import useForm from '../../hooks/useForm';
+import useUserAccounts from '../../hooks/useUserAccounts';
 import useOutsideClose from '../../hooks/useOutsideClose';
 import useScrollDisable from '../../hooks/useScrollDisable';
 import userContext from '../../contexts/user/userContext.jsx';
@@ -14,7 +14,7 @@ const AccountForm = () => {
         inputValues, handleInputValues, handleFormSubmit, passwordValidation, setInputValues, isSignupVisible, setIsSignupVisible, doPasswordsMatch, setDoPasswordsMatch, 
         satisfiedConditions, setSatisfiedConditions, 
         areAllConditionsSatisfied, setAreAllConditionsSatisfied, 
-    } = useForm();
+    } = useUserAccounts();
     const { token, isLoggedIn, loginWorkflowState, user } = useContext(userContext);
 
     const formRef = useRef();
