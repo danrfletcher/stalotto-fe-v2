@@ -1,4 +1,9 @@
-export const getCustomerCartFromTokenQuery = () => {
+interface AddToCartItem {
+    quantity: number;
+    sku: string;
+}
+
+export const getCustomerCartFromTokenQuery = (): string => {
     return `
         query {
             customerCart {
@@ -31,3 +36,35 @@ export const getCustomerCartFromIdQuery =  `
         }
     }      
 `
+
+export const createAnonymousCartQuery = `
+    mutation {
+        createEmptyCart
+    }  
+`
+
+export const addToCartQuery = (cartId: string, cartItems: AddToCartItem[]) => {
+    const cartItemsString = cartItems.map(item => `{quantity: ${item.quantity}, sku: "${item.sku}"}`).join(", ");
+
+    return `
+        mutation {
+            addProductsToCart(
+            cartId: "${cartId}",
+            cartItems: ${cartItemsString}
+            ) {
+            cart {
+                items {
+                uid
+                product {
+                    name
+                    sku
+                    uid
+                }
+                quantity
+                }
+            }
+            }
+        }
+                
+    `
+}
