@@ -50,13 +50,17 @@ const useUserAccounts = () => {
                 const userCart = await getCustomerCartFromToken(token);
 
                 if (userData && userCart) {
+                    
+                    //merge local cart if possible or fetch users cart
 
                     modifyUser(userData);
                     setToken(token);
                     toggleLoggedIn(true);
                     setFormUserInfo(userData.firstName);
 
-                    if (localStorage.cartId) { //Remove anonymous cart for logged in user
+                    // Update localStorage to persist data
+                    localStorage.setItem('userToken', token); //persist logged in state
+                    if (localStorage.cartId) { //remove anonymous cart for logged in user
                         localStorage.removeItem('cartId');
                     };
 
