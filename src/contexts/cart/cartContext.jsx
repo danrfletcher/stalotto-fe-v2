@@ -1,18 +1,22 @@
 import React, { createContext, useReducer } from 'react';
 import cartReducer from './cartReducer';
+import { useContext } from 'react';
+import userContext from '../user/userContext';
 
 // Cart-Context
 const cartContext = createContext();
 
 // Initial State
 const initialState = {
-    cartItems: []
+    cartItems: [],
+    cartId: null,
 };
 
 // Cart-Provider Component
 const CartProvider = ({ children }) => {
 
     const [state, dispatch] = useReducer(cartReducer, initialState);
+    const { isLoggedIn } = useContext(userContext);
 
     // Dispatched Actions
     const addItem = (item) => {
@@ -43,13 +47,28 @@ const CartProvider = ({ children }) => {
         });
     };
 
+    const emptyCart = () => {
+        return dispatch({
+            type: 'EMPTY'
+        });
+    };
+
+    const setItemQtd = (itemId, qtd) => {
+        return dispatch({
+            type: 'SET_ITEM_QTD',
+            payload: { itemId, qtd }
+        });
+    }
+
     // Context values
     const values = {
         ...state,
         addItem,
         removeItem,
         incrementItem,
-        decrementItem
+        decrementItem,
+        emptyCart,
+        setItemQtd
     };
 
     return (
