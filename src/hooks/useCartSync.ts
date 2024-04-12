@@ -1,16 +1,20 @@
 import { useContext } from "react";
-import { getCustomerCartFromId } from "../services/cartApi";
+import { addToCart, createAnonymousCart, getCustomerCartFromId } from "../services/cartApi";
 import cartContext from "../contexts/cart/cartContext";
-import { getFilteredCompetitionData } from "../services/competitionsApi";
+import { Competition, getFilteredCompetitionData } from "../services/competitionsApi";
+import userContext from "../contexts/user/userContext";
 
 const useCartSync = () => {
-    const { cartId, emptyCart, addItem, setItemQtd } = useContext(cartContext);
-    const localCartItems = useContext(cartContext).cartItems;
+    const { cartId, emptyCart, setItemQtd, setNewCartId, cartItems } = useContext(cartContext);
+    const { token }= useContext(userContext);
     
-    const updateCartFromId = async (cartId) => {
+    const syncCart = async (cartIdFromStorage, token) => {
         try {
+            //save the cartId to the application state
+            setNewCartId(cartIdFromStorage)
+
             //get users cart from back-end
-            const remoteCart = await getCustomerCartFromId(cartId);
+            const remoteCart = await getCustomerCartFromId(cartIdFromStorage, token);
 
             //check user's cart is valid
             if (typeof remoteCart === "string") {
@@ -34,25 +38,67 @@ const useCartSync = () => {
                 } else {
 
                     //sync remote cart to local cart state
-                    productInformation.forEach(product => {
-
-                        //add the product to the cart
-                        addItem(product);
+                    productInformation.forEach(item => {
 
                         //set the correct quantity
-                        const qtd = remoteCartItems.filter(remoteCartItem => product.id === remoteCartItem.product.uid)[0].quantity
-                        setItemQtd(product.id, qtd);
+                        const qtd = remoteCartItems.filter(remoteCartItem => item.id === remoteCartItem.product.uid)[0].quantity
+                        setItemQtd(item, qtd);
                     });
                 };
             };
+        } catch (err) {
+            return;
         }
-        catch (err) {
-            console.log(err);
-        }
-    }
+    };
+
+    
+    const handleAddToCart = async (item, qtd = 1) => {
+
+        const addItemToCart = async (item: Competition, qtd: number) => {
+            try {
+                const oldQtd = cartItems.filter(cartItem => cartItem.id === item.id)[0].quantity
+                const newQtd = oldQtd + qtd;
+
+                setItemQtd(item, newQtd)
+                const remoteCartAction = await addToCart(cartId, token, [item], [{id: item.id, qtdToAdd: qtd}]);
+                if (remoteCartAction) {
+                    return true
+                } else {
+                    throw new Error();
+                }
+
+                return true;
+            } catch (err) {
+                throw new Error('Failed to add item to the cart');
+            };
+        };
+
+        try {
+            if (localStorage.userToken || localStorage.cartId) { //for logged in users or anonymous users with a saved cart
+
+                return await addItemToCart(item, qtd);
+
+            } else { //for new anonymous users
+
+                //initialize a new empty cart
+                const newCart = await createAnonymousCart()
+                if (newCart.cartId) {
+                    localStorage.setItem('cartId', newCart.cartId); //add anonymous cart to localStorage
+                    setNewCartId(newCart.cartId); //add to application state
+                } else {
+                    throw new Error('Failed to create a new cart for the anonymous user');
+                }
+
+                //add an item to the new cart
+                return await addItemToCart(item, qtd);
+            }
+        } catch (err) {
+            throw err;
+        };
+    };
 
     return { 
-        updateCartFromId 
+        syncCart, handleAddToCart
     };
 };
 
