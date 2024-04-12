@@ -41,7 +41,7 @@ const CompetitionDetails = () => {
     useEffect(() => {
         const fetchCompetition = async () => {
             try {
-                const data = await getFilteredCompetitionData({ sku });
+                const data = await getFilteredCompetitionData({ skus: [sku] });
                 if (data.length === 1) {
                     setCompetition(data[0]);
                     setCompTitle(data[0].title);
