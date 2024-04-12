@@ -9,12 +9,16 @@ const initialState = {
     //First Load State Variable
     isFirstLoad: true,
 
+    //User Data
+    isUserDataLoaded: false,
+
     //Home Page State Variables
     isHomeLoaded: false,
     isHeroSliderLoaded: false,
     isFeaturedSliderLoaded: false,
     isTopProductsLoaded: false,
     isServicesLoaded: false,
+
 };
 
 // Loading-Provider Component
@@ -27,6 +31,14 @@ const LoadingProvider = ({ children }) => {
         return dispatch({
             type: 'TOGGLE_IS_FIRST_LOAD_FALSE',
         });
+    };
+
+    //Item Load Actions
+    const toggleItemsLoaded = (loaders) => {
+        return dispatch({
+            type: 'TOGGLE_LOADERS_TRUE',
+            payload: { loaders }
+        })
     };
 
     // Home Page Load Actions
@@ -74,6 +86,8 @@ const LoadingProvider = ({ children }) => {
         toggleIsFeaturedSliderLoaded,
         toggleIsTopProductsLoaded,
         toggleIsServicesLoaded,
+
+        toggleItemsLoaded
     };
 
     return (

@@ -14,17 +14,20 @@ const Home = () => {
 
     //loading state variables
     const {
-        isHeroSliderLoaded, toggleIsHeroSliderLoaded, //hero slider component
+        toggleItemsLoaded, //function to toggle loading states
 
-        isFeaturedSliderLoaded, toggleIsFeaturedSliderLoaded, //featured competitions slider component
+        isUserDataLoaded, //user data loads silently in the background
 
-        isTopProductsLoaded, toggleIsTopProductsLoaded, //top products component
+        isHeroSliderLoaded, //hero slider component
 
-        isServicesLoaded, toggleIsServicesLoaded, //services component
+        isFeaturedSliderLoaded, //featured competitions slider component
+
+        isTopProductsLoaded, //top products component
+
+        isServicesLoaded, //services component
 
         isFirstLoad, toggleIsFirstLoad, //first load logic for loading spinner
     } = useContext(loadingContext);
-
 
     //page data
     const { 
@@ -39,13 +42,13 @@ const Home = () => {
 
         //hero slider - data currently hardcoded
         if (!isHeroSliderLoaded) {
-            toggleIsHeroSliderLoaded();
+            toggleItemsLoaded(['isHeroSliderLoaded']);
         }
 
         //featured competitions component
         const setFeaturedCompetitionsAsLoaded = () => {
             if (!isFeaturedSliderLoaded) {
-                toggleIsFeaturedSliderLoaded();
+                toggleItemsLoaded(['isFeaturedSliderLoaded']);
             };
         };
         const fetchFeaturedCompetitions = async () => {
@@ -65,7 +68,7 @@ const Home = () => {
         //top products component - data currently hardcoded
         const setTopCompetitionsAsLoaded = () => {
             if (!isTopProductsLoaded) {
-                toggleIsTopProductsLoaded();
+                toggleItemsLoaded(['isTopProductsLoaded']);
             };
         };
         const fetchTopProducts = async () => {
@@ -82,24 +85,24 @@ const Home = () => {
         }
         fetchTopProducts();
 
-
         if (!isTopProductsLoaded) {
-            toggleIsTopProductsLoaded();
+            toggleItemsLoaded(['isTopProductsLoaded']);
         }
 
         //services component - data currently hardcoded
         if (!isServicesLoaded) {
-            toggleIsServicesLoaded();
+            toggleItemsLoaded(['isServicesLoaded']);
         }
     },[]);
 
 
     //finalizing first page load logic for loading spinner
     useEffect(() => {
-        if (isHeroSliderLoaded && isFeaturedSliderLoaded && isTopProductsLoaded && isServicesLoaded && isFirstLoad) {
+        if (isUserDataLoaded && isHeroSliderLoaded && isFeaturedSliderLoaded && isTopProductsLoaded && isServicesLoaded && isFirstLoad) {
+            toggleItemsLoaded(['isHomeLoaded']);
             toggleIsFirstLoad();
         }
-    }, [isHeroSliderLoaded, isFeaturedSliderLoaded, isTopProductsLoaded, isServicesLoaded])
+    }, [isHeroSliderLoaded, isFeaturedSliderLoaded, isTopProductsLoaded, isServicesLoaded, isUserDataLoaded])
 
     return (
         isFirstLoad ? (

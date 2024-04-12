@@ -21,7 +21,7 @@ import { BounceLoader, PulseLoader } from 'react-spinners';
 
 const CompetitionDetails = () => {
 
-    const { isFirstLoad, toggleIsFirstLoad } = useContext(loadingContext);
+    const { isFirstLoad, toggleIsFirstLoad, isUserDataLoaded } = useContext(loadingContext);
 
     const [competition, setCompetition] = useState({});
     const [isCompetitionLoaded,setIsCompetitionLoaded] = useState(false);
@@ -98,7 +98,7 @@ const CompetitionDetails = () => {
 
     return (
         <>
-            {isFirstLoad ? (
+            {isFirstLoad && !isUserDataLoaded ? (
                 <div className="loading-spinner">
                     <BounceLoader color="#a9afc3" />
                 </div>
