@@ -1,19 +1,21 @@
 import { CompetitionFilters } from "./competitionsApi";
 
+type sku = string;
+
 export const competitionFilters = {
 	featured: `feature_this_competition: { eq: "1" }`,
-	singleProduct: function(sku) {
-		return `sku: { eq: "${sku}" }`
-	},
+	setOfProducts: function(skus: sku[]) {
+		return `sku: {in: ${JSON.stringify(skus)}}`
+	}
 };
 
 export const competitionSorts = {
 	newestToOldest: `sort: { posted: DESC }`
 }
 
-export const getCompetitionGraphQLQuery = ({baseFilter, pageSize, currentPage, sku}: CompetitionFilters): string => {
-	if (sku) {
-		baseFilter = competitionFilters.singleProduct(sku);
+export const getCompetitionGraphQLQuery = ({baseFilter, pageSize, currentPage, skus}: CompetitionFilters): string => {
+	if (skus) {
+		baseFilter = competitionFilters.setOfProducts(skus);
 	}
 
 	const query = `
@@ -24,7 +26,7 @@ export const getCompetitionGraphQLQuery = ({baseFilter, pageSize, currentPage, s
 				${currentPage ? `currentPage: ${currentPage}` : ""}
 			) {
 			items {
-				id
+				uid
 				sku
 				url_key
 					name

@@ -9,7 +9,7 @@ interface ProductImage {
 }
 
 interface Competition {
-  id: number;
+  id: string; //uid
   sku: number;
   urlKey: string;
   thumbnail: ProductImage;
@@ -24,7 +24,7 @@ interface Competition {
   winningTicketIDs;
 };
 
-class GraphQLError extends Error {
+export class GraphQLError extends Error {
   constructor(message: string) {
     super(message);
     this.name = "GraphQLError";
@@ -35,13 +35,13 @@ type tag = "featured" | "none";
 
 export interface CompetitionFilters {
   tag?: tag;
-  sku?: string | null;
+  skus?: string[] | null;
   baseFilter?: string;
 	pageSize?: number | null;
-	currentPage?: number;
+	currentPage?: number | null;
 }
 
-export const getFilteredCompetitionData = async ({tag = "none", sku = null, pageSize = 25, currentPage = 1}: CompetitionFilters = {}): Promise<Competition[] | string> => {
+export const getFilteredCompetitionData = async ({tag = "none", skus = null, pageSize, currentPage}: CompetitionFilters = {}): Promise<Competition[] | string> => {
 
     const noContent = `No ${tag === "featured" ? 'featured' : ""}competitions at the moment!`;
     const badRequest = `We're having trouble fetching ${tag === "featured" ? 'featured ' : ""}competitions. Try reloading your browser or clearing the browser cache.`;
@@ -52,12 +52,13 @@ export const getFilteredCompetitionData = async ({tag = "none", sku = null, page
         case "featured":
           return getCompetitionGraphQLQuery({
             baseFilter: competitionFilters.featured,
-          })
+          });
         default:
           return getCompetitionGraphQLQuery({
-            pageSize: !sku ? pageSize : null,
-            sku: sku ? sku : null,
-          })
+            pageSize: pageSize ? pageSize : null,
+            currentPage: currentPage ? currentPage : null,
+            skus: skus ? skus : null,
+          });
       };
     };
 
@@ -71,8 +72,8 @@ export const getFilteredCompetitionData = async ({tag = "none", sku = null, page
         }
         const items = response.data.data.products.items.map((item) => {
           const result: Competition = {
-            id: item.id,
-            sku: parseInt(item.sku),
+            id: item.uid,
+            sku: item.sku,
             urlKey: item.url_key,
             title: item.name,
             finalPrice: item.price_range.minimum_price.final_price.value,
@@ -113,7 +114,6 @@ export const getFilteredCompetitionData = async ({tag = "none", sku = null, page
         if (items.length === 0) {
           return noContent;
         }
-
         return items;
     } catch (err: unknown) {
         let axiosError = err as AxiosError<any>;
