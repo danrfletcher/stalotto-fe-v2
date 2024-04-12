@@ -63,11 +63,30 @@ const cartReducer = (state, action) => {
                     return item;
                 }).filter(item => item.quantity !== 0)
             };
-
+        
+        case 'EMPTY':
+            return {
+                ...state,
+                cartItems: []
+            };
+        
+        case 'SET_ITEM_QTD':
+            return {
+                ...state,
+                cartItems: state.cartItems.map(item => {
+                    if (item.id === action.payload.itemId) {
+                        return {
+                            ...item,
+                            quantity: action.payload.qtd
+                        };
+                    }
+                    return item;
+                })
+            };
 
         default:
             return state;
-    }
+    };
 };
 
 export default cartReducer;
