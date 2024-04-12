@@ -8,8 +8,8 @@ import AccountForm from '../form/AccountForm.jsx';
 import SearchBar from './SearchBar.jsx';
 import { NavPages } from './NavPages.js';
 import userContext from '../../contexts/user/userContext.jsx';
-import { logoutUser } from '../../services/userAccountApi.js';
 import { BarLoader } from 'react-spinners';
+import useUserAccounts from '../../hooks/useUserAccounts.js';
 
 const Header = () => {
 
@@ -19,6 +19,7 @@ const Header = () => {
     const { cartItems } = useContext(cartContext);
     const [isSticky, setIsSticky] = useState(false);
     const [cartQuantity, setCartQuantity] = useState(0);
+    const { handleUserLogout } = useUserAccounts();
 
     const {firstName} = user;
 
@@ -52,22 +53,12 @@ const Header = () => {
     const handleLogout = async () => {
         try {
             setLogoutPending(true);
-            const logout = await logoutUser(token);
-            if (logout) {
-                setFormUserInfo('');
-                setUserDefaults();
-                setLogoutPending(false);
-            } else {
-                setLogoutPending(false);
-                modifyLoginWorkflowState("ServerError");
-                toggleForm(true);
-            }
+            await handleUserLogout();
         } catch (err) {
-            setLogoutPending(false);
-            modifyLoginWorkflowState("ServerError");
-            toggleForm(true);
+            return;
         }
-    }
+        setLogoutPending(false);
+    };
 
     return (
         <>

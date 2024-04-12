@@ -1,12 +1,25 @@
 import { useContext, useState } from 'react';
 import commonContext from '../contexts/common/commonContext';
-import { getUserInfo, loginUser, signupUser } from '../services/userAccountApi'
+import { getUserInfo, loginUser, logoutUser, signupUser } from '../services/userAccountApi'
 import userContext from '../contexts/user/userContext';
 import { pwValidationConditions } from '../data/passwordValidation';
+import { getCustomerCartFromToken } from '../services/cartApi';
+import cartContext from '../contexts/cart/cartContext';
 
-const useForm = () => {
+const useUserAccounts = () => {
+
     const { toggleForm, setFormUserInfo } = useContext(commonContext);
-    const { setToken, toggleLoggedIn, modifyLoginWorkflowState, modifyUser } = useContext(userContext);
+    const { 
+        setToken, 
+        toggleLoggedIn, 
+        modifyLoginWorkflowState, 
+        modifyUser, 
+        user, 
+        isLoggedIn,
+        token,
+        setUserDefaults 
+    } = useContext(userContext);
+
     const [inputValues, setInputValues] = useState({});
     const [isSignupVisible, setIsSignupVisible] = useState(false);
 
@@ -28,6 +41,38 @@ const useForm = () => {
         });
     };
 
+    // handling user-login
+    const handleUserLogin = async (token) => {
+        try {
+            if (token) {
+
+                const userData = await getUserInfo(token);
+                const userCart = await getCustomerCartFromToken(token);
+
+                if (userData && userCart) {
+
+                    modifyUser(userData);
+                    setToken(token);
+                    toggleLoggedIn(true);
+                    setFormUserInfo(userData.firstName);
+
+                    if (localStorage.cartId) { //Remove anonymous cart for logged in user
+                        localStorage.removeItem('cartId');
+                    };
+
+                    return true; //Indicate user logged in successfully
+                } else {
+                    throw new Error();
+                };
+            } else {
+                throw new Error()
+            }
+        } catch (err) {
+            localStorage.removeItem('userToken');
+            return false;
+        }
+    }
+
     // handling form-submission
     const handleFormSubmit = (e) => {
         e.preventDefault();
@@ -39,17 +84,12 @@ const useForm = () => {
                 const token = await loginUser({email: inputValues.mail, password: inputValues.password});
                 
                 if (token) {
-                    const userData = await getUserInfo(token);
-                    if (userData) {
-                        modifyUser(userData);
-                        setToken(token);
-                        toggleLoggedIn(true);
+                    const doLoginWorkflow = await handleUserLogin(token);
+                    if (doLoginWorkflow === true) {
                         modifyLoginWorkflowState("LoggedIn");
-                        setFormUserInfo(userData.firstName);
                     } else {
                         modifyLoginWorkflowState("ServerError");
-                    };
-                    
+                    }
                 } else {
                     modifyLoginWorkflowState("Unauthorized");
                 }
@@ -132,6 +172,25 @@ const useForm = () => {
         };
     };
 
+    //Handling log-out
+    const handleUserLogout = async () => {
+        try {
+            const logout = await logoutUser(token);
+            if (logout) {
+                setFormUserInfo('');
+                setUserDefaults();
+                localStorage.removeItem('userToken');
+                return true
+            } else {
+                modifyLoginWorkflowState("ServerError");
+                toggleForm(true);
+            }
+        } catch (err) {
+            modifyLoginWorkflowState("ServerError");
+            toggleForm(true);
+        };
+    };
+
     return { 
         inputValues, handleInputValues, handleFormSubmit, setInputValues,
         passwordValidation, 
@@ -139,8 +198,8 @@ const useForm = () => {
         satisfiedConditions, setSatisfiedConditions, 
         areAllConditionsSatisfied, setAreAllConditionsSatisfied,
         isSignupVisible, setIsSignupVisible,
-        submissionError
+        submissionError, handleUserLogin, handleUserLogout
     };
 };
 
-export default useForm;
+export default useUserAccounts;
