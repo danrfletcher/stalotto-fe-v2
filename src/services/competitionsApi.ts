@@ -8,7 +8,7 @@ interface ProductImage {
   label: string
 }
 
-interface Competition {
+export interface Competition {
   id: string; //uid
   sku: number;
   urlKey: string;
