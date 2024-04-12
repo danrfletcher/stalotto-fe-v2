@@ -2,14 +2,14 @@ const cartReducer = (state, action) => {
     switch (action.type) {
 
         case 'ADD_TO_CART':
-            const newItemId = action.payload.item.id;
-            const itemExist = state.cartItems.some(item => item.id === newItemId);
+            const newItemIdToAdd = action.payload.item.id;
+            const itemToAddExist = state.cartItems.some(item => item.id === newItemIdToAdd);
 
             let updatedCartItems = null;
 
-            if (itemExist) {
+            if (itemToAddExist) {
                 updatedCartItems = state.cartItems.map(item => {
-                    if (item.id === newItemId) {
+                    if (item.id === newItemIdToAdd) {
                         return {
                             ...item,
                             quantity: item.quantity + 1
@@ -71,17 +71,35 @@ const cartReducer = (state, action) => {
             };
         
         case 'SET_ITEM_QTD':
-            return {
-                ...state,
-                cartItems: state.cartItems.map(item => {
-                    if (item.id === action.payload.itemId) {
+            const newItemToChange = action.payload.item.id;
+            const itemToChangeExist = state.cartItems.some(item => item.id === newItemToChange);
+
+            let updatedQtdCartItems = null;
+
+            if (itemToChangeExist) {
+                updatedQtdCartItems = state.cartItems.map(item => {
+                    if (item.id === newItemToChange) {
                         return {
                             ...item,
                             quantity: action.payload.qtd
                         };
                     }
                     return item;
-                })
+                });
+            } else {
+                action.payload.item.quantity = action.payload.qtd;
+                updatedQtdCartItems = [...state.cartItems, action.payload.item];
+            }
+
+            return {
+                ...state,
+                cartItems: updatedQtdCartItems.filter(item => item.quantity !== 0)
+            };
+
+        case 'SET_NEW_CART_ID':
+            return {
+                ...state,
+                cartId: action.payload.cartId
             };
 
         default:

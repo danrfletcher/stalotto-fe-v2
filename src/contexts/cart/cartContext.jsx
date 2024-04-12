@@ -53,12 +53,19 @@ const CartProvider = ({ children }) => {
         });
     };
 
-    const setItemQtd = (itemId, qtd) => {
+    const setItemQtd = (item, qtd) => {
         return dispatch({
             type: 'SET_ITEM_QTD',
-            payload: { itemId, qtd }
+            payload: { item, qtd }
         });
     }
+
+    const setNewCartId = (cartId) => {
+        return dispatch({
+            type: 'SET_NEW_CART_ID',
+            payload: { cartId }
+        });
+    };
 
     // Context values
     const values = {
@@ -68,7 +75,8 @@ const CartProvider = ({ children }) => {
         incrementItem,
         decrementItem,
         emptyCart,
-        setItemQtd
+        setItemQtd,
+        setNewCartId
     };
 
     return (
