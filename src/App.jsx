@@ -7,39 +7,40 @@ import { useContext } from 'react';
 import { useEffect } from 'react';
 import useUserAccounts from './hooks/useUserAccounts.js';
 import useCartSync from './hooks/useCartSync.ts';
-import cartContext from './contexts/cart/cartContext.jsx';
-
 
 const App = () => {
   const { isFirstLoad, isUserDataLoaded, toggleItemsLoaded } = useContext(loadingContext);
-
   const { handleUserLogin } = useUserAccounts();
-  const { updateCartFromId } = useCartSync();
+  const { syncCart } = useCartSync();
 
   //Check for user token, silently log in user & update their cart
   const restoreState = async () => {
 
-    const customerCredentials = {
-      savedToken: localStorage.userToken ? localStorage.userToken : false,
-      savedCartId: localStorage.cartId ? localStorage.cartId : false,
-    };
-    const { savedToken, savedCartId } = customerCredentials;
-
+    //retrieve user data or anonymous cart items
     try {
-      if (savedToken) {
+      if (localStorage.userToken) {
+
+        //if token, get user's credentials
         const doSilentLogin = await handleUserLogin(localStorage.userToken); //Log user in using token
-      } else if (savedCartId) {
-        const retrieveAnonymousCart = await updateCartFromId(savedCartId);
+
+      } else if (localStorage.cartId) {
+
+        //if cart, update local cart from remote cart
+        const retrieveAnonymousCart = await syncCart(localStorage.cartId);
+
       }
-      toggleItemsLoaded(['isUserDataLoaded']);
+      toggleItemsLoaded(['isUserDataLoaded']); //allows page loading to complete
 
     } catch (err) {
-
+      return;
     };
   };
 
+  //run silent login on first load
   useEffect(()=> {
-    restoreState()
+    if (isFirstLoad) {
+      restoreState()
+    }
   },[])
 
   return (
