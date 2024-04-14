@@ -1,30 +1,49 @@
-import { LoginParameters } from "./userAccountApi";
+import { LoginParameters } from './userAccountApi';
 
-export const getUserLoginQuery = ({email, password}: LoginParameters): string => {
+export const getUserLoginQuery = ({
+    email,
+    password,
+}: LoginParameters): string => {
     const query = `
         mutation {
             generateCustomerToken(email: "${email}", password: "${password}") {
             token
             }
         }
-    `
+    `;
     return query;
 };
 
 export const getUserInfoQuery = () => {
     const query = `
-        query {
-            customer {
-            firstname
-            lastname
-            email
+      query {
+        customer {
+          firstname
+          lastname
+          email
+        }
+        customerCart {
+            id
+            items {
+                uid
+                product {
+                    sku
+                    name
+                }
+                quantity
             }
         }
-    `
+      }
+    `;
     return query;
 };
 
-export const createUserAccountQuery = ({firstName, lastName, email, password}) => {
+export const createUserAccountQuery = ({
+    firstName,
+    lastName,
+    email,
+    password,
+}) => {
     const query = `
         mutation {
             createCustomer(
@@ -42,8 +61,8 @@ export const createUserAccountQuery = ({firstName, lastName, email, password}) =
             }
             }
         }
-    `
-    return query
+    `;
+    return query;
 };
 
 export const logoutUserQuery = `
@@ -52,4 +71,4 @@ export const logoutUserQuery = `
         result
         }
     }
-`
+`;

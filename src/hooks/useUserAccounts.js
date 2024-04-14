@@ -1,34 +1,40 @@
 import { useContext, useState } from 'react';
 import commonContext from '../contexts/common/commonContext';
-import { getUserInfo, loginUser, logoutUser, signupUser } from '../services/userAccountApi'
+import {
+    getUserInfo,
+    loginUser,
+    logoutUser,
+    signupUser,
+} from '../services/userAccountApi';
 import userContext from '../contexts/user/userContext';
 import { pwValidationConditions } from '../data/passwordValidation';
-import { getCustomerCartFromToken } from '../services/cartApi';
 import cartContext from '../contexts/cart/cartContext';
 
 const useUserAccounts = () => {
-
     const { toggleForm, setFormUserInfo } = useContext(commonContext);
-    const { 
-        setToken, 
-        toggleLoggedIn, 
-        modifyLoginWorkflowState, 
-        modifyUser, 
-        user, 
+    const {
+        setToken,
+        toggleLoggedIn,
+        modifyLoginWorkflowState,
+        modifyUser,
+        user,
         isLoggedIn,
         token,
-        setUserDefaults 
+        setUserDefaults,
     } = useContext(userContext);
+
+    const { setCart } = useContext(cartContext);
 
     const [inputValues, setInputValues] = useState({});
     const [isSignupVisible, setIsSignupVisible] = useState(false);
 
     const [doPasswordsMatch, setDoPasswordsMatch] = useState(null);
     const [satisfiedConditions, setSatisfiedConditions] = useState(null);
-    const [areAllConditionsSatisfied, setAreAllConditionsSatisfied] = useState(null);
+    const [areAllConditionsSatisfied, setAreAllConditionsSatisfied] =
+        useState(null);
 
     const [submissionError, setSubmissionError] = useState(null);
-    
+
     // handling input-values
     const handleInputValues = (e) => {
         const { name, value } = e.target;
@@ -36,7 +42,7 @@ const useUserAccounts = () => {
         setInputValues((prevValues) => {
             return {
                 ...prevValues,
-                [name]: value
+                [name]: value,
             };
         });
     };
@@ -45,37 +51,35 @@ const useUserAccounts = () => {
     const handleUserLogin = async (token) => {
         try {
             if (token) {
-
                 const userData = await getUserInfo(token);
-                const userCart = await getCustomerCartFromToken(token);
 
-                if (userData && userCart) {
-                    
-                    //merge local cart if possible or fetch users cart
+                if (userData && userData.customer && userData.customerCart) {
+                    modifyUser({
+                        firstName: userData.customer.firstname,
+                        lastName: userData.customer.lastname,
+                        email: userData.customer.email,
+                    });
 
-                    modifyUser(userData);
+                    // Set local state variables
                     setToken(token);
                     toggleLoggedIn(true);
-                    setFormUserInfo(userData.firstName);
+                    setFormUserInfo(userData.customer.firstName);
 
                     // Update localStorage to persist data
                     localStorage.setItem('userToken', token); //persist logged in state
-                    if (localStorage.cartId) { //remove anonymous cart for logged in user
-                        localStorage.removeItem('cartId');
-                    };
+                    localStorage.setItem('cartId', userData.customerCart.id); //persist cart id for sync on reload
 
                     return true; //Indicate user logged in successfully
                 } else {
                     throw new Error();
-                };
+                }
             } else {
-                throw new Error()
+                throw new Error();
             }
         } catch (err) {
-            localStorage.removeItem('userToken');
             return false;
         }
-    }
+    };
 
     // handling form-submission
     const handleFormSubmit = (e) => {
@@ -84,45 +88,51 @@ const useUserAccounts = () => {
 
         const userLogin = async () => {
             try {
-                modifyLoginWorkflowState("Pending");
-                const token = await loginUser({email: inputValues.mail, password: inputValues.password});
-                
+                modifyLoginWorkflowState('Pending');
+                const token = await loginUser({
+                    email: inputValues.mail,
+                    password: inputValues.password,
+                });
+
                 if (token) {
                     const doLoginWorkflow = await handleUserLogin(token);
                     if (doLoginWorkflow === true) {
-                        modifyLoginWorkflowState("LoggedIn");
+                        modifyLoginWorkflowState('LoggedIn');
                     } else {
-                        modifyLoginWorkflowState("ServerError");
+                        modifyLoginWorkflowState('ServerError');
                     }
                 } else {
-                    modifyLoginWorkflowState("Unauthorized");
+                    modifyLoginWorkflowState('Unauthorized');
                 }
-
             } catch (err) {
-                modifyLoginWorkflowState("Unauthorized");
-            };
+                modifyLoginWorkflowState('Unauthorized');
+            }
             setInputValues({});
         };
 
         const userSignUp = async () => {
             try {
-                modifyLoginWorkflowState("Pending");
+                modifyLoginWorkflowState('Pending');
 
                 const { firstName, lastName, mail, password } = inputValues;
-                const newUser = await signupUser({firstName: firstName, lastName: lastName, email: mail, password: password});
+                const newUser = await signupUser({
+                    firstName: firstName,
+                    lastName: lastName,
+                    email: mail,
+                    password: password,
+                });
 
                 if (newUser.user) {
-                    modifyLoginWorkflowState("AccountCreated");
+                    modifyLoginWorkflowState('AccountCreated');
                     setInputValues({});
                 } else if (newUser.userAlreadyExists) {
-                    modifyLoginWorkflowState("DuplicateAccount");
+                    modifyLoginWorkflowState('DuplicateAccount');
                 } else {
-                    modifyLoginWorkflowState("ServerError");
+                    modifyLoginWorkflowState('ServerError');
                     setInputValues({});
-                };
-
+                }
             } catch (err) {
-                modifyLoginWorkflowState("ServerError");
+                modifyLoginWorkflowState('ServerError');
             }
         };
 
@@ -134,46 +144,43 @@ const useUserAccounts = () => {
             userLogin();
             setInputValues({});
         }
-
     };
 
     // handling password-validation
     const passwordValidation = () => {
-        const match = inputValues.password === inputValues.conf_password
+        const match = inputValues.password === inputValues.conf_password;
         if (match) {
-            const satisfiedConditions = pwValidationConditions.map((condition) => {
-                const satisfiesCondition = condition.regex.test(inputValues.password);
-                if (satisfiesCondition) {
-                    return (
-                        {
-                            satisfied: true,
-                            ...condition
-                        }
-                    )
-                } else {
-                    return (
-                        {
-                            satisfied: false,
-                            ...condition
-                        }
+            const satisfiedConditions = pwValidationConditions.map(
+                (condition) => {
+                    const satisfiesCondition = condition.regex.test(
+                        inputValues.password
                     );
-                };
-            });
-            const allConditionsSatisfied = satisfiedConditions.every((condition) => condition.satisfied === true)
-            return (
-                {
-                    match: true,
-                    conditions: satisfiedConditions,
-                    allConditionsSatisfied: allConditionsSatisfied
-                }
-            )
-        } else {
-            return  (
-                {
-                    match: false
+                    if (satisfiesCondition) {
+                        return {
+                            satisfied: true,
+                            ...condition,
+                        };
+                    } else {
+                        return {
+                            satisfied: false,
+                            ...condition,
+                        };
+                    }
                 }
             );
-        };
+            const allConditionsSatisfied = satisfiedConditions.every(
+                (condition) => condition.satisfied === true
+            );
+            return {
+                match: true,
+                conditions: satisfiedConditions,
+                allConditionsSatisfied: allConditionsSatisfied,
+            };
+        } else {
+            return {
+                match: false,
+            };
+        }
     };
 
     //Handling log-out
@@ -183,26 +190,37 @@ const useUserAccounts = () => {
             if (logout) {
                 setFormUserInfo('');
                 setUserDefaults();
+                setCart([]);
                 localStorage.removeItem('userToken');
-                return true
+                localStorage.removeItem('cartId');
+                return true;
             } else {
-                modifyLoginWorkflowState("ServerError");
+                modifyLoginWorkflowState('ServerError');
                 toggleForm(true);
             }
         } catch (err) {
-            modifyLoginWorkflowState("ServerError");
+            modifyLoginWorkflowState('ServerError');
             toggleForm(true);
-        };
+        }
     };
 
-    return { 
-        inputValues, handleInputValues, handleFormSubmit, setInputValues,
-        passwordValidation, 
-        doPasswordsMatch, setDoPasswordsMatch, 
-        satisfiedConditions, setSatisfiedConditions, 
-        areAllConditionsSatisfied, setAreAllConditionsSatisfied,
-        isSignupVisible, setIsSignupVisible,
-        submissionError, handleUserLogin, handleUserLogout
+    return {
+        inputValues,
+        handleInputValues,
+        handleFormSubmit,
+        setInputValues,
+        passwordValidation,
+        doPasswordsMatch,
+        setDoPasswordsMatch,
+        satisfiedConditions,
+        setSatisfiedConditions,
+        areAllConditionsSatisfied,
+        setAreAllConditionsSatisfied,
+        isSignupVisible,
+        setIsSignupVisible,
+        submissionError,
+        handleUserLogin,
+        handleUserLogout,
     };
 };
 

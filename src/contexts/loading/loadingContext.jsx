@@ -1,5 +1,5 @@
 import { createContext, useReducer } from 'react';
-import { loadingReducer } from './loadingReducer.ts'
+import { loadingReducer } from './loadingReducer.ts';
 
 // Loading-Context
 const loadingContext = createContext();
@@ -7,23 +7,26 @@ const loadingContext = createContext();
 // Initial State
 const initialState = {
     //First Load State Variable
-    isFirstLoad: true,
+    isFirstLoad: true, //main loader for the entire web app, relies on below main loaders
 
     //User Data
+    isSilentDataLoaded: false, //main loader, relies on below loaders
     isUserDataLoaded: false,
+    isCartDataLoaded: false,
 
-    //Home Page State Variables
-    isHomeLoaded: false,
+    //Home Page
+    isHomeLoaded: false, //main loader, relies on below loaders
     isHeroSliderLoaded: false,
     isFeaturedSliderLoaded: false,
     isTopProductsLoaded: false,
     isServicesLoaded: false,
 
+    //Cart
+    isCartProductDataLoaded: false,
 };
 
 // Loading-Provider Component
 const LoadingProvider = ({ children }) => {
-
     const [state, dispatch] = useReducer(loadingReducer, initialState);
 
     // First Load Action
@@ -34,60 +37,18 @@ const LoadingProvider = ({ children }) => {
     };
 
     //Item Load Actions
-    const toggleItemsLoaded = (loaders) => {
+    const toggleItemsLoaded = (loader) => {
         return dispatch({
-            type: 'TOGGLE_LOADERS_TRUE',
-            payload: { loaders }
-        })
-    };
-
-    // Home Page Load Actions
-    const toggleIsHomeLoaded = () => {
-        return dispatch({
-            type: 'TOGGLE_IS_HOME_LOADED_TRUE',
+            type: 'TOGGLE_LOADER_TRUE',
+            payload: { loader },
         });
     };
-
-    const toggleIsHeroSliderLoaded = () => {
-        return dispatch({
-            type: 'TOGGLE_IS_HERO_SLIDER_LOADED_TRUE',
-        });
-    };
-
-    const toggleIsFeaturedSliderLoaded = () => {
-        return dispatch({
-            type: 'TOGGLE_IS_FEATURED_SLIDER_LOADED_TRUE',
-        });
-    };
-
-    const toggleIsTopProductsLoaded = () => {
-    return dispatch({
-            type: 'TOGGLE_IS_TOP_PRODUCTS_LOADED_TRUE',
-        });
-    };
-
-    const toggleIsServicesLoaded = () => {
-        return dispatch({
-                type: 'TOGGLE_IS_SERVICES_LOADED_TRUE',
-            });
-        };    
 
     // Context values
     const values = {
-        //State Variables
         ...state,
-
-        //First Load Actions
         toggleIsFirstLoad,
-
-        //Home Page Actions
-        toggleIsHomeLoaded,
-        toggleIsHeroSliderLoaded,
-        toggleIsFeaturedSliderLoaded,
-        toggleIsTopProductsLoaded,
-        toggleIsServicesLoaded,
-
-        toggleItemsLoaded
+        toggleItemsLoaded,
     };
 
     return (

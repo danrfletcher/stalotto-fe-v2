@@ -1,188 +1,126 @@
-import axios, { AxiosResponse } from 'axios';
-import { addToCartQuery, createAnonymousCartQuery, getCustomerCartFromIdQuery, getCustomerCartFromTokenQuery } from './cartQueries';
-import { Competition } from './competitionsApi';
+import axios from 'axios';
+import { addProductToCartQuery, createAnonymousCartQuery, getCustomerCartFromIdQuery, setQtdCartItemQuery } from './cartQueries';
 
 const baseURL = import.meta.env.VITE_API_BASE_URL;
-const cartFailure = "Unable to load cart items";
 
-interface CartItem {
+export interface CartItem {
     uid: string;
-    quantity: number;
     product: {
-        uid: string;
-        name: string;
         sku: string;
+        name: string;
     };
+    quantity: number;
 }
-
-export interface Cart {
-    cartId: string;
-    cartItems: CartItem[];
-    loggedIn: boolean
-};
-
-type CartFailure = string;
-
-const defaultReturnCart = (token: string | null = null, response: AxiosResponse) => {
-    if (response.data.errors) {
-        return cartFailure;
-    } else if (response.data.data.customerCart || response.data.data.cart) {
-
-        let cart;
-        if (response.data.data.customerCart) {
-            cart = response.data.data.customerCart
-        } else if (response.data.data.cart) {
-            cart = response.data.data.cart
-        }
-        
-        const formattedCart = {
-            cartId: cart.id,
-            cartItems: cart.items,
-            loggedIn: token ? true : false,
-        }
-
-        return formattedCart;
-
-    } else {
-        throw new Error();
+//get items in user's cart
+export const getCartItems = async () => {
+    //add authentication credentials for logged in users
+    const headers = {};
+    if (localStorage.userToken) {
+        headers['Authorization'] = `Bearer ${localStorage.userToken}`;
     }
-}
 
-export const getCustomerCartFromToken = async (token): Promise<Cart | CartFailure> => {
+    //send request & return response
     try {
-        const response = await axios.post(`${baseURL}/graphql`, 
-            {
-                query: getCustomerCartFromTokenQuery()
-            },
-            {
-                headers: {
-                    'Authorization': `Bearer ${token}`,
-                    'Content-Type': 'application/json',
-                }
-            }
-        )
-
-        return defaultReturnCart(token, response);
-
-    } catch (err) {
-        return cartFailure;
-    };
-};
-
-export const getCustomerCartFromId = async (cartId: number, token: string | null = null): Promise<Cart | CartFailure> => {
-    try {
-
-        const headers = {};
-        if (token) {
-            headers['Authorization'] = `Bearer ${token}`;
-            headers['Content-Type'] = 'application/json'
-        }
-
-        const response = await axios.post(`${baseURL}/graphql`, 
+        const itemsInCart = await axios.post(
+            `${baseURL}/graphql`,
             {
                 query: getCustomerCartFromIdQuery,
                 variables: {
-                    cartId: cartId
-                }
+                    cartId: localStorage.cartId,
+                },
             },
             {
-                headers: headers
+                headers: headers,
             }
         );
 
-        return defaultReturnCart(token, response);
-
+        if (itemsInCart.data.data.cart.items) {
+            return itemsInCart.data.data.cart.items;
+        } else if (itemsInCart.data.errors[0].message && typeof itemsInCart.data.errors[0].message == 'string') {
+            throw new Error(itemsInCart.data.errors[0].message);
+        } else {
+            throw new Error('Failed to get cart items');
+        }
     } catch (err) {
-        return cartFailure;
-    };
+        throw err;
+    }
 };
 
-export const createAnonymousCart = async () => {
+//create anonymous cart
+export const createAnonymousCart = async (): Promise<string | Error> => {
     try {
-        const response = await axios.post(`${baseURL}/graphql`, 
-            {
-                query: createAnonymousCartQuery,
-            },
-        )
+        const response = await axios.post(`${baseURL}/graphql`, {
+            query: createAnonymousCartQuery,
+        });
         if (response.data.data.createEmptyCart) {
-            return ({cartId: response.data.data.createEmptyCart})
+            return response.data.data.createEmptyCart;
         } else {
-            throw new Error();
+            throw new Error('Failed to create anonymous cart ID');
         }
     } catch (err) {
-        throw err
+        throw err;
     }
-}
-
-//add to cart
-interface UidQtd {
-    id: string; //uid
-    qtdToAdd: number;
-}
-
-interface ID {
-    id: string //uid of item to be added to the cart. Local cart items can contain any properties, but must id/uid in order to be purchasable
-}
-
-export const addToCart = async (cartId: string, token: string | null = null, localCartItemsToAdd: Competition[], qtds?: UidQtd[] | undefined) => {
-    const headers = {};
-    if (token) {
-        headers['Authorization'] = `Bearer ${token}`;
-        headers['Content-Type'] = 'application/json'
-    }
-    
-    const cartItemsToAdd = localCartItemsToAdd.map((localCartItem) => {
-        
-        let quantity;
-        let qtdIds;
-        if (qtds) {
-            qtdIds = qtds.map(qtd => qtd.id);
-            if (qtdIds.includes(localCartItem.id)) {
-                const qtdIndex = qtdIds.indexOf(localCartItem.id);
-                quantity = qtds[qtdIndex].qtdToAdd;
-            } else {
-                quantity = 1;
-            };
-        };
-
-        return (
-            {
-                quantity: quantity,
-                sku: localCartItem.sku.toString(),
-            }
-        );
-    });
-
-    const response = await axios.post(`${baseURL}/graphql`, 
-        {
-            query: addToCartQuery(cartId, cartItemsToAdd),
-            variables: {
-                cartId: cartId
-            }
-        },
-        {
-            headers: headers
-        }
-    );
-
-    if (response.data.data.addProductsToCart.cart.items) {
-        const items = response.data.data.addProductsToCart.cart.items
-        return items.map((item) => {
-            return {
-                id: item.uid,
-                name: item.product.name,
-                sku: item.product.sku,
-                quantity: item.quantity
-            }
-        });
-    };
-    console.log(response);
-}
-
-//remove from cart
-
+};
 
 //set quantity of items in cart
+export const setNumItemsInCart = async (cartItemUid: string, qtd: number) => {
+    //add authentication credentials for logged in users
+    const headers = {};
+    if (localStorage.userToken) {
+        headers['Authorization'] = `Bearer ${localStorage.userToken}`;
+    }
 
+    //send request & return response
+    try {
+        const newItemsInCart = await axios.post(
+            `${baseURL}/graphql`,
+            {
+                query: setQtdCartItemQuery(cartItemUid, qtd),
+            },
+            {
+                headers: headers,
+            }
+        );
 
+        if (newItemsInCart.data.data.updateCartItems.cart.items) {
+            return newItemsInCart.data.data.updateCartItems.cart.items;
+        } else if (newItemsInCart.data.errors[0].message && typeof newItemsInCart.data.errors[0].message == 'string') {
+            throw new Error(newItemsInCart.data.errors[0].message);
+        } else {
+            throw new Error('Failed to update cart items');
+        }
+    } catch (err) {
+        throw err;
+    }
+};
 
+//add items to the cart
+export const addProductToCart = async (sku: string, qtd: number): Promise<CartItem[] | Error> => {
+    //add authentication credentials for logged in users
+    const headers = {};
+    if (localStorage.userToken) {
+        headers['Authorization'] = `Bearer ${localStorage.userToken}`;
+    }
+
+    try {
+        const updatedCart = await axios.post(
+            `${baseURL}/graphql`,
+            {
+                query: addProductToCartQuery(sku, qtd),
+            },
+            {
+                headers: headers,
+            }
+        );
+
+        if (updatedCart.data.data.addProductsToCart.cart.items) {
+            return updatedCart.data.data.addProductsToCart.cart.items;
+        } else if (updatedCart.data.errors[0].message && typeof updatedCart.data.errors[0].message == 'string') {
+            throw new Error(updatedCart.data.errors[0].message);
+        } else {
+            throw new Error('Failed to update cart items');
+        }
+    } catch (err) {
+        throw err;
+    };
+};

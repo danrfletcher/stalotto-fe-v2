@@ -1,29 +1,23 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { IoMdCheckmark, IoIosCloseCircle } from 'react-icons/io';
+import { IoMdCheckmark } from 'react-icons/io';
 import { calculateDiscount, displayMoney } from '../utils/currency.js';
 import useDocTitle from '../hooks/useDocTitle.js';
 import useActive from '../hooks/useActive.js';
 import cartContext from '../contexts/cart/cartContext.jsx';
-import competitionsData from '../data/competitionData.tsx';
-import SectionsHead from '../components/common/SectionsHead.jsx';
-import RelatedSlider from '../components/sliders/RelatedSlider.jsx';
-import ProductSummary from '../components/product/ProductSummary.jsx';
 import Services from '../components/common/Services.jsx';
 import { CountdownTimer } from '../components/sliders/CountdownTimer.tsx';
-import { offersData } from '../data/offersData.ts';
-import { OffersList } from './OffersList.tsx';
 import commonContext from '../contexts/common/commonContext.jsx';
 import { getFilteredCompetitionData } from '../services/competitionsApi.ts';
 import loadingContext from '../contexts/loading/loadingContext.jsx';
 import { BounceLoader, PulseLoader } from 'react-spinners';
-import useCartSync from '../hooks/useCartSync.ts';
+import useCartUpdater from '../hooks/useCartUpdater.ts';
 
 
 const CompetitionDetails = () => {
 
-    const { isFirstLoad, toggleIsFirstLoad, isUserDataLoaded } = useContext(loadingContext);
-
+    const { isFirstLoad, toggleIsFirstLoad, isUserDataLoaded, isCartDataLoaded } = useContext(loadingContext);
+    const { addToCart } = useCartUpdater();
     const [competition, setCompetition] = useState({});
     const [isCompetitionLoaded,setIsCompetitionLoaded] = useState(false);
     const [compTitle, setCompTitle] = useState('Competition')
@@ -37,8 +31,6 @@ const CompetitionDetails = () => {
 
     const sku = parseInt(urlKey.split('-')[0]);
     const [previewImg, setPreviewImg] = useState(null);
-
-    const { handleAddToCart } = useCartSync();
 
     // showing the Product based on the received 'id'
     useEffect(() => {
@@ -65,10 +57,11 @@ const CompetitionDetails = () => {
     }, [filteredCompetitions, sku]);
 
     const { images, title, creator, category, finalPrice, originalPrice, totalTickets, ticketsRemaining, closes, thumbnail, winningTicketIDs } = competition;
+    const itemSku = competition.sku
 
     // handling Add-to-cart
     const handleAddItem = () => {
-        handleAddToCart(competition);
+        addToCart(itemSku, 1);
     };
 
 
@@ -101,7 +94,7 @@ const CompetitionDetails = () => {
 
     return (
         <>
-            {isFirstLoad && !isUserDataLoaded ? (
+            {isFirstLoad && !isUserDataLoaded && !isCartDataLoaded ? (
                 <div className="loading-spinner">
                     <BounceLoader color="#a9afc3" />
                 </div>

@@ -12,22 +12,19 @@ import { BarLoader } from 'react-spinners';
 import useUserAccounts from '../../hooks/useUserAccounts.js';
 
 const Header = () => {
-
-    const { formUserInfo, toggleForm, toggleSearch, setCurrentHash, currentHash, setFormUserInfo } = useContext(commonContext);
-    const { user, isLoggedIn, token, setUserDefaults } = useContext(userContext);
+    const { toggleForm, toggleSearch, setCurrentHash, currentHash } = useContext(commonContext);
+    const { user, isLoggedIn } = useContext(userContext);
     const { modifyLoginWorkflowState } = useContext(userContext);
     const { cartItems } = useContext(cartContext);
     const [isSticky, setIsSticky] = useState(false);
     const [cartQuantity, setCartQuantity] = useState(0);
     const { handleUserLogout } = useUserAccounts();
-
-    const {firstName} = user;
-
+    const { firstName } = user;
     const [logoutPending, setLogoutPending] = useState(false);
 
     // handle the sticky-header
     useEffect(() => {
-        const handleIsSticky = () => window.scrollY >= 50 ? setIsSticky(true) : setIsSticky(false);
+        const handleIsSticky = () => (window.scrollY >= 50 ? setIsSticky(true) : setIsSticky(false));
         window.addEventListener('scroll', handleIsSticky);
 
         return () => {
@@ -42,13 +39,12 @@ const Header = () => {
 
     useEffect(() => {
         handleHashChange();
-    },[currentHash])
+    }, [currentHash]);
 
     useEffect(() => {
-        let totalCartQtd = 0
-        const getCartQuantity = cartItems.map(cartItem => totalCartQtd += cartItem.quantity);
-        setCartQuantity(getCartQuantity);
-    },[cartItems])
+        let totalCartQtd = cartItems.reduce((acc, cur) => acc + cur.quantity, 0);
+        setCartQuantity(totalCartQtd);
+    }, [cartItems]);
 
     const handleLogout = async () => {
         try {
@@ -59,6 +55,8 @@ const Header = () => {
         }
         setLogoutPending(false);
     };
+
+
 
     return (
         <>
@@ -83,11 +81,7 @@ const Header = () => {
                             <div className="cart_action">
                                 <Link to="/cart">
                                     <AiOutlineShoppingCart />
-                                    {
-                                        cartQuantity > 0 && (
-                                            <span className="badge">{cartQuantity}</span>
-                                        )
-                                    }
+                                    {cartQuantity > 0 && <span className="badge">{cartQuantity}</span>}
                                 </Link>
                                 <div className="tooltip">Cart</div>
                             </div>
@@ -97,49 +91,43 @@ const Header = () => {
                                     <AiOutlineUser />
                                 </span>
                                 <div className="dropdown_menu">
-                                    <h4>Hello! {formUserInfo && <Link to="*">&nbsp;{firstName}</Link>}</h4>
+                                    <h4>Hello! {user.firstName && <Link to="*">&nbsp;{firstName}</Link>}</h4>
                                     <p>Email admin@stalotto.com if you need help.</p>
-                                    {
-                                        !formUserInfo && (
-                                            <button
-                                                type="button"
-                                                onClick={() => {
-                                                    modifyLoginWorkflowState("None");
-                                                    toggleForm(true);
-                                                }}
-                                            >
-                                                Login / Signup
-                                            </button>
-                                        )
-                                    }
+                                    {!user.firstName && (
+                                        <button
+                                            type="button"
+                                            onClick={() => {
+                                                modifyLoginWorkflowState('None');
+                                                toggleForm(true);
+                                            }}
+                                        >
+                                            Login / Signup
+                                        </button>
+                                    )}
                                     {isLoggedIn ? (
                                         <>
                                             <div className="separator"></div>
                                             <ul>
-                                                {
-                                                    dropdownMenu.map(item => {
-                                                        const { id, link, path } = item;
-                                                        return (
-                                                            <li key={id}>
-                                                                <Link to={path}>{link}</Link>
-                                                            </li>
-                                                        );
-                                                    })
-                                                }
+                                                {dropdownMenu.map((item) => {
+                                                    const { id, link, path } = item;
+                                                    return (
+                                                        <li key={id}>
+                                                            <Link to={path}>{link}</Link>
+                                                        </li>
+                                                    );
+                                                })}
                                             </ul>
                                             <div className="separator"></div>
                                             <ul>
                                                 <li className="logout" key="logout" onClick={handleLogout}>
-                                                        <p className="logout_text">Logout </p>
-                                                        {
-                                                            logoutPending && (
-                                                                <BarLoader color="#a9afc3" /> 
-                                                            )
-                                                        }     
+                                                    <p className="logout_text">Logout </p>
+                                                    {logoutPending && <BarLoader color="#a9afc3" />}
                                                 </li>
                                             </ul>
                                         </>
-                                    ) : ""}
+                                    ) : (
+                                        ''
+                                    )}
                                 </div>
                             </div>
                         </nav>

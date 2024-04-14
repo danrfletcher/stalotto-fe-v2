@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext, useEffect } from 'react';
 import HeroSlider from '../components/sliders/HeroSlider';
 import FeaturedSlider from '../components/sliders/FeaturedSlider';
 import SectionsHead from '../components/common/SectionsHead';
@@ -9,25 +9,27 @@ import loadingContext from '../contexts/loading/loadingContext';
 import commonContext from '../contexts/common/commonContext';
 import { getFilteredCompetitionData } from '../services/competitionsApi';
 
-
 const Home = () => {
-
+    
     //loading state variables
     const {
         toggleItemsLoaded, //function to toggle loading states
-
         isUserDataLoaded, //user data loads silently in the background
-
+        isCartDataLoaded, //cart data loads silently in the background
         isHeroSliderLoaded, //hero slider component
-
         isFeaturedSliderLoaded, //featured competitions slider component
-
         isTopProductsLoaded, //top products component
-
         isServicesLoaded, //services component
-
         isFirstLoad, toggleIsFirstLoad, //first load logic for loading spinner
     } = useContext(loadingContext);
+
+    //finalizing first page load logic for loading spinner
+    useEffect(() => {
+        if (isUserDataLoaded && isCartDataLoaded && isHeroSliderLoaded && isFeaturedSliderLoaded && isTopProductsLoaded && isServicesLoaded && isFirstLoad) {
+            toggleItemsLoaded(['isHomeLoaded']);
+            toggleIsFirstLoad();
+        }
+    }, [isUserDataLoaded, isCartDataLoaded, isHeroSliderLoaded, isFeaturedSliderLoaded, isTopProductsLoaded, isServicesLoaded, isUserDataLoaded])
 
     //page data
     const { 
@@ -94,15 +96,6 @@ const Home = () => {
             toggleItemsLoaded(['isServicesLoaded']);
         }
     },[]);
-
-
-    //finalizing first page load logic for loading spinner
-    useEffect(() => {
-        if (isUserDataLoaded && isHeroSliderLoaded && isFeaturedSliderLoaded && isTopProductsLoaded && isServicesLoaded && isFirstLoad) {
-            toggleItemsLoaded(['isHomeLoaded']);
-            toggleIsFirstLoad();
-        }
-    }, [isHeroSliderLoaded, isFeaturedSliderLoaded, isTopProductsLoaded, isServicesLoaded, isUserDataLoaded])
 
     return (
         isFirstLoad ? (

@@ -1,8 +1,5 @@
 import React, { useContext } from 'react';
-import { BiSort, BiFilterAlt } from 'react-icons/bi';
 import filtersContext from '../../contexts/filters/filtersContext.jsx';
-import FilterBarOptions from './FilterBarOptions';
-
 
 const FilterBar = () => {
     //Sort & filter is currently disabled
