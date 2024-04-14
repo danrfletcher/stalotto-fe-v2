@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { addProductToCartQuery, createAnonymousCartQuery, getCustomerCartFromIdQuery, setQtdCartItemQuery } from './cartQueries';
+import { addProductToCartQuery, createAnonymousCartQuery, getCartTotalQuery, getCustomerCartFromIdQuery, setQtdCartItemQuery } from './cartQueries';
 
 const baseURL = import.meta.env.VITE_API_BASE_URL;
 
@@ -122,5 +122,38 @@ export const addProductToCart = async (sku: string, qtd: number): Promise<CartIt
         }
     } catch (err) {
         throw err;
-    };
+    }
+};
+
+//get cart grand total
+export const getCartTotal = async () => {
+    //add authentication credentials for logged in users
+    const headers = {};
+    if (localStorage.userToken) {
+        headers['Authorization'] = `Bearer ${localStorage.userToken}`;
+    }
+
+    try {
+        const grandTotal = await axios.post(
+            `${baseURL}/graphql`,
+            {
+                query: getCartTotalQuery,
+                variables: {
+                    cartId: localStorage.cartId,
+                },
+            },
+            {
+                headers: headers,
+            }
+        );
+        if (grandTotal.data.data.cart.prices.grand_total) {
+            return grandTotal.data.data.cart.prices.grand_total;
+        } else if (grandTotal.data.errors[0].message && typeof grandTotal.data.errors[0].message == 'string') {
+            throw new Error(grandTotal.data.errors[0].message);
+        } else {
+            throw new Error('Failed to fetch total amount');
+        }
+    } catch (err) {
+        throw err;
+    }
 };

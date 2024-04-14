@@ -1,9 +1,16 @@
-import { useContext, useCallback } from 'react';
+import { useContext, useCallback, useState } from 'react';
 import cartContext from '../contexts/cart/cartContext';
-import { CartItem, addProductToCart, setNumItemsInCart } from '../services/cartApi';
+import { CartItem, addProductToCart, getCartTotal, setNumItemsInCart } from '../services/cartApi';
+
+type CartTotalType = {
+    value: number | null | string;
+    currency?: string | null;
+};
 
 const useCartUpdater = () => {
-    const { cartItems, setCart, setProductDataState } = useContext(cartContext);
+    const { cartItems, setCart, setProductDataState, flagRecalculateTotal } = useContext(cartContext);
+    const [cartQuantity, setCartQuantity] = useState(null);
+    const [cartTotal, setCartTotal] = useState<CartTotalType>({ value: null, currency: null });
 
     const addToCart = useCallback(
         async (sku, qtd = 1, optimistic = false) => {
@@ -84,7 +91,6 @@ const useCartUpdater = () => {
                 try {
                     // Call API to update the cart quantity on the backend
                     const updatedCartItems = await setNumItemsInCart(cartItemUid, targetItem?.quantity - decrementAmount);
-
                 } catch (err) {
                     // Revert to original items if API call fails
                     setCart(cartItems);
@@ -95,10 +101,35 @@ const useCartUpdater = () => {
         [cartItems, setCart, removeFromCart] // Ensure removeFromCart is included as a dependency
     );
 
+    const fetchTotal = async () => {
+        flagRecalculateTotal(true); //set loading state on grand total price
+        try {
+            const total = await getCartTotal();
+            setCartTotal(total);
+        } catch (err) {
+            setCartTotal({ value: 'There has been an error calculating the total. Please reload the page.' });
+        }
+        flagRecalculateTotal(false);
+    };
+
+    const optimisticallyUpdateTotal = () => {
+        const total = cartItems.reduce((acc, curr) => acc + curr.product.price_range.minimum_price.final_price.value * curr.quantity, 0).toFixed(2);
+        setCartTotal({
+            ...cartTotal,
+            value: total,
+        });
+    };
+
     return {
         addToCart,
         removeFromCart,
         decrementCart,
+        cartQuantity,
+        setCartQuantity,
+        cartTotal,
+        setCartTotal,
+        fetchTotal,
+        optimisticallyUpdateTotal,
     };
 };
 

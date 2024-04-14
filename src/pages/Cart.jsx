@@ -1,6 +1,5 @@
 import React, { useContext, useState, useEffect } from 'react';
 import { BsCartX } from 'react-icons/bs';
-import { calculateTotal, displayMoney } from '../utils/currency.js';
 import useDocTitle from '../hooks/useDocTitle';
 import cartContext from '../contexts/cart/cartContext.jsx';
 import CartItem from '../components/cart/CartItem';
@@ -8,15 +7,29 @@ import EmptyView from '../components/common/EmptyView';
 import { Checkout } from '../components/form/Checkout.tsx';
 import loadingContext from '../contexts/loading/loadingContext.jsx';
 import { BounceLoader, PulseLoader } from 'react-spinners';
+import { getCartTotal } from '../services/cartApi.ts';
+import { currencies } from '../data/currencyData.tsx';
+import useCartUpdater from '../hooks/useCartUpdater.ts';
 
 const Cart = () => {
     useDocTitle('Cart');
 
-    const { cartItems, productDataReceived } = useContext(cartContext);
+    const { cartItems, productDataReceived, flagRecalculateTotal } = useContext(cartContext);
     const { isFirstLoad, toggleIsFirstLoad, isCartDataLoaded } = useContext(loadingContext);
-    const [cartQuantity, setCartQuantity] = useState(null);
+    const { cartQuantity, setCartQuantity, cartTotal, setCartTotal, optimisticallyUpdateTotal } = useCartUpdater();
 
-    //load cart data & set cart quantity
+    //load cart data, set cart quantity & display total
+    const fetchTotal = async () => {
+        flagRecalculateTotal(true); //set loading state on grand total price
+        try {
+            const total = await getCartTotal();
+            setCartTotal(total);
+        } catch (err) {
+            setCartTotal({ value: 'There has been an error calculating the total. Please reload the page.' });
+        }
+        flagRecalculateTotal(false);
+    };
+
     useEffect(() => {
         if (isCartDataLoaded && isFirstLoad) {
             toggleIsFirstLoad();
@@ -24,27 +37,12 @@ const Cart = () => {
         if (productDataReceived) {
             setCartQuantity(cartItems.length);
         }
+        optimisticallyUpdateTotal();
     }, [cartItems, isCartDataLoaded]);
 
-    // total original price
-    const cartTotal = cartItems.map((item) => {
-        return item.finalPrice * item.quantity;
-    });
-
-    const calculateCartTotal = calculateTotal(cartTotal);
-    const displayCartTotal = displayMoney(calculateCartTotal);
-
-    // total discount
-    const cartDiscount = cartItems.map((item) => {
-        return (item.originalPrice - item.finalPrice) * item.quantity;
-    });
-
-    const calculateCartDiscount = calculateTotal(cartDiscount);
-    const displayCartDiscount = displayMoney(calculateCartDiscount);
-
-    // final total amount
-    const totalAmount = calculateCartTotal - calculateCartDiscount;
-    const displayTotalAmount = displayMoney(totalAmount);
+    useEffect(() => {
+        fetchTotal(); //load price on first component mount
+    }, []);
 
     const [displayCheckout, setDisplayCheckout] = useState(false);
 
@@ -52,12 +50,12 @@ const Cart = () => {
         <div className="loading-spinner">
             <BounceLoader color="#a9afc3" />
         </div>
+    ) : !productDataReceived || cartQuantity === null ? (
+        <PulseLoader color="#a9afc3" className="centered_pulse_loader" />
     ) : (
         <section id="cart" className="section">
             <div className="container">
-                {!productDataReceived || cartQuantity === null ? (
-                    <PulseLoader color="#a9afc3" className="centered_pulse_loader" />
-                ) : cartQuantity === 0 ? (
+                {cartQuantity === 0 ? (
                     <EmptyView icon={<BsCartX />} msg="Your Cart is Empty" link="/competitions" btnText="Start Shopping" />
                 ) : (
                     <div className="wrapper cart_wrapper">
@@ -102,7 +100,9 @@ const Cart = () => {
                                         <b>
                                             <small>Total Price</small>
                                         </b>
-                                        <b>{displayTotalAmount}</b>
+                                        <b>
+                                            {currencies[cartTotal.currency]} {cartTotal.value}
+                                        </b>
                                     </div>
                                 </div>
                                 <button

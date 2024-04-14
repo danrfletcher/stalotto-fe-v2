@@ -103,8 +103,14 @@ const cartReducer = (state, action) => {
         case 'SET_PDR':
             return {
                 ...state,
-                productDataReceived: action.payload.bool
-            }
+                productDataReceived: action.payload.bool,
+            };
+
+        case 'FLAG_TOTAL':
+            return {
+                ...state,
+                recalculatingTotal: action.payload.bool,
+            };
 
         default:
             return state;

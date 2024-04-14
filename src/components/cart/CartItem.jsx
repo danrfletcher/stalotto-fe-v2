@@ -29,7 +29,9 @@ const CartItem = (props) => {
                             </Link>
                         </h4>
                         <div className="cart_item_del">
-                            <span onClick={() => removeFromCart(cartItemUid)}>
+                            <span onClick={async () => {
+                                removeFromCart(cartItemUid)
+                                }}>
                                 <TbTrash />
                             </span>
                             <div className="tooltip">Remove Item</div>

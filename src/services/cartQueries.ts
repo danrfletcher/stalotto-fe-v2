@@ -123,3 +123,16 @@ export const addProductToCartQuery = (sku: string, qtd: number) => {
         }
     `;
 };
+
+export const getCartTotalQuery = `
+    query GetCartDetails($cartId: String!) {
+            cart(cart_id: $cartId) {
+                    prices {
+                            grand_total {
+                                    value
+                                    currency
+                            }
+                    }
+            }
+    }
+`;

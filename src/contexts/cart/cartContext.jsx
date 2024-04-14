@@ -10,7 +10,8 @@ const cartContext = createContext();
 const initialState = {
     cartItems: [],
     cartId: null,
-    productDataReceived: true
+    productDataReceived: true,
+    recalculatingTotal: false,
 };
 
 // Cart-Provider Component
@@ -74,6 +75,13 @@ const CartProvider = ({ children }) => {
         });
     };
 
+    const flagRecalculateTotal = (bool) => {
+        return dispatch({
+            type: 'FLAG_TOTAL',
+            payload: { bool },
+        });
+    };
+
     // Context values
     const values = {
         ...state,
@@ -85,6 +93,7 @@ const CartProvider = ({ children }) => {
         setItemQtd,
         setCart,
         setProductDataState,
+        flagRecalculateTotal,
     };
 
     return <cartContext.Provider value={values}>{children}</cartContext.Provider>;
