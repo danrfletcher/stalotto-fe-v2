@@ -82,7 +82,7 @@ const TopProducts = () => {
                 {
                     filteredCompetitions === null ? (
                         <div className="card products_card browse_card loading_card">
-                                <div className="tp_loader_container">
+                            <div className="tp_loader_container">
                                 <PulseLoader color="#a9afc3" className="tp_pulse_loader" />
                             </div>
                         </div>

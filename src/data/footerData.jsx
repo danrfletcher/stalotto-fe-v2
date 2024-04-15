@@ -54,7 +54,7 @@ export const footMenu = [
             {
                 id: 6,
                 link: "Postal Entry Route",
-                path: "/"
+                path: "/postal-entry-route"
             },
         ]
     },
