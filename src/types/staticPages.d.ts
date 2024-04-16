@@ -1,4 +1,4 @@
-interface StaticPageDataType {
+interface StaticPageData {
     identifier: string;
     urlKey: string;
     title: string;

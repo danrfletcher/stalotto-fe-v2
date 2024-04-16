@@ -7,7 +7,7 @@ export class StaticPageDataClass {
     metaDescription: string;
     metaKeywords: string;
 
-    constructor(data: StaticPageDataType) {
+    constructor(data: StaticPageData) {
         this.identifier = data.identifier;
         this.urlKey = data.urlKey;
         this.title = data.title;

@@ -3,7 +3,7 @@ import { BounceLoader, PulseLoader } from 'react-spinners';
 import loadingContext from '../contexts/loading/loadingContext';
 import { useParams } from 'react-router';
 import { getStaticPage } from '../services/staticPageApi';
-import { StaticPageDataTypeFetchError } from '../data/errors';
+import { StaticPageDataFetchError } from '../data/errors';
 import { StaticPageDataClass } from '../models/staticPages';
 import { Helmet } from 'react-helmet-async';
 
@@ -35,20 +35,20 @@ const Static: React.FC = () => {
         })
     );
 
-    const fetchStaticPageDataType = async () => {
+    const fetchStaticPageData = async () => {
         setIsStaticDataLoaded(false);
         try {
-            const StaticPageDataType = await getStaticPage(staticPageUrlKey);
-            setPageContent(StaticPageDataType);
+            const StaticPageData = await getStaticPage(staticPageUrlKey);
+            setPageContent(StaticPageData);
         } catch (err) {
             console.error('Error fetching static page data: ', err);
-            setPageContent(new StaticPageDataTypeFetchError());
+            setPageContent(new StaticPageDataFetchError());
         }
         setIsStaticDataLoaded(true);
     };
 
     useEffect(() => {
-        fetchStaticPageDataType();
+        fetchStaticPageData();
     }, [staticPageUrlKey]);
 
     //fetching data & setting components as loaded
