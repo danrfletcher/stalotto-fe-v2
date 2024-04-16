@@ -5,6 +5,7 @@ import { useParams } from 'react-router';
 import { getStaticPage } from '../services/staticPageApi';
 import { StaticPageDataTypeFetchError } from '../data/errors';
 import { StaticPageDataClass } from '../models/staticPages';
+import { Helmet } from 'react-helmet-async';
 
 const Static: React.FC = () => {
     //loading spinners
@@ -56,19 +57,24 @@ const Static: React.FC = () => {
             <BounceLoader color="#a9afc3" />
         </div>
     ) : (
-        <main className={isFirstLoad ? 'content-hidden' : 'content-visible'}>
-            <section id="hero">
-                <div className="container">
-                    {isStaticDataLoaded &&
-                        (pageContent instanceof StaticPageDataClass ? (
-                            <article className="static_content" dangerouslySetInnerHTML={{ __html: pageContent.innerHtml }}></article>
-                        ) : (
-                            <p>{pageContent.message}</p>
-                        ))}
-                    {!isStaticDataLoaded && <PulseLoader color="#a9afc3" className="static_pulse_loader" />}
-                </div>
-            </section>
-        </main>
+        <>
+            <Helmet>
+                <title>{`Stalotto | ${isStaticDataLoaded ? (pageContent instanceof StaticPageDataClass ? pageContent.title : 'Error Getting Data') : 'Info Page'}`}</title>
+            </Helmet>
+            <main className={isFirstLoad ? 'content-hidden' : 'content-visible'}>
+                <section id="hero">
+                    <div className="container">
+                        {isStaticDataLoaded &&
+                            (pageContent instanceof StaticPageDataClass ? (
+                                <article className="static_content" dangerouslySetInnerHTML={{ __html: pageContent.innerHtml }}></article>
+                            ) : (
+                                <p>{pageContent.message}</p>
+                            ))}
+                        {!isStaticDataLoaded && <PulseLoader color="#a9afc3" className="static_pulse_loader" />}
+                    </div>
+                </section>
+            </main>
+        </>
     );
 };
 

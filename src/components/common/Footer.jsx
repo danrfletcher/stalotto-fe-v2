@@ -53,7 +53,6 @@ const Footer = () => {
                                         {
                                             menu.map(item => {
                                                 const { id, link, path } = item;
-                                                console.log("⚡ ~ path:", path)
                                                 return (
                                                     <li key={id}>
                                                         <Link to={path}>{link}</Link>

@@ -8,6 +8,7 @@ import { BounceLoader } from 'react-spinners';
 import loadingContext from '../contexts/loading/loadingContext';
 import commonContext from '../contexts/common/commonContext';
 import { getFilteredCompetitionData } from '../services/competitionsApi';
+import { Helmet } from 'react-helmet-async';
 
 const Home = () => {
     
@@ -97,12 +98,15 @@ const Home = () => {
         }
     },[]);
 
-    return (
-        isFirstLoad ? (
-            <div className="loading-spinner">
-                <BounceLoader color="#a9afc3" />
-            </div>
-            ) : (
+    return isFirstLoad ? (
+        <div className="loading-spinner">
+            <BounceLoader color="#a9afc3" />
+        </div>
+    ) : (
+        <>
+            <Helmet>
+                <title>Stalotto | Competitions by Your Favourite Creators</title>
+            </Helmet>
             <main className={isFirstLoad ? 'content-hidden' : 'content-visible'}>
                 <section id="hero">
                     <HeroSlider />
@@ -124,7 +128,7 @@ const Home = () => {
 
                 <Services />
             </main>
-        )
+        </>
     );
 };
 

@@ -10,24 +10,27 @@ import { CartProvider } from './contexts/cart/cartContext';
 import { FiltersProvider } from './contexts/filters/filtersContext';
 import { LoadingProvider } from './contexts/loading/loadingContext.jsx';
 import { UserProvider } from './contexts/user/userContext.jsx';
+import { HelmetProvider } from 'react-helmet-async';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
-  <React.StrictMode>
-    <BrowserRouter>
-      <UserProvider>
-      <LoadingProvider>
-      <CommonProvider>
-      <FiltersProvider>
-      <CartProvider>
-        <App />
-      </CartProvider>
-      </FiltersProvider>
-      </CommonProvider>
-      </LoadingProvider>
-      </UserProvider>
-    </BrowserRouter>
-  </React.StrictMode>
+    <React.StrictMode>
+        <HelmetProvider>
+            <BrowserRouter>
+                <UserProvider>
+                    <LoadingProvider>
+                        <CommonProvider>
+                            <FiltersProvider>
+                                <CartProvider>
+                                    <App />
+                                </CartProvider>
+                            </FiltersProvider>
+                        </CommonProvider>
+                    </LoadingProvider>
+                </UserProvider>
+            </BrowserRouter>
+        </HelmetProvider>
+    </React.StrictMode>
 );
 
 // If you want to start measuring performance in your app, pass a function
