@@ -157,3 +157,6 @@ export const getCartTotal = async () => {
         throw err;
     }
 };
+
+//set shipping address for user's cart
+//export const set

@@ -81,33 +81,45 @@
 // mixin for media-queries
 
 @mixin devices($breakpoint) {
-
+                    //xxl
+    @if $breakpoint==xxl {
+        @media (min-width: 1399.98px) {
+            @content;
+        }
+    }
+                    //xl
     @if $breakpoint==xl {
         @media (max-width: 1399.98px) {
             @content;
         }
     }
-
+                    //lg
     @else if $breakpoint==lg {
         @media (max-width: 1023.98px) {
             @content;
         }
     }
-
+                    //md
     @else if $breakpoint==md {
         @media (max-width: 767.98px) {
             @content;
         }
     }
-
+                    //sm
     @else if $breakpoint==sm {
         @media (max-width: 639.98px) {
             @content;
         }
     }
-
+                    //xs
     @else if $breakpoint==xs {
         @media (max-width: 479.98px) {
+            @content;
+        }
+    }
+
+    @else if $breakpoint==lgAndAbove {
+        @media (min-width: 1023.98px) {
             @content;
         }
     }

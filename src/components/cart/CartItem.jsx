@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import { TbTrash } from 'react-icons/tb';
 import { Link } from 'react-router-dom';
 import { displayMoney } from '../../utils/currency.js';
@@ -6,7 +6,7 @@ import QuantityBox from '../common/QuantityBox';
 import useCartUpdater from '../../hooks/useCartUpdater.ts';
 
 const CartItem = (props) => {
-    const { id, title, finalPrice, originalPrice, quantity, thumbnail, creator, sku, urlKey, cartItemUid } = props;
+    const { title, finalPrice, originalPrice, quantity, thumbnail, creator, sku, urlKey, cartItemUid } = props;
 
     const newPrice = displayMoney(finalPrice);
     const oldPrice = displayMoney(originalPrice);

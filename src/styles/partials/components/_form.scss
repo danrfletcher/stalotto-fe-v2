@@ -33,7 +33,6 @@
 }
 
 .form_head {
-
     h2 {
         margin-bottom: 0.6rem;
     }
@@ -48,9 +47,10 @@
     }
 }
 
-.form_body {
+.form_body, .form_body fieldset {
     display: grid;
     gap: 1.5rem;
+
     @include margin-y(2rem, 2rem);
 
     .input_label {
@@ -76,7 +76,6 @@
     .login_btn {
         @include margin-y(0.8rem, 0.4rem);
     }
-
 }
 
 .form_foot {
@@ -134,3 +133,77 @@
     justify-content: center;
     padding: 80px;
 }
+
+.checkout_form {
+    width: 100%;
+    max-width: 1410px;
+    margin-top: -8rem;
+
+    option {
+        color: black;
+    }
+
+    @include devices(lgAndAbove) {
+        .checkout_form_body {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            grid-template-rows: repeat(3, 1fr);
+            grid-template-areas: 
+                "checkout_billing    checkout_billing    checkout_contact    checkout_contact"
+                "checkout_billing    checkout_billing    checkout_contact    checkout_contact"
+                "checkout_billing    checkout_billing    checkout_payment    checkout_payment";
+            
+            .checkout_contact {
+                grid-area: checkout_contact;
+            }
+
+            .checkout_billing {
+                grid-area: checkout_billing;
+            }
+
+            .checkout_payment {
+                grid-area: checkout_payment;
+            }
+
+            fieldset {
+                width: 100%;
+                margin: 0;
+            }
+
+        }
+    }
+
+    .form_subset {
+       display: flex;
+       flex-direction: column;
+       gap: 1.5rem;
+    }
+
+    .checkout_flex_box {
+        display: flex;
+        gap: 1.5rem;
+        width: 100%;
+        align-items: stretch;
+    }
+
+    .checkout_flex_item {
+        width: 50%;
+    }
+
+    fieldset {
+        border: none;
+        padding: 30px;
+        background-color: #161819;
+        border-radius: 5px;
+    }
+
+    .checkout_calling_code {
+        width: 45%;
+    }
+
+    .checkout_phone_number {
+        width: 55%
+    }
+}
+
+
