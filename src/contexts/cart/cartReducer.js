@@ -103,13 +103,31 @@ const cartReducer = (state, action) => {
         case 'SET_PDR':
             return {
                 ...state,
-                productDataReceived: action.payload.bool,
+                cartSyncedState: action.payload.bool,
             };
 
-        case 'FLAG_TOTAL':
+        case 'CART_PENDING':
             return {
                 ...state,
-                recalculatingTotal: action.payload.bool,
+                cartIsUpdating: action.payload.bool,
+            };
+
+        case 'DISPLAY_PAYMENTS':
+            return {
+                ...state,
+                displayPayments: !state.displayPayments,
+            };
+
+        case 'DISPLAY_CHECKOUT':
+            return {
+                ...state,
+                displayCheckout: !state.displayCheckout,
+            };
+
+        case 'SET_CHECKOUT_FIELD':
+            return {
+                ...state,
+                [action.payload.keyToSet]: action.payload.value,
             };
 
         default:

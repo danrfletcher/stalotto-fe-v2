@@ -1,12 +1,14 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { TbTrash } from 'react-icons/tb';
 import { Link } from 'react-router-dom';
 import { displayMoney } from '../../utils/currency.js';
 import QuantityBox from '../common/QuantityBox';
 import useCartUpdater from '../../hooks/useCartUpdater.ts';
+import cartContext from '../../contexts/cart/cartContext.jsx';
 
 const CartItem = (props) => {
     const { title, finalPrice, originalPrice, quantity, thumbnail, creator, sku, urlKey, cartItemUid } = props;
+    const { displayCheckout } = useContext(cartContext);
 
     const newPrice = displayMoney(finalPrice);
     const oldPrice = displayMoney(originalPrice);
@@ -28,16 +30,22 @@ const CartItem = (props) => {
                                 <strong>{title}</strong> Competition Entry
                             </Link>
                         </h4>
-                        <div className="cart_item_del">
-                            <span onClick={async () => {
-                                removeFromCart(cartItemUid)
-                                }}>
-                                <TbTrash />
-                            </span>
-                            <div className="tooltip">Remove Item</div>
-                        </div>
+                        <button
+                            disabled={displayCheckout}
+                            onClick={async () => {
+                                removeFromCart(cartItemUid);
+                            }}
+                        >
+                            <div className="cart_item_del">
+                                <span
+                                    style={displayCheckout ? { color: '#6c757d' } : {}}
+                                >
+                                    <TbTrash />
+                                </span>
+                                {!displayCheckout && <div className="tooltip">Remove Item</div>}
+                            </div>
+                        </button>
                     </div>
-
                     <h2 className="cart_item_price">
                         {newPrice} &nbsp;
                         {originalPrice ? (

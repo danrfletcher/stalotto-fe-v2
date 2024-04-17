@@ -158,5 +158,8 @@ export const getCartTotal = async () => {
     }
 };
 
+//save a new billing address to the user's account
+//export const saveNewAddress = async (address: )
+
 //set shipping address for user's cart
 //export const set

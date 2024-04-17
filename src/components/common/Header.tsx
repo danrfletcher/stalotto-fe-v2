@@ -8,19 +8,21 @@ import AccountForm from '../form/AccountForm.jsx';
 import SearchBar from './SearchBar.jsx';
 import { NavPages } from './NavPages.js';
 import userContext from '../../contexts/user/userContext.jsx';
-import { BarLoader } from 'react-spinners';
+import { BarLoader, PuffLoader } from 'react-spinners';
 import useUserAccounts from '../../hooks/useUserAccounts.js';
+import { useNavigate } from 'react-router-dom';
 
 const Header = () => {
     const { toggleForm, toggleSearch, setCurrentHash, currentHash } = useContext(commonContext);
     const { user, isLoggedIn } = useContext(userContext);
     const { modifyLoginWorkflowState } = useContext(userContext);
-    const { cartItems } = useContext(cartContext);
+    const { cartItems, cartIsUpdating } = useContext(cartContext);
     const [isSticky, setIsSticky] = useState(false);
     const [cartQuantity, setCartQuantity] = useState(0);
     const { handleUserLogout } = useUserAccounts();
     const { firstName } = user;
     const [logoutPending, setLogoutPending] = useState(false);
+    const navigate = useNavigate();
 
     // handle the sticky-header
     useEffect(() => {
@@ -56,8 +58,24 @@ const Header = () => {
         setLogoutPending(false);
     };
 
+    // ensure cart icon will not allow cart component to mount if cart update is in progress
+    const [enableCartSpinner, setEnableCartSpinner] = useState<boolean>(false);
+    
+    const waitThenLoadCart = () => { //enable loading spinner when cart icon is clicked - wait for cart items to be fully updated
+        if (cartIsUpdating) {
+            setEnableCartSpinner(true);
+        } else {
+            navigate('/cart');
+        }
+    };
 
-
+    useEffect(() => { //navigate the user to the cart once the update is completed if they clicked on the cart previously
+        if (enableCartSpinner) {
+            navigate('/cart');
+            setEnableCartSpinner(false);
+        }
+    }, [cartIsUpdating]);
+    
     return (
         <>
             <header onClick={handleHashChange} id="header" className={isSticky ? 'sticky' : ''}>
@@ -79,10 +97,19 @@ const Header = () => {
                             </div>
 
                             <div className="cart_action">
-                                <Link to="/cart">
-                                    <AiOutlineShoppingCart />
-                                    {cartQuantity > 0 && <span className="badge">{cartQuantity}</span>}
-                                </Link>
+                                {/* <Link to={enableCartSpinner ? "" : "/cart"} onClick={() => { */}
+                                <button className="cart_button" onClick={waitThenLoadCart}>
+                                    {!enableCartSpinner && (
+                                        <div className="cart_icon_loader">
+                                            <div className="cart_icon">
+                                                <AiOutlineShoppingCart />
+                                                {cartQuantity > 0 && <span className="badge">{cartQuantity}</span>}
+                                            </div>
+                                        </div>
+                                    )}
+                                    {enableCartSpinner && <PuffLoader color="#a9afc3" size="2rem" cssOverride={{ marginLeft: 5 }} />}
+                                </button>
+                                {/* </Link> */}
                                 <div className="tooltip">Cart</div>
                             </div>
 

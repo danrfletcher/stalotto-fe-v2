@@ -11,9 +11,9 @@ import cartContext from './contexts/cart/cartContext.jsx';
 
 const App = () => {
     const { isFirstLoad, toggleItemsLoaded, isUserDataLoaded, isCartDataLoaded } = useContext(loadingContext);
-    const { setCart, productDataReceived, setProductDataState } = useContext(cartContext);
+    const { setCart, cartSyncedState, setCartSyncedState } = useContext(cartContext);
     const { handleUserLogin } = useUserAccounts();
-    
+
     //silently load data the first time the application mounts & when local storage items change.
     const silentlyUpdateCart = async () => {
         try {
@@ -27,7 +27,7 @@ const App = () => {
         } catch (err) {
             console.error('Error: ', err);
         }
-        setProductDataState(true);
+        setCartSyncedState(true);
     };
 
     useEffect(() => {
@@ -45,8 +45,8 @@ const App = () => {
                 localStorage.removeItem('userToken');
                 localStorage.removeItem('cartId');
             }
-        };   
-        
+        };
+
         const getNewCartIfNone = async () => {
             try {
                 if (!localStorage.userToken && !localStorage.cartId) {
@@ -64,7 +64,6 @@ const App = () => {
         getNewCartIfNone();
 
         toggleItemsLoaded('isUserDataLoaded');
-        
     }, [localStorage.userToken, localStorage.cartId]);
 
     useEffect(() => {
@@ -75,7 +74,7 @@ const App = () => {
 
     useEffect(() => {
         silentlyUpdateCart();
-    }, [productDataReceived]);
+    }, [cartSyncedState]);
 
     return (
         <div className="app_container">

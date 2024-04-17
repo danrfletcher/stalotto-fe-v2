@@ -73,6 +73,11 @@
         }
     }
 
+    .fix_text ~ .input_label {
+        transform: scale(0.85) translateY(-185%);
+    }
+
+
     .login_btn {
         @include margin-y(0.8rem, 0.4rem);
     }
@@ -148,10 +153,10 @@
             display: grid;
             grid-template-columns: repeat(4, 1fr);
             grid-template-rows: repeat(3, 1fr);
-            grid-template-areas: 
-                "checkout_billing    checkout_billing    checkout_contact    checkout_contact"
-                "checkout_billing    checkout_billing    checkout_contact    checkout_contact"
-                "checkout_billing    checkout_billing    checkout_payment    checkout_payment";
+            grid-template-areas: //form grid layout when payment card is hidden (default)
+                "checkout_contact checkout_contact checkout_billing checkout_billing"
+                "checkout_contact checkout_contact checkout_billing checkout_billing"
+                "checkout_contact checkout_contact checkout_billing checkout_billing";
             
             .checkout_contact {
                 grid-area: checkout_contact;
@@ -165,11 +170,36 @@
                 grid-area: checkout_payment;
             }
 
+            .checkout_saved {
+                grid-area: checkout_saved;
+            }
+
             fieldset {
                 width: 100%;
                 margin: 0;
             }
 
+        }
+
+        .logged_in {
+            grid-template-areas: //form grid layout when payment card is hidden (default)
+                "checkout_saved   checkout_saved   checkout_billing checkout_billing"
+                "checkout_contact checkout_contact checkout_billing checkout_billing"
+                "checkout_contact checkout_contact checkout_billing checkout_billing";
+        }
+
+        .ct_payment_visible { //form grid layout when payment card is visible (overrides default grid layout)
+            grid-template-areas: 
+                "checkout_contact checkout_contact checkout_billing checkout_billing"
+                "checkout_contact checkout_contact checkout_billing checkout_billing"
+                "checkout_payment checkout_payment checkout_billing checkout_billing";
+        }
+
+        .ct_payment_visible_logged_in { //form grid layout when payment card is visible (overrides default grid layout)
+            grid-template-areas: 
+                "checkout_saved   checkout_saved   checkout_billing checkout_billing"
+                "checkout_contact checkout_contact checkout_billing checkout_billing"
+                "checkout_payment checkout_payment checkout_billing checkout_billing";
         }
     }
 

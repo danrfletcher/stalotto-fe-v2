@@ -10,8 +10,28 @@ const cartContext = createContext();
 const initialState = {
     cartItems: [],
     cartId: null,
-    productDataReceived: true,
-    recalculatingTotal: false,
+    cartSyncedState: true,
+    cartIsUpdating: false,
+
+    //checkout
+    email: '',
+    country: '',
+    firstName: '',
+    lastName: '',
+    company: '',
+    addressLine1: '',
+    addressLine2: '',
+    region: '',
+    postcode: '',
+    city: '',
+    callingCode: '',
+    phoneNumber: '',
+    optOut: false,
+    saveAddress: false,
+    makeDefaultBilling: false,
+
+    displayCheckout: false,
+    displayPayments: false,
 };
 
 // Cart-Provider Component
@@ -68,18 +88,45 @@ const CartProvider = ({ children }) => {
         });
     };
 
-    const setProductDataState = (bool) => {
+    const setCartSyncedState = (bool) => {
         return dispatch({
             type: 'SET_PDR',
             payload: { bool },
         });
     };
 
-    const flagRecalculateTotal = (bool) => {
+    const flagCartUpdate = (bool) => {
         return dispatch({
-            type: 'FLAG_TOTAL',
+            type: 'CART_PENDING',
             payload: { bool },
         });
+    };
+
+    const toggleDisplayPayments = () => {
+        return dispatch({
+            type: 'DISPLAY_PAYMENTS',
+        });
+    };
+
+    const toggleDisplayCheckout = () => {
+        return dispatch({
+            type: 'DISPLAY_CHECKOUT',
+        });
+    };
+
+    const setCheckoutItem = (keyToSet, value) => {
+        try {
+            if (Object.keys(state).find((key) => key === keyToSet)) {
+                return dispatch({
+                    type: 'SET_CHECKOUT_FIELD',
+                    payload: { keyToSet, value },
+                });
+            } else {
+                throw new Error('The specified checkout field does not exist');
+            }
+        } catch (err) {
+            console.error('Error: ', err);
+        }
     };
 
     // Context values
@@ -92,8 +139,11 @@ const CartProvider = ({ children }) => {
         emptyCart,
         setItemQtd,
         setCart,
-        setProductDataState,
-        flagRecalculateTotal,
+        setCartSyncedState,
+        flagCartUpdate,
+        toggleDisplayPayments,
+        toggleDisplayCheckout,
+        setCheckoutItem,
     };
 
     return <cartContext.Provider value={values}>{children}</cartContext.Provider>;

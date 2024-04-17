@@ -67,6 +67,7 @@
         right: -20px;
         background-color: var(--main-color-2);
         border-radius: 50%;
+        margin-right: 40%;
     }
 }
 
@@ -139,5 +140,15 @@
 
     .logout_text {
         margin-right: 15px;
+    }
+}
+
+.cart_button {
+    display: flex;
+    align-items: baseline;
+    justify-content: center;
+    width: 2rem;
+    @include devices(xs) {
+        width: 1.5rem;
     }
 }
