@@ -34,7 +34,11 @@ const App = () => {
         const silentlyLoginUserIfToken = async () => {
             try {
                 if (localStorage.userToken) {
-                    await handleUserLogin(localStorage.userToken);
+                    const login = await handleUserLogin(localStorage.userToken);
+                    if (!login) {
+                        localStorage.removeItem('userToken');
+                        localStorage.removeItem('cartId');
+                    }
                 }
             } catch (err) {
                 console.error('Error: ', err);
