@@ -2,23 +2,40 @@ import Checkbox from '@mui/material/Checkbox';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import countryCodes from '../../data/countryCodes.json';
 import { useContext, useEffect, useState } from 'react';
-import { NewShippingAddressDto } from '../../models/cart';
 import userContext from '../../contexts/user/userContext';
 import cartContext from '../../contexts/cart/cartContext';
+import useCheckout from '../../hooks/useCheckout';
 
-export const Checkout = () => {
+export const Checkout: React.FC<CheckoutProps> = ({ savedAddresses }) => {
     const { isLoggedIn } = useContext(userContext);
-    const [savedAddresses, setSavedAddresses] = useState([]);
+    const { handleSelectSavedAddress } = useCheckout();
 
     //data validation
-    const { email, callingCode, phoneNumber, country, firstName, lastName, company, addressLine1, addressLine2, region, postcode, city, optOut, saveAddress, setCheckoutItem, makeDefaultBilling } =
-        useContext(cartContext);
+    const {
+        email,
+        callingCode,
+        telephone,
+        country,
+        firstName,
+        lastName,
+        company,
+        addressLine1,
+        addressLine2,
+        region,
+        postcode,
+        city,
+        optOut,
+        saveAddress,
+        setCheckoutItem,
+        defaultBilling,
+        savedAddressIsSelected,
+    } = useContext(cartContext);
 
     //form completion
     const [isFormComplete, setIsFormComplete] = useState(false);
 
     useEffect(() => {
-        if (country !== '' && firstName !== '' && lastName !== '' && addressLine1 !== '' && region !== '' && postcode !== '' && city !== '' && callingCode !== '' && phoneNumber !== '') {
+        if (country !== '' && firstName !== '' && lastName !== '' && addressLine1 !== '' && region !== '' && postcode !== '' && city !== '' && callingCode !== '' && telephone !== '') {
             if (isLoggedIn) {
                 setIsFormComplete(true);
             } else {
@@ -27,24 +44,24 @@ export const Checkout = () => {
                 }
             }
         } else setIsFormComplete(false);
-    }, [email, country, firstName, lastName, addressLine1, postcode, city, callingCode, phoneNumber]);
+    }, [email, country, firstName, lastName, addressLine1, postcode, city, callingCode, telephone]);
 
-    const handleSubmit = () => {
-        if (isFormComplete) {
-            const address = new NewShippingAddressDto({
-                firstName: firstName,
-                lastName: lastName,
-                company: company,
-                street: `${addressLine1}\n${addressLine2}`,
-                city: city,
-                region: region,
-                postcode: postcode,
-                countryCode: country,
-                telephone: `${callingCode}${phoneNumber}`,
-                saveInAddressBook: saveAddress,
-            });
-        }
-    };
+    //will be handle submit function
+    // const handleSubmit = () => {
+    //     if (isFormComplete) {
+    //         const address = new NewShippingAddressDto({
+    //             firstName: firstName,
+    //             lastName: lastName,
+    //             street: `${addressLine1}\n${addressLine2}`,
+    //             city: city,
+    //             region: region,
+    //             postcode: postcode,
+    //             countryCode: country,
+    //             telephone: `${callingCode}${telephone}`,
+    //             defaultBilling: defaultBilling,
+    //         });
+    //     }
+    // }; 
 
     //payments section
     const { displayPayments, toggleDisplayPayments } = useContext(cartContext);
@@ -66,9 +83,15 @@ export const Checkout = () => {
                                     <h2>Saved Details</h2>
                                 </legend>
                                 <div className="input_box">
-                                    <select disabled={disabled} name="saved_addresses" className={`input_field ${savedAddresses.length > 0 ? 'fix_text' : ''}`} value={''} onChange={() => {}}>
+                                    <select disabled={disabled} name="saved_addresses" className={`input_field`} value={''} onChange={(e) => handleSelectSavedAddress(JSON.parse(e.target.value))}>
                                         <option value=""></option>
-                                        <option value="GB">United Kingdom</option>
+                                        {savedAddresses.map((address, i) => {
+                                            return (
+                                                <option value={JSON.stringify(address)} key={i}>{`${address.firstName} ${address.lastName}, ${address.street.join(', ')}, ${address.city}, ${
+                                                    address.region
+                                                }, ${address.postcode}, ${address.countryCode}, ${address.telephone}`}</option>
+                                            );
+                                        })}
                                     </select>
                                     <label className="input_label">Select from Saved</label>
                                 </div>
@@ -95,7 +118,10 @@ export const Checkout = () => {
                                                 className={`input_field ${email.length > 0 ? 'fix_text' : ''}`}
                                                 required
                                                 value={email}
-                                                onChange={(e) => setCheckoutItem('email', e.target.value)}
+                                                onChange={(e) => {
+                                                    setCheckoutItem('email', e.target.value)
+                                                    setCheckoutItem('savedAddressIsSelected', false);
+                                                }}
                                             />
                                             <label className="input_label">Email *</label>
                                         </div>
@@ -109,7 +135,10 @@ export const Checkout = () => {
                                             className={`input_field ${callingCode.length > 0 ? 'fix_text' : ''}`}
                                             required
                                             value={callingCode}
-                                            onChange={(e) => setCheckoutItem('callingCode', e.target.value)}
+                                            onChange={(e) => {
+                                                setCheckoutItem('callingCode', e.target.value)
+                                                setCheckoutItem('savedAddressIsSelected', false);
+                                            }}
                                         >
                                             <option value=""></option>
                                             {countryCodes.map((country, i) => {
@@ -122,11 +151,14 @@ export const Checkout = () => {
                                         <input
                                             disabled={disabled}
                                             type="text"
-                                            name="phoneNumber"
-                                            className={`input_field ${phoneNumber.length > 0 ? 'fix_text' : ''}`}
+                                            name="telephone"
+                                            className={`input_field ${telephone.length > 0 ? 'fix_text' : ''}`}
                                             required
-                                            value={phoneNumber}
-                                            onChange={(e) => setCheckoutItem('phoneNumber', e.target.value)}
+                                            value={telephone}
+                                            onChange={(e) => {
+                                                setCheckoutItem('telephone', e.target.value)
+                                                setCheckoutItem('savedAddressIsSelected', false);
+                                            }}
                                         />
                                         <label className="input_label">Phone Number *</label>
                                     </div>
@@ -134,7 +166,10 @@ export const Checkout = () => {
                                 {!isLoggedIn && (
                                     <FormControlLabel
                                         disabled={disabled}
-                                        control={<Checkbox checked={optOut} onChange={(e) => setCheckoutItem('optOut', !optOut)} sx={{ color: '#5b5b5b', '&.Mui-checked': { color: '#cc0000' } }} />}
+                                        control={<Checkbox checked={optOut} onChange={() => {
+                                            setCheckoutItem('optOut', !optOut)
+                                            setCheckoutItem('savedAddressIsSelected', false);
+                                        }} sx={{ color: '#5b5b5b', '&.Mui-checked': { color: '#cc0000' } }} />}
                                         label="Opt out of marketing emails with news and offers from your favourite creators."
                                     />
                                 )}
@@ -151,10 +186,13 @@ export const Checkout = () => {
                                     className={`input_field country_selector ${country.length > 0 ? 'fix_text' : ''}`}
                                     required
                                     value={country}
-                                    onChange={(e) => setCheckoutItem('country', e.target.value)}
+                                    onChange={(e) => {
+                                        setCheckoutItem('country', e.target.value)
+                                        setCheckoutItem('savedAddressIsSelected', false);
+                                    }}
                                 >
                                     <option value=""></option>
-                                    <option value="GB">United Kingdom</option>
+                                    <option value="United Kingdom">United Kingdom</option>
                                 </select>
                                 <label className="input_label">Country *</label>
                             </div>
@@ -167,7 +205,10 @@ export const Checkout = () => {
                                         className={`input_field ${firstName.length > 0 ? 'fix_text' : ''}`}
                                         required
                                         value={firstName}
-                                        onChange={(e) => setCheckoutItem('firstName', e.target.value)}
+                                        onChange={(e) => {
+                                            setCheckoutItem('firstName', e.target.value)
+                                            setCheckoutItem('savedAddressIsSelected', false);
+                                        }}
                                     />
                                     <label className="input_label">First Name *</label>
                                 </div>
@@ -179,7 +220,10 @@ export const Checkout = () => {
                                         className={`input_field ${lastName.length > 0 ? 'fix_text' : ''}`}
                                         required
                                         value={lastName}
-                                        onChange={(e) => setCheckoutItem('lastName', e.target.value)}
+                                        onChange={(e) => {
+                                            setCheckoutItem('lastName', e.target.value)
+                                            setCheckoutItem('savedAddressIsSelected', false);
+                                        }}
                                     />
                                     <label className="input_label">Last Name *</label>
                                 </div>
@@ -192,7 +236,10 @@ export const Checkout = () => {
                                     className={`input_field ${company.length > 0 ? 'fix_text' : ''}`}
                                     required
                                     value={company}
-                                    onChange={(e) => setCheckoutItem('company', e.target.value)}
+                                    onChange={(e) => {
+                                        setCheckoutItem('company', e.target.value)
+                                        setCheckoutItem('savedAddressIsSelected', false);
+                                    }}
                                 />
                                 <label className="input_label">Company (Optional)</label>
                             </div>
@@ -204,7 +251,10 @@ export const Checkout = () => {
                                     className={`input_field ${addressLine1.length > 0 ? 'fix_text' : ''}`}
                                     required
                                     value={addressLine1}
-                                    onChange={(e) => setCheckoutItem('addressLine1', e.target.value)}
+                                    onChange={(e) => {
+                                        setCheckoutItem('addressLine1', e.target.value)
+                                        setCheckoutItem('savedAddressIsSelected', false);
+                                    }}
                                 />
                                 <label className="input_label">Address Line 1 (House Number & Street) *</label>
                             </div>
@@ -216,7 +266,10 @@ export const Checkout = () => {
                                     className={`input_field ${addressLine2.length > 0 ? 'fix_text' : ''}`}
                                     required
                                     value={addressLine2}
-                                    onChange={(e) => setCheckoutItem('addressLine2', e.target.value)}
+                                    onChange={(e) => {
+                                        setCheckoutItem('addressLine2', e.target.value)
+                                        setCheckoutItem('savedAddressIsSelected', false);
+                                    }}
                                 />
                                 <label className="input_label">Address Line 2 (Optional)</label>
                             </div>
@@ -228,7 +281,10 @@ export const Checkout = () => {
                                     className={`input_field ${city.length > 0 ? 'fix_text' : ''}`}
                                     required
                                     value={city}
-                                    onChange={(e) => setCheckoutItem('city', e.target.value)}
+                                    onChange={(e) => {
+                                        setCheckoutItem('city', e.target.value)
+                                        setCheckoutItem('savedAddressIsSelected', false);
+                                    }}
                                 />
                                 <label className="input_label">City *</label>
                             </div>
@@ -241,7 +297,10 @@ export const Checkout = () => {
                                         className={`input_field ${postcode.length > 0 ? 'fix_text' : ''}`}
                                         required
                                         value={postcode}
-                                        onChange={(e) => setCheckoutItem('postcode', e.target.value)}
+                                        onChange={(e) => {
+                                            setCheckoutItem('postcode', e.target.value)
+                                            setCheckoutItem('savedAddressIsSelected', false);
+                                        }}
                                     />
                                     <label className="input_label">Postcode *</label>
                                 </div>
@@ -253,12 +312,15 @@ export const Checkout = () => {
                                         className={`input_field ${region.length > 0 ? 'fix_text' : ''}`}
                                         required
                                         value={region}
-                                        onChange={(e) => setCheckoutItem('region', e.target.value)}
+                                        onChange={(e) => {
+                                            setCheckoutItem('region', e.target.value)
+                                            setCheckoutItem('savedAddressIsSelected', false);
+                                        }}
                                     />
                                     <label className="input_label">Region *</label>
                                 </div>
                             </div>
-                            {isLoggedIn && (
+                            {isLoggedIn && !savedAddressIsSelected && (
                                 <>
                                     <div>
                                         <FormControlLabel
@@ -266,7 +328,10 @@ export const Checkout = () => {
                                             control={
                                                 <Checkbox
                                                     checked={saveAddress}
-                                                    onChange={(e) => setCheckoutItem('saveAddress', !saveAddress)}
+                                                    onChange={() => {
+                                                        setCheckoutItem('saveAddress', !saveAddress)
+                                                        setCheckoutItem('savedAddressIsSelected', false);
+                                                    }}
                                                     sx={{ color: '#5b5b5b', '&.Mui-checked': { color: '#cc0000' } }}
                                                 />
                                             }
@@ -277,8 +342,11 @@ export const Checkout = () => {
                                                 disabled={disabled}
                                                 control={
                                                     <Checkbox
-                                                        checked={makeDefaultBilling}
-                                                        onChange={(e) => setCheckoutItem('makeDefaultBilling', !makeDefaultBilling)}
+                                                        checked={defaultBilling}
+                                                        onChange={() => {
+                                                            setCheckoutItem('defaultBilling', !defaultBilling)
+                                                            setCheckoutItem('savedAddressIsSelected', false);
+                                                        }}
                                                         sx={{ color: '#5b5b5b', '&.Mui-checked': { color: '#cc0000' } }}
                                                     />
                                                 }

@@ -4,7 +4,7 @@ import useCartUpdater from '../../hooks/useCartUpdater.ts';
 import cartContext from '../../contexts/cart/cartContext.jsx';
 
 const QuantityBox = (props) => {
-    const { itemQuantity, sku, cartItemUid } = props;
+    const { itemQuantity, sku, cartItemUid, disableCartUpdates } = props;
     const { displayCheckout } = useContext(cartContext);
 
     const { addToCart, decrementCart } = useCartUpdater();
@@ -12,11 +12,11 @@ const QuantityBox = (props) => {
     return (
         <>
             <div className="quantity_box">
-                <button disabled={displayCheckout} type="button" onClick={() => decrementCart(cartItemUid)}>
+                <button disabled={disableCartUpdates} type="button" onClick={() => decrementCart(cartItemUid)}>
                     <FaMinus />
                 </button>
                 <span className="quantity_count">{itemQuantity}</span>
-                <button disabled={displayCheckout} type="button" onClick={() => addToCart(sku, 1, true)}>
+                <button disabled={disableCartUpdates} type="button" onClick={() => addToCart(sku, 1, true)}>
                     <FaPlus />
                 </button>
             </div>

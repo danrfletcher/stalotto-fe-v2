@@ -136,3 +136,72 @@ export const getCartTotalQuery = `
             }
     }
 `;
+
+export const saveAddressQuery = `
+    mutation CreateCustomerAddress(
+    $firstName: String!, 
+    $lastName: String!, 
+    $street: [String!]!,
+    $city: String!, 
+    $region: String!, 
+    $postcode: String!, 
+    $countryCode: CountryCodeEnum!, 
+    $telephone: String!, 
+    $defaultBilling: Boolean
+    ) {
+    createCustomerAddress(input: {
+        firstname: $firstName,
+        lastname: $lastName,
+        street: $street
+        city: $city,
+        region: {
+          region: $region,
+        },
+        postcode: $postcode,
+        country_code: $countryCode,
+        telephone: $telephone,
+        default_shipping: $defaultBilling,
+        default_billing: $defaultBilling
+    }) {
+        id
+        firstname
+        lastname
+        street
+        city
+        region {
+        region
+        region_code
+        }
+        postcode
+        country_code
+        telephone
+        default_shipping
+        default_billing
+    }
+    }
+`;
+
+export const getSavedAddressesQuery = `
+    query {
+    customer {
+        firstname
+        lastname
+        addresses {
+        id
+        firstname
+        lastname
+        street
+        city
+        region {
+            region
+            region_code
+        }
+        postcode
+        country_code
+        telephone
+        default_shipping
+        default_billing
+        }
+    }
+    }
+`;

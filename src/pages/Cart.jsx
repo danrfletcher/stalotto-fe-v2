@@ -7,7 +7,7 @@ import EmptyView from '../components/common/EmptyView';
 import { Checkout } from '../components/cart/Checkout.tsx';
 import loadingContext from '../contexts/loading/loadingContext.jsx';
 import { BarLoader, BounceLoader, PropagateLoader, PulseLoader } from 'react-spinners';
-import { getCartTotal } from '../services/cartApi.ts';
+import { getCartTotal, getSavedAddresses } from '../services/cartApi.ts';
 import useCartUpdater from '../hooks/useCartUpdater.ts';
 import { displayMoney } from '../utils/currency.js';
 import userContext from '../contexts/user/userContext.jsx';
@@ -18,7 +18,7 @@ const Cart = () => {
     const { cartItems, cartSyncedState, flagCartUpdate, displayPayments, displayCheckout, toggleDisplayCheckout, setCartSyncedState, cartIsUpdating, toggleDisplayPayments } = useContext(cartContext);
     const { isFirstLoad, toggleIsFirstLoad, isCartDataLoaded } = useContext(loadingContext);
     const { cartQuantity, setCartQuantity, cartTotal, setCartTotal, optimisticallyUpdateTotal } = useCartUpdater();
-    const { loggedIn } = useContext(userContext);
+    const { isLoggedIn } = useContext(userContext);
 
     //load cart data, set cart quantity & display total
     const fetchTotal = async () => {
@@ -57,18 +57,27 @@ const Cart = () => {
 
     //wait before proceeding if cart is updating
     const [loadCheckoutComponent, setLoadCheckoutComponent] = useState(false);
+    const [disableCartUpdates, setDisableCartUpdates] = useState(false);
+    const [customerSavedAddresses, setCustomerSavedAddresses] = useState([]);
 
     const handleProceedToCheckout = async () => {
         if (displayCheckout) {
             toggleDisplayCheckout();
+            setDisableCartUpdates(false);
         } else {
-            setLoadCheckoutComponent(true); 
+            setDisableCartUpdates(true);
             setCartSyncedState(false); //trigger cart updater
+            setLoadCheckoutComponent(true); 
             try {
-                const total = await getCartTotal();
-                setCartTotal(total); //check price
+                const total = await getCartTotal(); //check price
+                setCartTotal(total);
+                
+                if (isLoggedIn) {
+                    const savedAddresses = await getSavedAddresses();
+                    setCustomerSavedAddresses(savedAddresses);
+                }
             } catch (err) {
-                console.error('Error cross-checking cart total', err);
+                console.error('Error: ', err);
             }
         }
     };
@@ -79,6 +88,10 @@ const Cart = () => {
             setLoadCheckoutComponent(false);
         }
     }, [cartSyncedState]);
+
+    useEffect(() => {
+        setLoadCheckoutComponent(false);
+    },[localStorage.userToken])
 
     return isFirstLoad ? (
         <div className="loading-spinner">
@@ -108,6 +121,7 @@ const Cart = () => {
                                         creator={item.product.creator}
                                         sku={item.product.sku}
                                         urlKey={item.product.url_key}
+                                        disableCartUpdates={disableCartUpdates}
                                     />
                                 ))}
                             </div>
@@ -152,7 +166,7 @@ const Cart = () => {
                     )}
                 </div>
             </section>
-            {displayCheckout && <Checkout />}
+            {displayCheckout && <Checkout savedAddresses={customerSavedAddresses} />}
         </>
     );
 };

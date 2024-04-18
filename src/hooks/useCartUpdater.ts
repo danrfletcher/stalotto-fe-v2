@@ -95,7 +95,7 @@ const useCartUpdater = () => {
 
                 try {
                     // Call API to update the cart quantity on the backend
-                    const updatedCartItems = await setNumItemsInCart(cartItemUid, targetItem?.quantity - decrementAmount);
+                    await setNumItemsInCart(cartItemUid, targetItem?.quantity - decrementAmount);
                 } catch (err) {
                     // Revert to original items if API call fails
                     setCart(cartItems);

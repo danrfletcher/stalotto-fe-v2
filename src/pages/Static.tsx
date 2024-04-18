@@ -3,7 +3,7 @@ import { BounceLoader, PulseLoader } from 'react-spinners';
 import loadingContext from '../contexts/loading/loadingContext';
 import { useParams } from 'react-router';
 import { getStaticPage } from '../services/staticPageApi';
-import { StaticPageDataFetchError } from '../data/errors';
+import { StaticPageDataFetchError } from '../models/errors';
 import { StaticPageDataClass } from '../models/staticPages';
 import { Helmet } from 'react-helmet-async';
 

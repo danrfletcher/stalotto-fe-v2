@@ -25,10 +25,12 @@ const initialState = {
     postcode: '',
     city: '',
     callingCode: '',
-    phoneNumber: '',
+    telephone: '',
     optOut: false,
     saveAddress: false,
-    makeDefaultBilling: false,
+    defaultBilling: false,
+
+    savedAddressIsSelected: false,
 
     displayCheckout: false,
     displayPayments: false,
@@ -122,7 +124,7 @@ const CartProvider = ({ children }) => {
                     payload: { keyToSet, value },
                 });
             } else {
-                throw new Error('The specified checkout field does not exist');
+                throw new Error(`The specified checkout field '${keyToSet}' does not exist in this context`);
             }
         } catch (err) {
             console.error('Error: ', err);

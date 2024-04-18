@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import { useEffect, useRef } from 'react';
 import ProgressBar from 'progressbar.js';
 
 export const TicketSoldBar = ({ progress }) => {

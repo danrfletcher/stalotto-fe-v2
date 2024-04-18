@@ -1,11 +1,10 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 
 export const PostComment = ({ buttonType, nestingLevel }) => {
         //State variables
         const [input, setInput] = useState("");
         const [formFocus, setFormFocus] = useState(false);
         const [valid, setValid] = useState(false);
-        const formRef = useRef();
 
         //Form validation regex
         const regex = /^[\S]{1}/i;
@@ -23,7 +22,6 @@ export const PostComment = ({ buttonType, nestingLevel }) => {
     
         //Update state when form is valid/invalid
         useEffect(() => {
-            const uIElement = formRef.current
             if (regex.test(input)) {
                 setValid(true)
             }

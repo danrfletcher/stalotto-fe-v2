@@ -1,5 +1,6 @@
 import axios from 'axios';
-import { addProductToCartQuery, createAnonymousCartQuery, getCartTotalQuery, getCustomerCartFromIdQuery, setQtdCartItemQuery } from './cartQueries';
+import { addProductToCartQuery, createAnonymousCartQuery, getCartTotalQuery, getCustomerCartFromIdQuery, getSavedAddressesQuery, saveAddressQuery, setQtdCartItemQuery } from './cartQueries';
+import { AuthenticationError } from '../models/errors';
 
 const baseURL = import.meta.env.VITE_API_BASE_URL;
 
@@ -158,8 +159,105 @@ export const getCartTotal = async () => {
     }
 };
 
-//save a new billing address to the user's account
-//export const saveNewAddress = async (address: )
+//get user's saved addresses
+export const getSavedAddresses = async (): Promise<FormattedMagentoShippingAddress[] | Error> => {
+    //add authentication credentials (this service function requires authentication)
+    const headers = {};
 
+    try {
+        if (localStorage.userToken) {
+            headers['Authorization'] = `Bearer ${localStorage.userToken}`;
+
+            const savedAddresses = await axios.post(
+                `${baseURL}/graphql`,
+                {
+                    query: getSavedAddressesQuery,
+                },
+                {
+                    headers: headers,
+                }
+            );
+
+            if (savedAddresses.data.data.customer.addresses) {
+                const addressList = savedAddresses.data.data.customer.addresses;
+                return addressList.map((address: RawMagentoShippingAddress): FormattedMagentoShippingAddress => {
+                    const { firstname, lastname, street, city, postcode, country_code, telephone, default_billing } = address;
+                    const region = address.region.region;
+
+                    return {
+                        firstName: firstname,
+                        lastName: lastname,
+                        street: street,
+                        city: city,
+                        region: region,
+                        postcode: postcode,
+                        countryCode: country_code,
+                        telephone: telephone,
+                        defaultBilling: default_billing,
+                    };
+                });
+            } else if (savedAddresses.data.errors[0].message && typeof savedAddresses.data.errors[0].message == 'string') {
+                throw new Error(savedAddresses.data.errors[0].message);
+            } else {
+                throw new Error('Failed to fetch saved addresses');
+            }
+        } else {
+            throw new AuthenticationError();
+        }
+    } catch (err) {
+        throw err;
+    }
+};
+
+//save a new billing address to the user's account
+export const saveCustomerAddress = async (vars: ShippingAddress): Promise<ShippingAddress | Error> => {
+    //add authentication credentials (this service function requires authentication)
+    const headers = {};
+
+    try {
+        if (localStorage.userToken) {
+            headers['Authorization'] = `Bearer ${localStorage.userToken}`;
+
+            const addNewAddress = await axios.post(
+                `${baseURL}/graphql`,
+                {
+                    query: saveAddressQuery,
+                    variables: vars,
+                },
+                {
+                    headers: headers,
+                }
+            );
+
+            if (addNewAddress.data.data.createCustomerAddress) {
+                const address = addNewAddress.data.data.createCustomerAddress;
+                const { firstname, lastname, street, city, postcode, country_code, telephone, default_billing } = address;
+                const region = address.region.region;
+
+                return {
+                    firstName: firstname,
+                    lastName: lastname,
+                    street: street,
+                    city: city,
+                    region: region,
+                    postcode: postcode,
+                    countryCode: country_code,
+                    telephone: telephone,
+                    defaultBilling: default_billing,
+                };
+            } else if (addNewAddress.data.errors[0].message && typeof addNewAddress.data.errors[0].message == 'string') {
+                throw new Error(addNewAddress.data.errors[0].message);
+            } else {
+                throw new Error('Failed to fetch total amount');
+            }
+        } else {
+            throw new AuthenticationError();
+        }
+    } catch (err) {
+        throw err;
+    }
+};
+
+//export const saveNewAddress = async (address: )
 //set shipping address for user's cart
 //export const set

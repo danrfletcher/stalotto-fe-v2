@@ -7,7 +7,7 @@ import useCartUpdater from '../../hooks/useCartUpdater.ts';
 import cartContext from '../../contexts/cart/cartContext.jsx';
 
 const CartItem = (props) => {
-    const { title, finalPrice, originalPrice, quantity, thumbnail, creator, sku, urlKey, cartItemUid } = props;
+    const { title, finalPrice, originalPrice, quantity, thumbnail, creator, sku, urlKey, cartItemUid, disableCartUpdates } = props;
     const { displayCheckout } = useContext(cartContext);
 
     const newPrice = displayMoney(finalPrice);
@@ -31,15 +31,13 @@ const CartItem = (props) => {
                             </Link>
                         </h4>
                         <button
-                            disabled={displayCheckout}
+                            disabled={disableCartUpdates}
                             onClick={async () => {
                                 removeFromCart(cartItemUid);
                             }}
                         >
                             <div className="cart_item_del">
-                                <span
-                                    style={displayCheckout ? { color: '#6c757d' } : {}}
-                                >
+                                <span style={displayCheckout ? { color: '#6c757d' } : {}}>
                                     <TbTrash />
                                 </span>
                                 {!displayCheckout && <div className="tooltip">Remove Item</div>}
@@ -57,7 +55,7 @@ const CartItem = (props) => {
                         )}
                     </h2>
 
-                    <QuantityBox sku={sku} itemQuantity={quantity} cartItemUid={cartItemUid} />
+                    <QuantityBox sku={sku} itemQuantity={quantity} cartItemUid={cartItemUid} disableCartUpdates={disableCartUpdates} />
                 </div>
             </div>
         </>

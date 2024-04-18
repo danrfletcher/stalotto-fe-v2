@@ -13,7 +13,7 @@ export const userInitialState = {
         firstName: null,
         lastName: null,
         email: null
-    }
+    },
 };
 
 // User-Provider Component
