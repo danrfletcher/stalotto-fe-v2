@@ -41,3 +41,19 @@ interface RawMagentoShippingAddress {
 interface CheckoutProps {
     savedAddresses: FormattedMagentoShippingAddress[];
 }
+
+interface HandleFetchDataForPaymentVariables {
+    email: string;
+    firstName: string;
+    lastName: string;
+    company?: string;
+    addressLine1: string;
+    addressLine2: string;
+    city: string;
+    region: string;
+    postcode: string;
+    country: string;
+    callingCode: string;
+    telephone: string;
+    isFormComplete: boolean
+}

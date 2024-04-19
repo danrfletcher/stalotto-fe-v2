@@ -1,11 +1,11 @@
-import Header from './components/common/Header.tsx';
-import RouterRoutes from './routes/RouterRoutes';
-import Footer from './components/common/Footer';
-import BackTop from './components/common/BackTop';
+import Header from './components/common/Header.js';
+import RouterRoutes from './routes/RouterRoutes.jsx';
+import Footer from './components/common/Footer.jsx';
+import BackTop from './components/common/BackTop.jsx';
 import loadingContext from './contexts/loading/loadingContext.jsx';
 import { useContext } from 'react';
 import { useEffect } from 'react';
-import { createAnonymousCart, getCartItems } from './services/cartApi.ts';
+import { createAnonymousCart, getCartItems } from './services/cartApi.js';
 import useUserAccounts from './hooks/useUserAccounts.js';
 import cartContext from './contexts/cart/cartContext.jsx';
 

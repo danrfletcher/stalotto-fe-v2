@@ -144,3 +144,20 @@
 .checkout_btn {
     width: 100%;
 }
+
+.payment_buttons {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 15px;
+
+
+    .payment_btn {
+        max-height: 50px;
+        max-width: 244px;
+    
+        @include devices(lg) {
+            text-align: center;
+        }
+    }
+}

@@ -1,0 +1,41 @@
+mutation SetBillingAddressOnCart(
+    $cartId: String!
+    $firstName: String!
+    $lastName: String!
+    $company: String
+    $street: [String!]!
+    $city: String!
+    $region: String!
+    $postcode: String!
+    $countryCode: String!
+    $telephone: String!
+) {
+    setBillingAddressOnCart(
+        input: {
+            cart_id: $cartId
+            billing_address: {
+                address: { firstname: $firstName, lastname: $lastName, company: $company, street: $street, city: $city, region: $region, postcode: $postcode, country_code: $countryCode, telephone: $telephone }
+            }
+        }
+    ) {
+        cart {
+            billing_address {
+                firstname
+                lastname
+                company
+                street
+                city
+                region {
+                    code
+                    label
+                }
+                postcode
+                telephone
+                country {
+                    code
+                    label
+                }
+            }
+        }
+    }
+}

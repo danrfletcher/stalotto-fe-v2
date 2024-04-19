@@ -3,13 +3,20 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@apollo/client": "^3.9.11",
+    "@apollo/react-hooks": "^4.0.0",
     "@emotion/react": "^11.11.4",
     "@emotion/styled": "^11.11.5",
+    "@graphql-codegen/typescript-react-apollo": "^4.3.0",
+    "@graphql-typed-document-node/core": "^3.2.0",
     "@mui/material": "^5.15.15",
+    "@parcel/watcher": "^2.4.1",
     "@testing-library/user-event": "^13.5.0",
     "@vitejs/plugin-react": "^4.2.1",
     "axios": "^1.6.7",
     "debug": "^4.3.4",
+    "graphql": "^16.8.1",
+    "graphql-tag": "^2.12.6",
     "progressbar.js": "^1.1.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
@@ -30,7 +37,9 @@
     "build": "vite build",
     "test": "jest",
     "eject": "vite eject",
-    "serve": "vite preview"
+    "serve": "vite preview",
+    "codegen": "graphql-codegen --config codegen.ts",
+    "cg-watch": "graphql-codegen -w"
   },
   "eslintConfig": {
     "extends": [
@@ -58,8 +67,13 @@
   "devDependencies": {
     "@babel/preset-env": "^7.23.9",
     "@babel/preset-react": "^7.23.3",
+    "@graphql-codegen/cli": "5.0.2",
+    "@graphql-codegen/client-preset": "4.2.5",
+    "@graphql-codegen/introspection": "4.0.3",
+    "@rollup/plugin-graphql": "^2.0.4",
     "@testing-library/jest-dom": "^5.17.0",
     "@testing-library/react": "^13.4.0",
+    "@types/graphql": "^14.5.0",
     "@types/jest": "^29.5.12",
     "@types/mocha": "^10.0.6",
     "@types/react": "^18.2.55",

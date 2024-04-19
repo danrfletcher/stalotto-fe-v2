@@ -1,6 +1,28 @@
 import axios from 'axios';
-import { addProductToCartQuery, createAnonymousCartQuery, getCartTotalQuery, getCustomerCartFromIdQuery, getSavedAddressesQuery, saveAddressQuery, setQtdCartItemQuery } from './cartQueries';
+import {
+    addProductToCartQuery,
+    createAnonymousCartQuery,
+    getCartTotalQuery,
+    getCustomerCartFromIdQuery,
+    getSavedAddressesQuery,
+    saveAddressQuery,
+    setQtdCartItemQuery,
+} from './cartQueries';
 import { AuthenticationError } from '../models/errors';
+import { useMutation, useLazyQuery } from '@apollo/client';
+
+import SetBillingAddressOnCartGql from '../graphql/SetBillingAddressOnCart.gql';
+import SetGuestEmailOnCartGql from '../graphql/SetGuestEmailOnCart.gql';
+import GetPaymentMethodsOnCartGql from '../graphql/GetPaymentMethodsOnCart.gql';
+
+import {
+    GetPaymentMethodsOnCartQuery,
+    GetPaymentMethodsOnCartQueryVariables,
+    SetBillingAddressOnCartMutation,
+    SetBillingAddressOnCartMutationVariables,
+    SetGuestEmailOnCartMutation,
+    SetGuestEmailOnCartMutationVariables,
+} from '../__generated__/graphql';
 
 const baseURL = import.meta.env.VITE_API_BASE_URL;
 
@@ -32,12 +54,15 @@ export const getCartItems = async () => {
             },
             {
                 headers: headers,
-            }
+            },
         );
 
         if (itemsInCart.data.data.cart.items) {
             return itemsInCart.data.data.cart.items;
-        } else if (itemsInCart.data.errors[0].message && typeof itemsInCart.data.errors[0].message == 'string') {
+        } else if (
+            itemsInCart.data.errors[0].message &&
+            typeof itemsInCart.data.errors[0].message == 'string'
+        ) {
             throw new Error(itemsInCart.data.errors[0].message);
         } else {
             throw new Error('Failed to get cart items');
@@ -48,7 +73,7 @@ export const getCartItems = async () => {
 };
 
 //create anonymous cart
-export const createAnonymousCart = async (): Promise<string | Error> => {
+export const createAnonymousCart = async () => {
     try {
         const response = await axios.post(`${baseURL}/graphql`, {
             query: createAnonymousCartQuery,
@@ -80,12 +105,15 @@ export const setNumItemsInCart = async (cartItemUid: string, qtd: number) => {
             },
             {
                 headers: headers,
-            }
+            },
         );
 
         if (newItemsInCart.data.data.updateCartItems.cart.items) {
             return newItemsInCart.data.data.updateCartItems.cart.items;
-        } else if (newItemsInCart.data.errors[0].message && typeof newItemsInCart.data.errors[0].message == 'string') {
+        } else if (
+            newItemsInCart.data.errors[0].message &&
+            typeof newItemsInCart.data.errors[0].message == 'string'
+        ) {
             throw new Error(newItemsInCart.data.errors[0].message);
         } else {
             throw new Error('Failed to update cart items');
@@ -96,7 +124,7 @@ export const setNumItemsInCart = async (cartItemUid: string, qtd: number) => {
 };
 
 //add items to the cart
-export const addProductToCart = async (sku: string, qtd: number): Promise<CartItem[] | Error> => {
+export const addProductToCart = async (sku: string, qtd: number) => {
     //add authentication credentials for logged in users
     const headers = {};
     if (localStorage.userToken) {
@@ -111,12 +139,15 @@ export const addProductToCart = async (sku: string, qtd: number): Promise<CartIt
             },
             {
                 headers: headers,
-            }
+            },
         );
 
         if (updatedCart.data.data.addProductsToCart.cart.items) {
             return updatedCart.data.data.addProductsToCart.cart.items;
-        } else if (updatedCart.data.errors[0].message && typeof updatedCart.data.errors[0].message == 'string') {
+        } else if (
+            updatedCart.data.errors[0].message &&
+            typeof updatedCart.data.errors[0].message == 'string'
+        ) {
             throw new Error(updatedCart.data.errors[0].message);
         } else {
             throw new Error('Failed to update cart items');
@@ -145,11 +176,14 @@ export const getCartTotal = async () => {
             },
             {
                 headers: headers,
-            }
+            },
         );
         if (grandTotal.data.data.cart.prices.grand_total) {
             return grandTotal.data.data.cart.prices.grand_total;
-        } else if (grandTotal.data.errors[0].message && typeof grandTotal.data.errors[0].message == 'string') {
+        } else if (
+            grandTotal.data.errors[0].message &&
+            typeof grandTotal.data.errors[0].message == 'string'
+        ) {
             throw new Error(grandTotal.data.errors[0].message);
         } else {
             throw new Error('Failed to fetch total amount');
@@ -160,7 +194,7 @@ export const getCartTotal = async () => {
 };
 
 //get user's saved addresses
-export const getSavedAddresses = async (): Promise<FormattedMagentoShippingAddress[] | Error> => {
+export const getSavedAddresses = async () => {
     //add authentication credentials (this service function requires authentication)
     const headers = {};
 
@@ -175,13 +209,22 @@ export const getSavedAddresses = async (): Promise<FormattedMagentoShippingAddre
                 },
                 {
                     headers: headers,
-                }
+                },
             );
 
             if (savedAddresses.data.data.customer.addresses) {
                 const addressList = savedAddresses.data.data.customer.addresses;
-                return addressList.map((address: RawMagentoShippingAddress): FormattedMagentoShippingAddress => {
-                    const { firstname, lastname, street, city, postcode, country_code, telephone, default_billing } = address;
+                return addressList.map((address: RawMagentoShippingAddress) => {
+                    const {
+                        firstname,
+                        lastname,
+                        street,
+                        city,
+                        postcode,
+                        country_code,
+                        telephone,
+                        default_billing,
+                    } = address;
                     const region = address.region.region;
 
                     return {
@@ -196,7 +239,10 @@ export const getSavedAddresses = async (): Promise<FormattedMagentoShippingAddre
                         defaultBilling: default_billing,
                     };
                 });
-            } else if (savedAddresses.data.errors[0].message && typeof savedAddresses.data.errors[0].message == 'string') {
+            } else if (
+                savedAddresses.data.errors[0].message &&
+                typeof savedAddresses.data.errors[0].message == 'string'
+            ) {
                 throw new Error(savedAddresses.data.errors[0].message);
             } else {
                 throw new Error('Failed to fetch saved addresses');
@@ -210,7 +256,9 @@ export const getSavedAddresses = async (): Promise<FormattedMagentoShippingAddre
 };
 
 //save a new billing address to the user's account
-export const saveCustomerAddress = async (vars: ShippingAddress): Promise<ShippingAddress | Error> => {
+export const saveCustomerAddress = async (
+    vars: FormattedMagentoShippingAddress,
+) => {
     //add authentication credentials (this service function requires authentication)
     const headers = {};
 
@@ -226,12 +274,21 @@ export const saveCustomerAddress = async (vars: ShippingAddress): Promise<Shippi
                 },
                 {
                     headers: headers,
-                }
+                },
             );
 
             if (addNewAddress.data.data.createCustomerAddress) {
                 const address = addNewAddress.data.data.createCustomerAddress;
-                const { firstname, lastname, street, city, postcode, country_code, telephone, default_billing } = address;
+                const {
+                    firstname,
+                    lastname,
+                    street,
+                    city,
+                    postcode,
+                    country_code,
+                    telephone,
+                    default_billing,
+                } = address;
                 const region = address.region.region;
 
                 return {
@@ -245,7 +302,10 @@ export const saveCustomerAddress = async (vars: ShippingAddress): Promise<Shippi
                     telephone: telephone,
                     defaultBilling: default_billing,
                 };
-            } else if (addNewAddress.data.errors[0].message && typeof addNewAddress.data.errors[0].message == 'string') {
+            } else if (
+                addNewAddress.data.errors[0].message &&
+                typeof addNewAddress.data.errors[0].message == 'string'
+            ) {
                 throw new Error(addNewAddress.data.errors[0].message);
             } else {
                 throw new Error('Failed to fetch total amount');
@@ -258,6 +318,87 @@ export const saveCustomerAddress = async (vars: ShippingAddress): Promise<Shippi
     }
 };
 
-//export const saveNewAddress = async (address: )
-//set shipping address for user's cart
-//export const set
+//Apollo GraphQL Api hook & functions
+export const useCartApi = () => {
+    //setBillingAddress
+    const [setBillingAddress, setBillingAddressStates] = useMutation<
+        SetBillingAddressOnCartMutation,
+        SetBillingAddressOnCartMutationVariables
+    >(SetBillingAddressOnCartGql);
+    const setBillingAddressData = setBillingAddressStates.data;
+    const setBillingAddressIsLoading = setBillingAddressStates.loading;
+    const setBillingAddressError = setBillingAddressStates.error;
+
+    const handleSetBillingAddress = async (
+        variables: SetBillingAddressOnCartMutationVariables,
+    ) => {
+        try {
+            const result = await setBillingAddress({ variables });
+            return result;
+        } catch (e) {
+            throw e;
+        }
+    };
+
+    //setGuestEmailOnCart
+    const [setGuestEmail, setGuestEmailStates] = useMutation<
+        SetGuestEmailOnCartMutation,
+        SetGuestEmailOnCartMutationVariables
+    >(SetGuestEmailOnCartGql);
+    const setGuestEmailData = setGuestEmailStates.data;
+    const setGuestEmailIsLoading = setGuestEmailStates.loading;
+    const setGuestEmailError = setGuestEmailStates.error;
+
+    const handleSetGuestEmailOnCart = async (
+        variables: SetGuestEmailOnCartMutationVariables,
+    ) => {
+        try {
+            const result = await setGuestEmail({ variables });
+            return result;
+        } catch (e) {
+            throw e;
+        }
+    };
+
+    //getPaymentMethodsOnCart
+    const [getPaymentMethodsOnCart, getPaymentMethodsOnCartStates] =
+        useLazyQuery<
+            GetPaymentMethodsOnCartQuery,
+            GetPaymentMethodsOnCartQueryVariables
+        >(GetPaymentMethodsOnCartGql);
+    const getPaymentMethodsOnCartData = getPaymentMethodsOnCartStates.data;
+    const getPaymentMethodsOnCartIsLoading =
+        getPaymentMethodsOnCartStates.loading;
+    const getPaymentMethodsOnCartError = getPaymentMethodsOnCartStates.error;
+
+    const handleGetPaymentMethodsOnCart = async (
+        variables: GetPaymentMethodsOnCartQueryVariables,
+    ) => {
+        try {
+            const result = await getPaymentMethodsOnCart({ variables });
+            return result;
+        } catch (e) {
+            throw e;
+        }
+    };
+
+    return {
+        //setBillingAddress
+        handleSetBillingAddress,
+        setBillingAddressData,
+        setBillingAddressIsLoading,
+        setBillingAddressError,
+
+        //setGuestEmailOnCart
+        handleSetGuestEmailOnCart,
+        setGuestEmailData,
+        setGuestEmailIsLoading,
+        setGuestEmailError,
+
+        //getPaymentMethodsOnCart
+        handleGetPaymentMethodsOnCart,
+        getPaymentMethodsOnCartData,
+        getPaymentMethodsOnCartIsLoading,
+        getPaymentMethodsOnCartError,
+    };
+};
