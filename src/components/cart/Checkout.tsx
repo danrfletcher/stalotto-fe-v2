@@ -66,6 +66,8 @@ export const Checkout: React.FC<CheckoutProps> = ({ savedAddresses }) => {
         callingCode: callingCode,
         telephone: telephone,
         isFormComplete: isFormComplete,
+        saveAddress: saveAddress,
+        defaultBilling: defaultBilling,
     });
 
     // Effects

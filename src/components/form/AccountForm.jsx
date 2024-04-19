@@ -5,7 +5,7 @@ import useUserAccounts from '../../hooks/useUserAccounts';
 import useOutsideClose from '../../hooks/useOutsideClose';
 import useScrollDisable from '../../hooks/useScrollDisable';
 import userContext from '../../contexts/user/userContext.jsx';
-import { HashLoader } from 'react-spinners';
+import { ScaleLoader } from 'react-spinners';
 
 const AccountForm = () => {
 
@@ -82,7 +82,7 @@ const AccountForm = () => {
                                         </>
                                     ) : loginWorkflowState === "Pending" ? (
                                         <div className="login_loader">
-                                            <HashLoader color="#a9afc3" />
+                                            <ScaleLoader color="#a9afc3" />
                                         </div>
                                     ) : loginWorkflowState === "AccountCreated" ? <p>{`Account created successfully. To login, please check your emails to activate your account.`}</p>
                                     : loginWorkflowState === "LoggedIn" ? <p>{`Welcome, ${user.email}, you have been logged in successfully.`}</p> : "Something went wrong. Please try again."

@@ -4,6 +4,10 @@ import countryCodes from '../../data/countryCodes.json';
 import { useCartApi } from '../../services/cartApi';
 import cartContext from '../../contexts/cart/cartContext';
 import userContext from '../../contexts/user/userContext';
+import {
+    CreateCustomerAddressMutationVariables,
+    SetBillingAddressOnCartMutationVariables,
+} from '../../__generated__/graphql';
 
 const useHandleFetchDataForPayment = ({
     email,
@@ -19,6 +23,8 @@ const useHandleFetchDataForPayment = ({
     callingCode,
     telephone,
     isFormComplete,
+    saveAddress,
+    defaultBilling,
 }: HandleFetchDataForPaymentVariables) => {
     // Local State Variables
     const { cartId } = localStorage;
@@ -47,10 +53,14 @@ const useHandleFetchDataForPayment = ({
         getPaymentMethodsOnCartData,
         getPaymentMethodsOnCartIsLoading,
         getPaymentMethodsOnCartError,
+
+        handleSaveCustomerAddress,
+        saveCustomerAddressData,
+        saveCustomerAddressIsLoading,
+        saveCustomerAddressError,
     } = useCartApi();
 
     // Effects
-
     useEffect(() => {
         if (
             setBillingAddressData &&
@@ -58,22 +68,24 @@ const useHandleFetchDataForPayment = ({
             ((setGuestEmailData && !isLoggedIn) || isLoggedIn) &&
             !displayPayments
         ) {
-            toggleDisplayPayments()
+            toggleDisplayPayments();
         }
     }, [setBillingAddressData, setGuestEmailData, getPaymentMethodsOnCartData]);
 
     useEffect(() => {
         return () => {
             setFinalGuestEmailCheck(false);
-        }
-    })
+        };
+    });
 
     const handleFetchDataForPayment = useCallback(
         async (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
-            setFetchInProgress(true);
-            e.preventDefault();
+            e.preventDefault(); //prevent page reload
+
             if (isFormComplete && !displayPayments) {
                 try {
+                    setFetchInProgress(true); //trigger loading state for proceed to payment button
+
                     //set guest email for anonymous users
                     if (!isLoggedIn) {
                         setFinalGuestEmailCheck(true);
@@ -83,35 +95,52 @@ const useHandleFetchDataForPayment = ({
                         });
                     }
 
+                    //define variables for billing address
+                    const billingAddress: SetBillingAddressOnCartMutationVariables =
+                        {
+                            cartId: cartId,
+                            firstName: firstName,
+                            lastName: lastName,
+                            company: company ? company : null,
+                            street: (() => {
+                                const streetItems = [addressLine1];
+                                if (addressLine2.length) {
+                                    streetItems.push(addressLine2);
+                                }
+                                return streetItems;
+                            })(),
+                            city: city,
+                            region: region,
+                            postcode: postcode,
+                            countryCode: (() => {
+                                const countryRecord = countryCodes.find(
+                                    listedCountry =>
+                                        listedCountry.name === country,
+                                );
+                                return countryRecord?.code || 'GB';
+                            })(),
+                            telephone: `${callingCode}~${telephone}`,
+                        };
+
                     //set billing address on cart
-                    await handleSetBillingAddress({
-                        cartId: cartId,
-                        firstName: firstName,
-                        lastName: lastName,
-                        company: company ? company : null,
-                        street: (() => {
-                            const streetItems = [addressLine1];
-                            if (addressLine2.length) {
-                                streetItems.push(addressLine2);
-                            }
-                            return streetItems;
-                        })(),
-                        city: city,
-                        region: region,
-                        postcode: postcode,
-                        countryCode: (() => {
-                            const countryRecord = countryCodes.find(
-                                listedCountry => listedCountry.name === country,
-                            );
-                            return countryRecord?.code || 'GB';
-                        })(),
-                        telephone: `${callingCode}~${telephone}`,
-                    });
+                    await handleSetBillingAddress(billingAddress);
 
                     //get payment methods on cart
                     await handleGetPaymentMethodsOnCart({
                         cartId: cartId,
                     });
+
+                    setFetchInProgress(false); //allow loading state for checkout button to end
+
+                    //if customer saved address, set it silently in the background
+                    if (saveAddress) {
+                        const addressToSave: CreateCustomerAddressMutationVariables =
+                            {
+                                ...(billingAddress as CreateCustomerAddressMutationVariables),
+                                defaultBilling: defaultBilling,
+                            };
+                        handleSaveCustomerAddress(addressToSave);
+                    }
                 } catch (err) {
                     console.error('Error: ', err);
                 }
@@ -122,7 +151,6 @@ const useHandleFetchDataForPayment = ({
                     'Error: Cannot proceed to payment unless payment card is hidden & form is completed.',
                 );
             }
-            setFetchInProgress(false);
         },
         [
             isLoggedIn,

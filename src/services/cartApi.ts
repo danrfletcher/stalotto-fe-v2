@@ -14,8 +14,11 @@ import { useMutation, useLazyQuery } from '@apollo/client';
 import SetBillingAddressOnCartGql from '../graphql/SetBillingAddressOnCart.gql';
 import SetGuestEmailOnCartGql from '../graphql/SetGuestEmailOnCart.gql';
 import GetPaymentMethodsOnCartGql from '../graphql/GetPaymentMethodsOnCart.gql';
+import CreateCustomerAddressGql from '../graphql/CreateCustomerAddress.gql';
 
 import {
+    CreateCustomerAddressMutation,
+    CreateCustomerAddressMutationVariables,
     GetPaymentMethodsOnCartQuery,
     GetPaymentMethodsOnCartQueryVariables,
     SetBillingAddressOnCartMutation,
@@ -325,6 +328,7 @@ export const useCartApi = () => {
         SetBillingAddressOnCartMutation,
         SetBillingAddressOnCartMutationVariables
     >(SetBillingAddressOnCartGql);
+
     const setBillingAddressData = setBillingAddressStates.data;
     const setBillingAddressIsLoading = setBillingAddressStates.loading;
     const setBillingAddressError = setBillingAddressStates.error;
@@ -345,6 +349,7 @@ export const useCartApi = () => {
         SetGuestEmailOnCartMutation,
         SetGuestEmailOnCartMutationVariables
     >(SetGuestEmailOnCartGql);
+
     const setGuestEmailData = setGuestEmailStates.data;
     const setGuestEmailIsLoading = setGuestEmailStates.loading;
     const setGuestEmailError = setGuestEmailStates.error;
@@ -366,6 +371,7 @@ export const useCartApi = () => {
             GetPaymentMethodsOnCartQuery,
             GetPaymentMethodsOnCartQueryVariables
         >(GetPaymentMethodsOnCartGql);
+
     const getPaymentMethodsOnCartData = getPaymentMethodsOnCartStates.data;
     const getPaymentMethodsOnCartIsLoading =
         getPaymentMethodsOnCartStates.loading;
@@ -376,6 +382,27 @@ export const useCartApi = () => {
     ) => {
         try {
             const result = await getPaymentMethodsOnCart({ variables });
+            return result;
+        } catch (e) {
+            throw e;
+        }
+    };
+
+    //saveCustomerAddress
+    const [saveCustomerAddress, saveCustomerAddressStates] = useMutation<
+        CreateCustomerAddressMutation,
+        CreateCustomerAddressMutationVariables
+    >(CreateCustomerAddressGql);
+
+    const saveCustomerAddressData = saveCustomerAddressStates.data;
+    const saveCustomerAddressIsLoading = saveCustomerAddressStates.loading;
+    const saveCustomerAddressError = saveCustomerAddressStates.error;
+
+    const handleSaveCustomerAddress = async (
+        variables: CreateCustomerAddressMutationVariables,
+    ) => {
+        try {
+            const result = await saveCustomerAddress({ variables });
             return result;
         } catch (e) {
             throw e;
@@ -400,5 +427,11 @@ export const useCartApi = () => {
         getPaymentMethodsOnCartData,
         getPaymentMethodsOnCartIsLoading,
         getPaymentMethodsOnCartError,
+
+        //saveCustomerAddress
+        handleSaveCustomerAddress,
+        saveCustomerAddressData,
+        saveCustomerAddressIsLoading,
+        saveCustomerAddressError,
     };
 };

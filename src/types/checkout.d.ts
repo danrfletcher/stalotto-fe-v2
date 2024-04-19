@@ -55,5 +55,7 @@ interface HandleFetchDataForPaymentVariables {
     country: string;
     callingCode: string;
     telephone: string;
-    isFormComplete: boolean
+    isFormComplete: boolean;
+    saveAddress: boolean;
+    defaultBilling: boolean;
 }
