@@ -1,5 +1,5 @@
 import { GetPaymentMethodsOnCartQuery } from '../../__generated__/graphql';
-import paymentProviderButtons from '../../data/paymentProviderButtons.json';
+import paymentProviderButtons from '../../data/paymentProviderButtons';
 
 interface PaymentProps {
     paymentOptionData: GetPaymentMethodsOnCartQuery;
@@ -17,20 +17,7 @@ export const Payments: React.FC<PaymentProps> = ({ paymentOptionData }) => {
                     const button = paymentProviderButtons.find(
                         button => button.code === provider?.code,
                     );
-                    return (
-                        <button
-                            className="btn payment_btn"
-                            style={{
-                                backgroundColor: button?.buttonBackgroundColor,
-                            }}
-                        >
-                            <img
-                                src={button?.thumbnailSrc}
-                                alt={button?.altText}
-                                style={{ scale: '80%' }}
-                            />
-                        </button>
-                    );
+                    return button?.component
                 })}
             </div>
         </>
