@@ -8,10 +8,11 @@ import { useEffect } from 'react';
 import { createAnonymousCart, getCartItems } from './services/cartApi.js';
 import useUserAccounts from './hooks/useUserAccounts.js';
 import cartContext from './contexts/cart/cartContext.jsx';
+import { useLocation } from 'react-router';
 
 const App = () => {
     const { isFirstLoad, toggleItemsLoaded, isUserDataLoaded, isCartDataLoaded } = useContext(loadingContext);
-    const { setCart, cartSyncedState, setCartSyncedState } = useContext(cartContext);
+    const { setCart, cartSyncedState, setCartSyncedState, displayCheckout, displayPayments, toggleDisplayCheckout, toggleDisplayPayments } = useContext(cartContext);
     const { handleUserLogin } = useUserAccounts();
 
     //silently load data the first time the application mounts & when local storage items change.
@@ -75,6 +76,12 @@ const App = () => {
     useEffect(() => {
         silentlyUpdateCart();
     }, [cartSyncedState]);
+
+    const location = useLocation();
+    useEffect(() => {
+        if (displayCheckout) toggleDisplayCheckout();
+        if (displayPayments) toggleDisplayPayments();
+    },[location])
 
     return (
         <div className="app_container">
