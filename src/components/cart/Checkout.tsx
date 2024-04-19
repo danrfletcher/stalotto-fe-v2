@@ -4,10 +4,11 @@ import countryCodes from '../../data/countryCodes.json';
 import { useContext, useEffect, useState } from 'react';
 import userContext from '../../contexts/user/userContext';
 import cartContext from '../../contexts/cart/cartContext';
-import useHandleSavedCustomerAddresses from '../../hooks/checkout/useHandleSavedCustomerAddresses';
+import useHandleSavedCustomerAddresses from './SavedAddressSelector';
 import useHandleFetchDataForPayment from '../../hooks/checkout/useHandleProceedToPayment';
 import { BarLoader } from 'react-spinners';
 import { Payments } from './Payments';
+import SavedAddressSelector from './SavedAddressSelector';
 
 export const Checkout: React.FC<CheckoutProps> = ({ savedAddresses }) => {
     // State Variables
@@ -143,39 +144,7 @@ export const Checkout: React.FC<CheckoutProps> = ({ savedAddresses }) => {
                                     <h2>Saved Details</h2>
                                 </legend>
                                 <div className="input_box">
-                                    <select
-                                        disabled={disabled}
-                                        name="saved_addresses"
-                                        className={`input_field`}
-                                        value={''}
-                                        onChange={e =>
-                                            handleSelectSavedAddress(
-                                                JSON.parse(e.target.value),
-                                            )
-                                        }
-                                    >
-                                        <option value=""></option>
-                                        {savedAddresses.map((address, i) => {
-                                            return (
-                                                <option
-                                                    value={JSON.stringify(
-                                                        address,
-                                                    )}
-                                                    key={i}
-                                                >{`${address.firstName} ${
-                                                    address.lastName
-                                                }, ${address.street.join(
-                                                    ', ',
-                                                )}, ${address.city}, ${
-                                                    address.region
-                                                }, ${address.postcode}, ${
-                                                    address.countryCode
-                                                }, ${
-                                                    address.telephone
-                                                }`}</option>
-                                            );
-                                        })}
-                                    </select>
+                                    <SavedAddressSelector disable={disabled ? true : false}/>
                                     <label className="input_label">
                                         Select from Saved
                                     </label>

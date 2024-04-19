@@ -21,11 +21,13 @@ export class ShippingAddressDto implements ShippingAddress {
 export class FormattedMagentoShippingAddressDto extends ShippingAddressDto implements FormattedMagentoShippingAddress {
     street: string[];
     countryCode: string;
+    company: string | null;
 
     constructor(data: FormattedMagentoShippingAddress) {
         super(data);
         this.street = data.street;
         this.countryCode = data.countryCode;
+        this.company = data.company
     }
 }
 

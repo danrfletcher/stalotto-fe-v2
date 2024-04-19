@@ -11,6 +11,7 @@ type ShippingAddress = {
 interface FormattedMagentoShippingAddress extends ShippingAddress {
     street: string[];
     countryCode: string;
+    company: string | null;
 }
 
 interface ShippingAddressFormEntry extends ShippingAddress {

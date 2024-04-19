@@ -15,12 +15,15 @@ import SetBillingAddressOnCartGql from '../graphql/SetBillingAddressOnCart.gql';
 import SetGuestEmailOnCartGql from '../graphql/SetGuestEmailOnCart.gql';
 import GetPaymentMethodsOnCartGql from '../graphql/GetPaymentMethodsOnCart.gql';
 import CreateCustomerAddressGql from '../graphql/CreateCustomerAddress.gql';
+import GetSavedCustomerAddresses from '../graphql/GetSavedCustomerAddresses.gql';
 
 import {
     CreateCustomerAddressMutation,
     CreateCustomerAddressMutationVariables,
     GetPaymentMethodsOnCartQuery,
     GetPaymentMethodsOnCartQueryVariables,
+    GetSavedCustomerAddressesQuery,
+    GetSavedCustomerAddressesQueryVariables,
     SetBillingAddressOnCartMutation,
     SetBillingAddressOnCartMutationVariables,
     SetGuestEmailOnCartMutation,
@@ -388,6 +391,27 @@ export const useCartApi = () => {
         }
     };
 
+    //getSavedCustomerAddresses
+    const [getSavedCustomerAddresses, getSavedCustomerAddressesStates] =
+        useLazyQuery<
+            GetSavedCustomerAddressesQuery
+        >(GetSavedCustomerAddresses);
+
+    const getSavedCustomerAddressesData = getSavedCustomerAddressesStates.data;
+    const getSavedCustomerAddressesIsLoading =
+        getSavedCustomerAddressesStates.loading;
+    const getSavedCustomerAddressesError =
+        getSavedCustomerAddressesStates.error;
+
+    const handleGetSavedCustomerAddresses = async () => {
+        try {
+            const result = await getSavedCustomerAddresses();
+            return result;
+        } catch (e) {
+            throw e;
+        }
+    };
+
     //saveCustomerAddress
     const [saveCustomerAddress, saveCustomerAddressStates] = useMutation<
         CreateCustomerAddressMutation,
@@ -433,5 +457,11 @@ export const useCartApi = () => {
         saveCustomerAddressData,
         saveCustomerAddressIsLoading,
         saveCustomerAddressError,
+
+        //getSavedCustomerAddresses
+        handleGetSavedCustomerAddresses,
+        getSavedCustomerAddressesData,
+        getSavedCustomerAddressesIsLoading,
+        getSavedCustomerAddressesError,
     };
 };

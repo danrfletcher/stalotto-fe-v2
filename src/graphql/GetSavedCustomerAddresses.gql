@@ -1,0 +1,23 @@
+query GetSavedCustomerAddresses {
+    customer {
+        firstname
+        lastname
+        addresses {
+            id
+            firstname
+            lastname
+            company
+            street
+            city
+            region {
+                region
+                region_code
+            }
+            postcode
+            country_code
+            telephone
+            default_shipping
+            default_billing
+        }
+    }
+}
