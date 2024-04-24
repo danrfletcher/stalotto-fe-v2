@@ -1,5 +1,0 @@
-mutation InitiateBoodilPayment($cartId: String!) {
-    initiateBoodilPayment(input: { cartId: $cartId }) {
-        uuid
-    }
-}

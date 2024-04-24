@@ -1,26 +1,26 @@
 import { useMutation } from '@apollo/client';
-import initiateBoodilPaymentGql from '../graphql/InitiateBoodilPayment.gql';
+import createBoodilTransactionGql from '../graphql/createBoodilTransaction.gql';
 import {
-    InitiateBoodilPaymentMutation,
-    InitiateBoodilPaymentMutationVariables,
+    CreateBoodilTransactionMutation,
+    CreateBoodilTransactionMutationVariables,
 } from '../__generated__/graphql';
 
 export const useCheckoutApi = () => {
-    //initiateBoodilPayment
-    const [initiateBoodilPayment, initiateBoodilPaymentStates] = useMutation<
-        InitiateBoodilPaymentMutation,
-        InitiateBoodilPaymentMutationVariables
-    >(initiateBoodilPaymentGql);
+    //createBoodilTransaction
+    const [createBoodilTransaction, createBoodilTransactionStates] = useMutation<
+        CreateBoodilTransactionMutation,
+        CreateBoodilTransactionMutationVariables
+    >(createBoodilTransactionGql);
 
-    const initiateBoodilPaymentData = initiateBoodilPaymentStates.data;
-    const initiateBoodilPaymentIsLoading = initiateBoodilPaymentStates.loading;
-    const initiateBoodilPaymentError = initiateBoodilPaymentStates.error;
+    const createBoodilTransactionData = createBoodilTransactionStates.data;
+    const createBoodilTransactionIsLoading = createBoodilTransactionStates.loading;
+    const createBoodilTransactionError = createBoodilTransactionStates.error;
 
-    const handleInitiateBoodilPayment = async (
-        variables: InitiateBoodilPaymentMutationVariables,
+    const handleCreateBoodilTransaction = async (
+        variables: CreateBoodilTransactionMutationVariables,
     ) => {
         try {
-            const result = await initiateBoodilPayment({ variables });
+            const result = await createBoodilTransaction({ variables });
             return result;
         } catch (e) {
             throw e;
@@ -28,10 +28,10 @@ export const useCheckoutApi = () => {
     };
 
     return {
-        //initiateBoodilPayment
-        handleInitiateBoodilPayment,
-        initiateBoodilPaymentData,
-        initiateBoodilPaymentIsLoading,
-        initiateBoodilPaymentError,
+        //createBoodilTransaction
+        handleCreateBoodilTransaction,
+        createBoodilTransactionData,
+        createBoodilTransactionIsLoading,
+        createBoodilTransactionError,
     };
 };

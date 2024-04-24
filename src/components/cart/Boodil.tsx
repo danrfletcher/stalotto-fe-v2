@@ -10,9 +10,9 @@ export const Boodil = () => {
 
     //checkout API service function / useCheckoutApi hook
     const {
-        handleInitiateBoodilPayment,
-        initiateBoodilPaymentData,
-        initiateBoodilPaymentIsLoading,
+        handleCreateBoodilTransaction,
+        createBoodilTransactionData,
+        createBoodilTransactionIsLoading,
     } = useCheckoutApi();
 
     //effects
@@ -28,12 +28,12 @@ export const Boodil = () => {
     }, []);
 
     useEffect(() => {
-        if (initiateBoodilPaymentData?.initiateBoodilPayment?.uuid) {
+        if (createBoodilTransactionData?.createBoodilTransaction?.uuid) {
             setPaymentUuid(
-                initiateBoodilPaymentData.initiateBoodilPayment.uuid,
+                createBoodilTransactionData.createBoodilTransaction.uuid,
             );
         }
-    }, [initiateBoodilPaymentData]);
+    }, [createBoodilTransactionData]);
 
     return (
         <>
@@ -44,19 +44,19 @@ export const Boodil = () => {
                 }}
                 onClick={e => {
                     e.preventDefault();
-                    handleInitiateBoodilPayment({
+                    handleCreateBoodilTransaction({
                         cartId: localStorage.cartId,
                     });
                 }}
             >
-                {!initiateBoodilPaymentIsLoading && (
+                {!createBoodilTransactionIsLoading && (
                     <img
                         src="/images/paymentProviderButtons/boodil-pay-by-bank.png"
                         alt="boodil logo with pay by bank text"
                         style={{ transform: 'scale(0.8)' }}
                     />
                 )}
-                {initiateBoodilPaymentIsLoading && (
+                {createBoodilTransactionIsLoading && (
                     <div className="boodil_loader">
                         <PropagateLoader color="#ffffff" />
                     </div>
