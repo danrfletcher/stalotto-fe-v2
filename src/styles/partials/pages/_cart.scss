@@ -153,11 +153,23 @@
 
 
     .payment_btn {
-        max-height: 50px;
-        max-width: 244px;
+        height: 50px;
+        width: 244px;
     
         @include devices(lg) {
             text-align: center;
         }
+    }
+}
+
+.boodil_loader {
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    & * {
+        margin-bottom: 15px;
+        margin-right: 15px;
     }
 }
