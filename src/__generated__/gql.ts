@@ -18,6 +18,7 @@ const documents = {
     "query GetSavedCustomerAddresses {\n  customer {\n    firstname\n    lastname\n    addresses {\n      id\n      firstname\n      lastname\n      company\n      street\n      city\n      region {\n        region\n        region_code\n      }\n      postcode\n      country_code\n      telephone\n      default_shipping\n      default_billing\n    }\n  }\n}": types.GetSavedCustomerAddressesDocument,
     "mutation SetBillingAddressOnCart($cartId: String!, $firstName: String!, $lastName: String!, $company: String, $street: [String!]!, $city: String!, $region: String!, $postcode: String!, $countryCode: String!, $telephone: String!) {\n  setBillingAddressOnCart(\n    input: {cart_id: $cartId, billing_address: {address: {firstname: $firstName, lastname: $lastName, company: $company, street: $street, city: $city, region: $region, postcode: $postcode, country_code: $countryCode, telephone: $telephone}}}\n  ) {\n    cart {\n      billing_address {\n        firstname\n        lastname\n        company\n        street\n        city\n        region {\n          code\n          label\n        }\n        postcode\n        telephone\n        country {\n          code\n          label\n        }\n      }\n    }\n  }\n}": types.SetBillingAddressOnCartDocument,
     "mutation setGuestEmailOnCart($cartId: String!, $email: String!) {\n  setGuestEmailOnCart(input: {cart_id: $cartId, email: $email}) {\n    cart {\n      id\n      email\n    }\n  }\n}": types.SetGuestEmailOnCartDocument,
+    "mutation CreateBoodilPayment($uuid: String!, $consentToken: String!) {\n  createBoodilPayment(input: {uuid: $uuid, consentToken: $consentToken}) {\n    processingTime\n    uuid\n    reference\n    amount\n    currency\n  }\n}": types.CreateBoodilPaymentDocument,
     "mutation CreateBoodilTransaction($cartId: String!) {\n  createBoodilTransaction(input: {cartId: $cartId}) {\n    uuid\n  }\n}": types.CreateBoodilTransactionDocument,
 };
 
@@ -55,6 +56,10 @@ export function gql(source: "mutation SetBillingAddressOnCart($cartId: String!, 
  * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
 export function gql(source: "mutation setGuestEmailOnCart($cartId: String!, $email: String!) {\n  setGuestEmailOnCart(input: {cart_id: $cartId, email: $email}) {\n    cart {\n      id\n      email\n    }\n  }\n}"): (typeof documents)["mutation setGuestEmailOnCart($cartId: String!, $email: String!) {\n  setGuestEmailOnCart(input: {cart_id: $cartId, email: $email}) {\n    cart {\n      id\n      email\n    }\n  }\n}"];
+/**
+ * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function gql(source: "mutation CreateBoodilPayment($uuid: String!, $consentToken: String!) {\n  createBoodilPayment(input: {uuid: $uuid, consentToken: $consentToken}) {\n    processingTime\n    uuid\n    reference\n    amount\n    currency\n  }\n}"): (typeof documents)["mutation CreateBoodilPayment($uuid: String!, $consentToken: String!) {\n  createBoodilPayment(input: {uuid: $uuid, consentToken: $consentToken}) {\n    processingTime\n    uuid\n    reference\n    amount\n    currency\n  }\n}"];
 /**
  * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */

@@ -7,6 +7,7 @@ import Home from '../pages/Home';
 import Static from '../pages/Static';
 import CompetitionDetails from '../pages/CompetitionDetails';
 import ErrorPage from '../pages/ErrorPage';
+import { CheckoutComplete } from '../pages/CheckoutComplete';
 
 const RouterRoutes = () => {
 
@@ -19,8 +20,10 @@ const RouterRoutes = () => {
                 <Route path="/cart" element={<Cart />} />
                 <Route path="/competitions" element={<AllProducts />} />
                 <Route path="/competition/:urlKey" element={<CompetitionDetails />} />
-                <Route path="*" element={<ErrorPage />} />
+                <Route path="/checkout-complete/boodil" element={<CheckoutComplete />} />
                 <Route path="/:staticPageUrlKey" element={<Static />} />
+                <Route path="/error/:errorKey" element={<ErrorPage />} />
+                <Route path="*" element={<ErrorPage />} />
             </Routes>
         </>
     );

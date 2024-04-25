@@ -5,7 +5,7 @@ import { useContext, useEffect, useState } from 'react';
 import userContext from '../../contexts/user/userContext';
 import cartContext from '../../contexts/cart/cartContext';
 import useHandleSavedCustomerAddresses from './SavedAddressSelector';
-import useHandleFetchDataForPayment from '../../hooks/checkout/useHandleProceedToPayment';
+import useHandleProceedToPayments from '../../hooks/checkout/useHandleProceedToPayment';
 import { BarLoader } from 'react-spinners';
 import { Payments } from './Payments';
 import SavedAddressSelector from './SavedAddressSelector';
@@ -53,7 +53,7 @@ export const Checkout: React.FC<CheckoutProps> = ({ savedAddresses }) => {
         setBillingAddressError,
         getPaymentMethodsOnCartError,
         getPaymentMethodsOnCartData,
-    } = useHandleFetchDataForPayment({
+    } = useHandleProceedToPayments({
         email: email,
         firstName: firstName,
         lastName: lastName,
@@ -144,7 +144,9 @@ export const Checkout: React.FC<CheckoutProps> = ({ savedAddresses }) => {
                                     <h2>Saved Details</h2>
                                 </legend>
                                 <div className="input_box">
-                                    <SavedAddressSelector disable={disabled ? true : false}/>
+                                    <SavedAddressSelector
+                                        disable={disabled ? true : false}
+                                    />
                                     <label className="input_label">
                                         Select from Saved
                                     </label>

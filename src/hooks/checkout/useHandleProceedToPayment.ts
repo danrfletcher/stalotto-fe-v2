@@ -1,4 +1,4 @@
-// hooks/useHandleFetchDataForPayment.js or .tsx if using TypeScript
+// hooks/useHandleProceedToPayments.js or .tsx if using TypeScript
 import { useCallback, useContext, useEffect, useState } from 'react';
 import countryCodes from '../../data/countryCodes.json';
 import { useCartApi } from '../../services/cartApi';
@@ -9,7 +9,7 @@ import {
     SetBillingAddressOnCartMutationVariables,
 } from '../../__generated__/graphql';
 
-const useHandleFetchDataForPayment = ({
+const useHandleProceedToPayments = ({
     email,
     firstName,
     lastName,
@@ -196,4 +196,4 @@ const useHandleFetchDataForPayment = ({
     };
 };
 
-export default useHandleFetchDataForPayment;
+export default useHandleProceedToPayments;
