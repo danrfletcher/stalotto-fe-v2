@@ -11,18 +11,21 @@ import { useCheckoutApi } from '../../services/checkoutApi';
 //----------------------------------------------------------------------------------------------------
 
 const useCompleteCheckout = () => {
+    
+    // Hook Call / State Machine Initialization
     const [state, send] = useMachine(checkoutCompletionMachine);
     const {
-        _handleCreateBoodilPayment,
-        _createBoodilPaymentData,
-        _createBoodilPaymentIsLoading,
-        _createBoodilPaymentError,
+        handleCreateBoodilPayment,
+        createBoodilPaymentData,
+        createBoodilPaymentIsLoading,
+        createBoodilPaymentError,
 
         _handleCreateBoodilOrder,
         _createBoodilOrderData,
         _createBoodilOrderIsLoading,
         _createBoodilOrderError,
     } = useCheckoutApi();
+    //----------------------------------------------------------------------------------------------------
 
     // Check & Send Query Params on Mount
     const location = useLocation();
@@ -42,16 +45,18 @@ const useCompleteCheckout = () => {
             send({ type: 'QUERY_PARAMS_FOUND', uuid, consentToken });
         else send({ type: 'NO_QUERY_PARAMS' });
     }, []);
+    //----------------------------------------------------------------------------------------------------
 
     // Handle API Responses / Initiate Happy Path State Change
     useEffect(() => {
-        if (_createBoodilPaymentData) {
+        if (createBoodilPaymentData) {
+            console.log("⚡ ~ createBoodilPaymentData:", createBoodilPaymentData)
             send({
                 type: 'PAYMENT_CREATED',
-                paymentData: _createBoodilPaymentData,
+                paymentData: createBoodilPaymentData,
             });
         }
-    }, [_createBoodilPaymentData]);
+    }, [createBoodilPaymentData]);
     useEffect(() => {
         if (_createBoodilOrderData)
             send({
@@ -59,11 +64,12 @@ const useCompleteCheckout = () => {
                 orderData: _createBoodilOrderData,
             });
     }, [_createBoodilOrderData]);
+    //----------------------------------------------------------------------------------------------------
 
     // Catch Errors / Initiate Sad Path State Change
     useEffect(() => {
-        if (_createBoodilPaymentError) send({ type: 'CREATE_PAYMENT_FAILED' });
-    }, [_createBoodilPaymentError]);
+        if (createBoodilPaymentError) send({ type: 'CREATE_PAYMENT_FAILED' });
+    }, [createBoodilPaymentError]);
     useEffect(() => {
         if (_createBoodilOrderError) send({ type: 'CREATE_ORDER_FAILED' });
     }, [_createBoodilOrderError]);
@@ -73,22 +79,21 @@ const useCompleteCheckout = () => {
     useEffect(() => {
         if (state.matches('createPayment')) {
             send({ type: 'CREATE_PAYMENT_REQUEST_SENT' });
-            _handleCreateBoodilPayment({ uuid, consentToken }, '200');
+            handleCreateBoodilPayment({ uuid, consentToken });
         }
         if (state.matches('createOrder')) {
             send({ type: 'CREATE_ORDER_REQUEST_SENT' });
             _handleCreateBoodilOrder({ uuid }, '200');
         }
     }, [state.value]);
-
-
+    //----------------------------------------------------------------------------------------------------
 
     return {
         state,
 
-        _createBoodilPaymentData,
-        _createBoodilPaymentIsLoading,
-        _createBoodilPaymentError,
+        createBoodilPaymentData,
+        createBoodilPaymentIsLoading,
+        createBoodilPaymentError,
 
         _createBoodilOrderData,
         _createBoodilOrderIsLoading,

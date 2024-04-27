@@ -29,17 +29,6 @@ export const CheckoutComplete = () => {
         state.matches('createPaymentError') ||
         state.matches('createTransactionError');
 
-    //----------------------------------DEBUGGING---------------------------------------------
-
-
-    useEffect(() => {
-        console.log("⚡ ~ state.value:", state.value)
-    },[state.value])
-
-
-
-    //----------------------------------DEBUGGING---------------------------------------------
-
     //Handle Navigation to Error Page if we Encounter an Error
     if (errors) {
         navigate(

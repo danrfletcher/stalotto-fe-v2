@@ -14,12 +14,10 @@ import {
     CreateBoodilTransactionMutationVariables,
 } from '../__generated__/graphql';
 import { useCallback, useMemo, useState } from 'react';
-import { StringValueNode } from 'graphql';
-import { GraphQLErrors } from '@apollo/client/errors';
 //----------------------------------------------------------------------------------------------------
 
 /**
- * GraphQL mutation to create a transaction (payment authorization) with Boodil
+ * GraphQL mutation to create a transaction (payment authorization) with Boodil - used before user checks out / cart page
  * @returns An object containing the mutation handler function, the loading state of the mutation operation,
  * and any errors that have occurred.
  */
@@ -70,7 +68,7 @@ const useCreateBoodilTransaction = () => {
 //----------------------------------------------------------------------------------------------------
 
 /**
- * GraphQL mutations (live & simulated) to create a payment (bank transfer) with Boodil
+ * GraphQL mutations (live & simulated) to create a payment (bank transfer) with Boodil  - first function call on checkout completion page
  * @returns An object containing the mutation handler function, the loading state of the mutation operation,
  * and any errors that have occurred.
  */
