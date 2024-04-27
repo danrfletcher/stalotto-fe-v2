@@ -1,61 +1,66 @@
-import { useContext, useEffect, useState } from 'react';
+import { useContext, useEffect } from 'react';
 import loadingContext from '../contexts/loading/loadingContext';
-import {
-    ScatterBoxLoader,
-    WifiLoader,
-    BoltLoader,
-} from 'react-awesome-loaders';
-import useCompleteCheckout from '../hooks/checkout/useCompleteCheckout';
+import { ScatterBoxLoader, WifiLoader } from 'react-awesome-loaders';
 import { useNavigate } from 'react-router';
-import { LightningLoader } from '../components/common/LightningLoader';
+import useCompleteCheckout from '../hooks/checkout/useCompleteCheckout';
 
 export const CheckoutComplete = () => {
     const { isFirstLoad, toggleIsFirstLoad } = useContext(loadingContext);
+    useEffect(() => {
+        if (isFirstLoad) toggleIsFirstLoad(false);
+    }, []);
+
+    const { state } = useCompleteCheckout();
+
     const navigate = useNavigate();
-    // const {
-    //     visibleLoadingDots,
-    //     orderStatusTextState,
 
-    //     // API Service Function / Hook
-    //     // Simulated API for testing purposes
-    //     _createBoodilPaymentData,
+    const completingPayment =
+        state.matches('checkTransactionCredentials') ||
+        state.matches('createPayment') ||
+        state.matches('creatingPayment');
 
-    //     // createBoodilOrder
-    //     // Simulated API for testing purposes
-    //     _createBoodilOrderData,
+    const placingOrder =
+        state.matches('createOrder') || state.matches('creatingOrder');
 
-    //     workflowState,
-    //     componentErrors,
-    // } = useCompleteCheckout();
+    const orderCompleted = state.matches('orderComplete');
 
-    // const { completingPayment, placingOrder, orderCompleted } = workflowState;
-    // const errors = Object.values(componentErrors).some(error => error);
+    const errors =
+        state.matches('createOrderError') ||
+        state.matches('createPaymentError') ||
+        state.matches('createTransactionError');
 
-    // useEffect(() => {
-    //     if (isFirstLoad) toggleIsFirstLoad(false);
-    // }, []);
+    //----------------------------------DEBUGGING---------------------------------------------
 
-    // Handle Navigation to Error Page if we Encounter an Error
-    // if (errors) {
-    //     const errorKey =
-    //         (
-    //             Object.keys(componentErrors) as Array<
-    //                 keyof typeof componentErrors
-    //             >
-    //         ).find(key => componentErrors[key] === true) || 'unknown';
-    //     const errorUrlParts = errorKey
-    //         .split(/(?=[A-Z])/)
-    //         .map(element => element.toLowerCase());
-    //     const errorUrl = errorUrlParts.join('-');
-    //     navigate(`/error/${errorUrl}`);
-    // }
+
+    useEffect(() => {
+        console.log("⚡ ~ state.value:", state.value)
+    },[state.value])
+
+
+
+    //----------------------------------DEBUGGING---------------------------------------------
+
+    //Handle Navigation to Error Page if we Encounter an Error
+    if (errors) {
+        navigate(
+            `/error/${
+                state.matches('createOrderError')
+                    ? 'create-order-error'
+                    : state.matches('createPaymentError')
+                    ? 'create-payment-error'
+                    : state.matches('createTransactionError')
+                    ? 'create-transaction-error'
+                    : 'unknown'
+            }`,
+        );
+    }
 
     return (
         <>
             <main>
-                <section id="loading_animation">
+                <section id="checkout_loading_animation">
                     <div className="centered_loader">
-                        {/* {completingPayment && (
+                        {completingPayment && (
                             <WifiLoader
                                 background={'transparent'}
                                 desktopSize={'150px'}
@@ -70,61 +75,56 @@ export const CheckoutComplete = () => {
                                 primaryColor={'#a9afc3'}
                                 background={'#141414'}
                             />
-                        )} */}
-                        {/* {orderCompleted && ( */}
-
-                        <LightningLoader />
-                        {/* )} */}
+                        )}
+                        {orderCompleted && (
+                            <svg
+                                className="checkmark"
+                                xmlns="http://www.w3.org/2000/svg"
+                                viewBox="0 0 52 52"
+                            >
+                                <circle
+                                    className="checkmark__circle"
+                                    cx="26"
+                                    cy="26"
+                                    r="25"
+                                    fill="none"
+                                />
+                                <path
+                                    className="checkmark__check"
+                                    fill="none"
+                                    d="M14.1 27.2l7.1 7.2 16.7-16.8"
+                                />
+                            </svg>
+                        )}
                     </div>
                 </section>
-                {/* <section id="checkout_info">
-                    <div className="has-animation animation-ltr animate-in">
-                        <p className="bigger">
-                            {orderStatusTextState}
-                            {!orderCompleted && (
-                                <span className="loading_dots">
-                                    <span
-                                        style={{
-                                            opacity:
-                                                visibleLoadingDots === 0
-                                                    ? 0
-                                                    : 1,
-                                        }}
-                                    >
-                                        .
-                                    </span>
-                                    <span
-                                        style={{
-                                            opacity:
-                                                visibleLoadingDots <= 1 ? 0 : 1,
-                                        }}
-                                    >
-                                        .
-                                    </span>
-                                    <span
-                                        style={{
-                                            opacity:
-                                                visibleLoadingDots <= 2 ? 0 : 1,
-                                        }}
-                                    >
-                                        .
-                                    </span>
-                                </span>
-                            )}
-                        </p>
-                        <br />
+                <section id="checkout_info">
+                    <div className="">
+                        <h1>
+                            {completingPayment
+                                ? 'Completing Payment'
+                                : placingOrder
+                                ? 'Securing Your Tickets'
+                                : orderCompleted
+                                ? 'Order Completed'
+                                : 'Something Went Wrong'}
+                        </h1>
                         <br />
                     </div>
-                    <div
-                        className={`blank_animation${
-                            _createBoodilPaymentData &&
-                            ' has-animation animation-rtl animate-in'
-                        }`}
-                    ></div>
-                </section> */}
+                    {orderCompleted && (
+                        <div className="order_complete_container">
+                            <p className="order_complete_text">
+                                Thank you for your purchase! You will receive a
+                                confirmation email shortly. Ticket numbers will
+                                be assigned & emailed to you when entries close,
+                                usually 7 days before the prize draw.
+                            </p>
+                            <br />
+                            <br />
+                        </div>
+                    )}
+                </section>
             </main>
         </>
     );
 };
-
-

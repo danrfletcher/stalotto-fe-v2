@@ -133,8 +133,90 @@
     }
 }
 
-.blank_animation {
-    height: 108px;
-    margin-top: -108px;
-    z-index: 1;
+.checkmark__circle {
+  stroke-dasharray: 166;
+  stroke-dashoffset: 166;
+  stroke-width: 4;
+  stroke-miterlimit: 10;
+  stroke: green;
+  fill: none;
+  animation: stroke 0.6s cubic-bezier(0.65, 0, 0.45, 1) forwards;
+}
+
+.checkmark {
+  width: 180px;
+  height: 180px;
+  border-radius: 50%;
+  display: block;
+  stroke-width: 5;
+  stroke: green;
+  stroke-miterlimit: 10;
+  margin: 10% auto;
+  box-shadow: inset 0px 0px 0px #7ac142;
+  animation: fill .4s ease-in-out .4s forwards, scale .3s ease-in-out .9s both;
+}
+
+.checkmark__check {
+  transform-origin: 50% 50%;
+  stroke-dasharray: 48;
+  stroke-dashoffset: 48;
+  animation: stroke 0.3s cubic-bezier(0.65, 0, 0.45, 1) 0.8s forwards;
+}
+
+@keyframes stroke {
+  100% {
+    stroke-dashoffset: 0;
+  }
+}
+@keyframes scale {
+  0%, 100% {
+    transform: none;
+  }
+  50% {
+    transform: scale3d(1.1, 1.1, 1);
+  }
+}
+@keyframes fill {
+  100% {
+    box-shadow: inset 0px 0px 0px 30px #141414;
+  }
+}
+
+/*
+
+*/
+.order_complete_container{
+display: flex;
+justify-content: center;
+align-items: center;
+
+    .order_complete_text {
+        padding: 0px 15px;
+        opacity: 0; 
+        height: 0;
+        transition: max-height 1s ease-in-out, opacity 2s ease-in-out; 
+
+        max-width: 500px;
+        @include devices(lgAndAbove) {
+            max-width: 1000px;
+        }
+
+        text-align: center;
+    }
+}
+
+
+@keyframes revealCompleteText {
+    0% {
+        max-height: 0%; 
+        opacity: 0; 
+    }
+    100% {
+        height: 100px; 
+        opacity: 1; 
+    }
+}
+
+.order_complete_text {
+    animation: revealCompleteText 1s ease forwards; 
 }

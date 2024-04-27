@@ -6,7 +6,7 @@ type ErrorData = {
 type ComponentErrorData = {
     createTransactionError: ErrorData;
     createPaymentError: ErrorData;
-    placeOrderError: ErrorData;
+    createOrderError: ErrorData;
 }
 
 type ComponentErrors = {

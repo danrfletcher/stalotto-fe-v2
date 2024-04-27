@@ -21,5 +21,9 @@
         "titleBar.inactiveForeground": "#e7e7e799"
     },
     "peacock.color": "#c61dc9",
-    "peacock.remoteColor": "#0516fc"
+    "peacock.remoteColor": "#0516fc",
+    "docthis.authorName": "danrfletcher",
+    "docthis.includeDescriptionTag": true,
+    "docthis.returnsTag": true,
+    "docthis.inferTypesFromNames": true
 }
