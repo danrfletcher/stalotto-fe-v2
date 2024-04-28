@@ -1,8 +1,9 @@
 import { useContext, useEffect } from 'react';
 import loadingContext from '../contexts/loading/loadingContext';
-import { ScatterBoxLoader, WifiLoader } from 'react-awesome-loaders';
 import { useNavigate } from 'react-router';
 import useCompleteCheckout from '../hooks/checkout/useCompleteCheckout';
+import { ScatterboxLoader } from '../lib/ScatterboxLoader';
+import WifiLoader from '../lib/WifiLoader';
 
 export const CheckoutComplete = () => {
     const { isFirstLoad, toggleIsFirstLoad } = useContext(loadingContext);
@@ -54,17 +55,12 @@ export const CheckoutComplete = () => {
                                 background={'transparent'}
                                 desktopSize={'150px'}
                                 mobileSize={'150px'}
-                                backColor="#141414"
-                                frontColor="#a9afc3"
+                                backColor="#d00404"
+                                frontColor="#ffffff"
                                 text={''}
                             />
                         )}
-                        {placingOrder && (
-                            <ScatterBoxLoader
-                                primaryColor={'#a9afc3'}
-                                background={'#141414'}
-                            />
-                        )}
+                        {placingOrder && <ScatterboxLoader />}
                         {orderCompleted && (
                             <svg
                                 className="checkmark"

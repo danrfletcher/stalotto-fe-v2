@@ -29,6 +29,6 @@
     "typeRoots": ["./node_modules/@types", "./src/types"],
     "types": ["node", "jest", "@testing-library/jest-dom", "@jest/globals"]
   },
-  "include": ["src/**/*.ts", "src/**/*.d.ts", "src/**/*.tsx", "src/**/*.vue", "src/__tests__/services.test.tsx", "src/contexts/user/userContext.jsx", "src/contexts/cart/cartContext.jsx"],
+  "include": ["src/**/*.ts", "src/**/*.d.ts", "src/**/*.tsx", "src/**/*.vue", "src/__tests__/services.test.tsx", "src/contexts/user/userContext.jsx", "src/contexts/cart/cartContext.jsx", "src/lib/WifiLoader.jsx"],
   "references": [{ "path": "./tsconfig.node.json" }]
 }
