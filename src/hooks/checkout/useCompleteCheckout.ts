@@ -79,11 +79,16 @@ const useCompleteCheckout = () => {
     useEffect(() => {
         if (state.matches('createPayment')) {
             send({ type: 'CREATE_PAYMENT_REQUEST_SENT' });
-            handleCreateBoodilPayment({ uuid, consentToken });
+
+            const { cartId } = localStorage;
+            handleCreateBoodilPayment({ uuid, consentToken, cartId });
         }
         if (state.matches('createOrder')) {
-            send({ type: 'CREATE_ORDER_REQUEST_SENT' });
-            _handleCreateBoodilOrder({ uuid }, '200');
+            send({ type: 'CREATE_ORDER_ANIMATION_STARTED' });
+            localStorage.removeItem('cartId');
+            setTimeout(() => {
+                send({ type: 'ORDER_CREATED' });
+            }, 5000);
         }
     }, [state.value]);
     //----------------------------------------------------------------------------------------------------
