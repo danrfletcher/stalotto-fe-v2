@@ -27,11 +27,11 @@ export const dropdownMenu = [
 ];
 
 export const navPages = [
-    {
-        name: "Competitions",
-        path: "/competitions",
-        children: []
-    },
+    // {
+    //     name: "Competitions",
+    //     path: "/competitions",
+    //     children: []
+    // },
 ];
 
 interface NavPage {
