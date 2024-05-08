@@ -25,7 +25,7 @@ jobs:
 
       - name: Create .env.production
         run: |
-          echo "VITE_API_BASE_URL=https://${{ vars.BACKEND_DOMAIN }} > .env.production
+          echo "VITE_API_BASE_URL=https://${{ vars.BACKEND_DOMAIN }}" > .env.production
           echo "VITE_BOODIL_WIDGET_URL=https://widget.boodil.com/prod.js" >> .env.production
 
       - name: Build Project
