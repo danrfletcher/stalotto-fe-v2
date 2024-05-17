@@ -53,7 +53,7 @@ const MainSlider = () => {
                     </div>
                     <div className="hero_item_txt">
                         <h3>
-                            scottyfairno, connallbdoyle and{' '}
+                            scottyfairno, conallbdoyle and{' '}
                             <a
                                 target="_blank"
                                 href="https://www.rust2rome.com/"
@@ -62,7 +62,8 @@ const MainSlider = () => {
                             </a>
                         </h3>
                         <h1>
-                            10 Days with Scotty & Connall on The Best Banger Rally Of All Time
+                            10 Days with Scotty & conall on The Best Banger
+                            Rally Of All Time
                         </h1>
                         <h4 className="hero_price">
                             Tickets £3.99 &nbsp;
