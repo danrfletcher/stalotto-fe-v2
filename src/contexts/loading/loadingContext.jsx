@@ -10,7 +10,7 @@ const initialState = {
     isFirstLoad: true, //main loader for the entire web app, relies on below main loaders
 
     //User Data
-    isSilentDataLoaded: false, //main loader, relies on below loaders
+    isAppDataLoaded: false, //main loader, relies on below loaders
     isUserDataLoaded: false,
     isCartDataLoaded: false,
 
@@ -37,7 +37,7 @@ const LoadingProvider = ({ children }) => {
     };
 
     //Item Load Actions
-    const toggleItemsLoaded = (loader) => {
+    const toggleItemsLoaded = loader => {
         return dispatch({
             type: 'TOGGLE_LOADER_TRUE',
             payload: { loader },

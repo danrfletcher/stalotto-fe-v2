@@ -11,8 +11,21 @@ import cartContext from './contexts/cart/cartContext.jsx';
 import { useLocation } from 'react-router';
 
 const App = () => {
-    const { isFirstLoad, toggleItemsLoaded, isUserDataLoaded, isCartDataLoaded } = useContext(loadingContext);
-    const { setCart, cartSyncedState, setCartSyncedState, displayCheckout, displayPayments, toggleDisplayCheckout, toggleDisplayPayments } = useContext(cartContext);
+    const {
+        isFirstLoad,
+        toggleItemsLoaded,
+        isUserDataLoaded,
+        isCartDataLoaded,
+    } = useContext(loadingContext);
+    const {
+        setCart,
+        cartSyncedState,
+        setCartSyncedState,
+        displayCheckout,
+        displayPayments,
+        toggleDisplayCheckout,
+        toggleDisplayPayments,
+    } = useContext(cartContext);
     const { handleUserLogin } = useUserAccounts();
 
     //silently load data the first time the application mounts & when local storage items change.
@@ -53,8 +66,11 @@ const App = () => {
                 if (!localStorage.userToken && !localStorage.cartId) {
                     const newCartId = await createAnonymousCart();
                     localStorage.setItem('cartId', newCartId);
+                    if (!isCartDataLoaded) {
+                        toggleItemsLoaded('isCartDataLoaded');
+                    }
                 }
-                return createAnonymousCart.cartId;
+                return localStorage.cartId;
             } catch (err) {
                 console.error('Error: ', err);
             }
@@ -69,7 +85,7 @@ const App = () => {
 
     useEffect(() => {
         if (isUserDataLoaded && isCartDataLoaded) {
-            toggleItemsLoaded('isSilentDataLoaded');
+            toggleItemsLoaded('isAppDataLoaded');
         }
     }, [isUserDataLoaded, isCartDataLoaded]);
 
@@ -81,7 +97,7 @@ const App = () => {
     useEffect(() => {
         if (displayCheckout) toggleDisplayCheckout();
         if (displayPayments) toggleDisplayPayments();
-    },[location])
+    }, [location]);
 
     return (
         <div className="app_container">
