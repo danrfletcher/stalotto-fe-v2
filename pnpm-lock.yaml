@@ -151,6 +151,9 @@ devDependencies:
   axios-mock-adapter:
     specifier: ^1.22.0
     version: 1.22.0(axios@1.6.7)
+  cross-env:
+    specifier: ^7.0.3
+    version: 7.0.3
   eslint-plugin-react:
     specifier: ^7.33.2
     version: 7.33.2(eslint@8.57.0)
@@ -205,8 +208,8 @@ packages:
       leven: 3.1.0
     dev: false
 
-  /@apollo/client@3.10.3(@types/react@18.2.55)(graphql@16.8.1)(react-dom@18.2.0)(react@18.2.0):
-    resolution: {integrity: sha512-4EIgZnFmRO1laWv3NCxlVIxcvimG63djuAXvyXhpQH3wkNMv9SykrasKRN08+z+cn/fVisBOLmkSRdyNyP9f4A==}
+  /@apollo/client@3.10.4(@types/react@18.2.55)(graphql@16.8.1)(react-dom@18.2.0)(react@18.2.0):
+    resolution: {integrity: sha512-51gk0xOwN6Ls1EbTG5svFva1kdm2APHYTzmFhaAdvUQoJFDxfc0UwQgDxGptzH84vkPlo1qunY1FuboyF9LI3Q==}
     peerDependencies:
       graphql: ^15.0.0 || ^16.0.0
       graphql-ws: ^5.5.5
@@ -286,7 +289,7 @@ packages:
   /@apollo/react-hooks@4.0.0(@types/react@18.2.55)(graphql@16.8.1)(react-dom@18.2.0)(react@18.2.0):
     resolution: {integrity: sha512-fCu0cbne3gbUl0QbA8X4L33iuuFVQbC5Jo2MIKRK8CyawR6PoxDpFdFA1kc6033ODZuZZ9Eo4RdeJFlFIIYcLA==}
     dependencies:
-      '@apollo/client': 3.10.3(@types/react@18.2.55)(graphql@16.8.1)(react-dom@18.2.0)(react@18.2.0)
+      '@apollo/client': 3.10.4(@types/react@18.2.55)(graphql@16.8.1)(react-dom@18.2.0)(react@18.2.0)
     transitivePeerDependencies:
       - '@types/react'
       - graphql
@@ -7598,6 +7601,14 @@ packages:
       - babel-plugin-macros
       - supports-color
       - ts-node
+    dev: true
+
+  /cross-env@7.0.3:
+    resolution: {integrity: sha512-+/HKd6EgcQCJGh2PSjZuUitQBQynKor4wrFbRg4DtAgS1aWO+gU52xpH7M9ScGgXSYmAVS9bIJ8EzuaGw0oNAw==}
+    engines: {node: '>=10.14', npm: '>=6', yarn: '>=1'}
+    hasBin: true
+    dependencies:
+      cross-spawn: 7.0.3
     dev: true
 
   /cross-fetch@3.1.8:

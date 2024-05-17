@@ -1,9 +1,0 @@
-mutation CreateBoodilPayment($uuid: String!, $consentToken: String!, $cartId: String!) {
-    createBoodilPayment(input: { uuid: $uuid, consentToken: $consentToken, cartId: $cartId }) {
-        processingTime
-        uuid
-        reference
-        amount
-        currency
-    }
-}

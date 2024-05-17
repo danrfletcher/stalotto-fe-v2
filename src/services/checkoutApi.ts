@@ -4,8 +4,8 @@
  */
 
 import { useMutation } from '@apollo/client';
-import createBoodilTransactionGql from '../graphql/createBoodilTransaction.gql';
-import createBoodilPaymentGql from '../graphql/createBoodilPayment.gql';
+import createBoodilTransactionGql from '../graphql/CreateBoodilTransaction.gql';
+import createBoodilPaymentGql from '../graphql/CreateBoodilPayment.gql';
 import {
     CreateBoodilPaymentMutation,
     CreateBoodilPaymentMutationVariables,
@@ -183,113 +183,6 @@ const useCreateBoodilPayment = () => {
 //----------------------------------------------------------------------------------------------------
 
 /**
- * GraphQL mutations (live & simulated) to create an order (check payment status has completed) & process order on back-end with Boodil
- * @returns An object containing the mutation handler function, the loading state of the mutation operation,
- * and any errors that have occurred.
- */
-const useCreateBoodilOrder = () => {
-    // Live API Function
-    type CreateBoodilOrderMutationVariables = {
-        //#################### Remove when real API function type is available
-        uuid: String;
-    };
-
-    type CreateBoodilOrderReponse = {
-        orderNumber: string;
-        paymentCompleted: boolean;
-        paymentFailed: boolean;
-    };
-
-    // Simulated API Function for Testing Purposes
-    const [_createBoodilOrderData, _setCreateBoodilOrderData] =
-        useState<any>(false);
-    const [_createBoodilOrderIsLoading, _setCreateBoodilOrderIsLoading] =
-        useState<any>(false);
-    const [_createBoodilOrderError, _setCreateBoodilOrderError] =
-        useState<any>(false);
-
-    const _handleCreateBoodilOrder = useCallback(
-        (variables: CreateBoodilOrderMutationVariables, statusCode: string) => {
-            _setCreateBoodilOrderIsLoading(true);
-            setTimeout(() => {
-                if (statusCode === '200') {
-                    const result: CreateBoodilOrderReponse = {
-                        orderNumber: '00000001256',
-                        paymentCompleted: true,
-                        paymentFailed: false,
-                    };
-                    _setCreateBoodilOrderData(result);
-                    _setCreateBoodilOrderIsLoading(false);
-                    return result;
-                } else if (statusCode === '200Failed') {
-                    const result = {
-                        orderNumber: '00000001256',
-                        paymentCompleted: true,
-                        paymentFailed: false,
-                    };
-                    _setCreateBoodilOrderData(result);
-                    _setCreateBoodilOrderIsLoading(false);
-                    return result;
-                } else if (statusCode === '200Incomplete') {
-                    const result = {
-                        orderNumber: '00000001256',
-                        paymentCompleted: false,
-                        paymentFailed: false,
-                    };
-                    _setCreateBoodilOrderData(result);
-                    _setCreateBoodilOrderIsLoading(false);
-                    return result;
-                } else {
-                    const result = {
-                        errors: [
-                            {
-                                message: 'API call to Boodil failed.',
-                                locations: [
-                                    {
-                                        line: 2,
-                                        column: 5,
-                                    },
-                                ],
-                                path: ['createBoodilOrder'],
-                                extensions: {
-                                    category: 'graphql-no-such-entity',
-                                },
-                            },
-                        ],
-                        data: {
-                            createBoodilOrder: null,
-                        },
-                    };
-                    _setCreateBoodilOrderError(result);
-                    _setCreateBoodilOrderIsLoading(false);
-                    return result;
-                }
-            }, 5000);
-        },
-        [],
-    );
-
-    // API Service Function Values
-    return useMemo(
-        () => ({
-            // Cached Values
-            _handleCreateBoodilOrder, // Simulated API Function
-            _createBoodilOrderData,
-            _createBoodilOrderIsLoading,
-            _createBoodilOrderError,
-        }),
-        [
-            // Dependencies
-            _handleCreateBoodilOrder, // Simulated API Function
-            _createBoodilOrderData,
-            _createBoodilOrderIsLoading,
-            _createBoodilOrderError,
-        ],
-    );
-};
-//----------------------------------------------------------------------------------------------------
-
-/**
  * Custom hook to return stable object references to outputs from the above API service functions
  * @returns An object containing the mutation handler functions, loading states,
  * and any errors that have occurred when executing any & all of the above service functions
@@ -298,11 +191,9 @@ export const useCheckoutApi = () => {
     // Hook Values
     const createBoodilTransactionApi = useCreateBoodilTransaction();
     const createBoodilPaymentApi = useCreateBoodilPayment();
-    const createBoodilOrderApi = useCreateBoodilOrder();
 
     return {
         ...createBoodilTransactionApi,
         ...createBoodilPaymentApi,
-        ...createBoodilOrderApi,
     };
 };

@@ -7,13 +7,13 @@ const servicesData = [
         id: 1,
         icon: <AiFillLike />,
         title: "Exclusive Creators & Brands",
-        info: "No. 1 for competitions, led by your favourite content creators & brands.",
+        info: "No. 1 for competitions led by your favourite content creators & brands.",
     },
     {
         id: 2,
         icon: <FaShieldAlt />,
         title: "Unbeatable Prizes",
-        info: "Unbeatable prizes & experiences by verified creators & brands only.",
+        info: "Unbeatable prizes & experiences, only by verified creators & brands.",
     },
     {
         id: 3,
@@ -25,7 +25,7 @@ const servicesData = [
         id: 4,
         icon: <FaCreditCard />,
         title: "Secure Payments",
-        info: "Choose to pay by bank & avoid entering sensitive information .",
+        info: "Fully secure payments. Choose to pay by card or bank.",
     },
 ];
 

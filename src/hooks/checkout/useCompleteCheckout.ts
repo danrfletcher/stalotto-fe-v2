@@ -50,7 +50,6 @@ const useCompleteCheckout = () => {
     // Handle API Responses / Initiate Happy Path State Change
     useEffect(() => {
         if (createBoodilPaymentData) {
-            console.log("⚡ ~ createBoodilPaymentData:", createBoodilPaymentData)
             send({
                 type: 'PAYMENT_CREATED',
                 paymentData: createBoodilPaymentData,

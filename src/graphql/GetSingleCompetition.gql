@@ -1,0 +1,33 @@
+query getSingleCompetition($sku: String!) {
+    products(filter: { sku: { eq: $sku } }) {
+        items {
+            sku
+            uid
+            short_description {
+                html
+            }
+            url_key
+            name
+            media_gallery_entries {
+                label
+                file
+            }
+            ... on VirtualProduct {
+                original_price
+                competition_closes_on
+                starting_ticket_qtd
+                creator
+                winning_ticket_ids
+            }
+            price_range {
+                minimum_price {
+                    final_price {
+                        value
+                        currency
+                    }
+                }
+            }
+            only_x_left_in_stock
+        }
+    }
+}

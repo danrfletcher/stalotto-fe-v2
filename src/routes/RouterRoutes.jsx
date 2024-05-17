@@ -5,7 +5,7 @@ import AllProducts from '../pages/AllProducts';
 import Cart from '../pages/Cart';
 import Home from '../pages/Home';
 import Static from '../pages/Static';
-import CompetitionDetails from '../pages/CompetitionDetails';
+import CompetitionDetails from '../pages/CompetitionDetails'
 import ErrorPage from '../pages/ErrorPage';
 import { CheckoutComplete } from '../pages/CheckoutComplete';
 import LaunchHome from '../pages/LaunchHome';

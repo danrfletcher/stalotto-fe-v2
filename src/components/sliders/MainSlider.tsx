@@ -46,14 +46,14 @@ const MainSlider = () => {
                             loop
                         >
                             <source
-                                src="/videos/rust2mexicopromo.mp4"
+                                src="/videos/rust2romepromo.mp4"
                                 type="video/mp4"
                             />
                         </video>
                     </div>
                     <div className="hero_item_txt">
                         <h3>
-                            scottyfairno and{' '}
+                            scottyfairno, connallbdoyle and{' '}
                             <a
                                 target="_blank"
                                 href="https://www.rust2rome.com/"
@@ -62,11 +62,10 @@ const MainSlider = () => {
                             </a>
                         </h3>
                         <h1>
-                            Travel with Scotty on a 14 Day Muscle Car Roadtrip
-                            to Mexico
+                            10 Days with Scotty & Connall on The Best Banger Rally Of All Time
                         </h1>
                         <h4 className="hero_price">
-                            Tickets From £3.99 &nbsp;
+                            Tickets £3.99 &nbsp;
                             <small>
                                 <del>£4.99</del>
                             </small>
