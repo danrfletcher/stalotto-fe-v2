@@ -6,14 +6,14 @@ const servicesData = [
     {
         id: 1,
         icon: <AiFillLike />,
-        title: "4,500 Players",
+        title: "Exclusive Creators & Brands",
         info: "No. 1 for competitions led by your favourite content creators & brands.",
     },
     {
         id: 2,
         icon: <FaShieldAlt />,
-        title: "Brand Warranty",
-        info: "100% Original products, verified creators & brands only.",
+        title: "Unbeatable Prizes",
+        info: "Unbeatable prizes & experiences, only by verified creators & brands.",
     },
     {
         id: 3,
@@ -25,7 +25,7 @@ const servicesData = [
         id: 4,
         icon: <FaCreditCard />,
         title: "Secure Payments",
-        info: "Backed by leading payment provider for online competitions with SSL / Secure payments.",
+        info: "Fully secure payments. Choose to pay by card or bank.",
     },
 ];
 

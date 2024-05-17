@@ -8,23 +8,34 @@ type CartTotalType = {
 };
 
 const useCartUpdater = () => {
-    const { cartItems, setCart, setCartSyncedState, flagCartUpdate } = useContext(cartContext);
+    const { cartItems, setCart, setCartSyncedState, flagCartUpdate } =
+        useContext(cartContext);
     const [cartQuantity, setCartQuantity] = useState(null);
-    const [cartTotal, setCartTotal] = useState<CartTotalType>({ value: null, currency: null });
+    const [cartTotal, setCartTotal] = useState<CartTotalType>({
+        value: null,
+        currency: null,
+    });
 
     const addToCart = useCallback(
         async (sku, qtd = 1, optimistic = false) => {
             // Optimistically update the cart
             flagCartUpdate(true);
-            const itemExists = cartItems.some((item) => item.product.sku === sku);
+            const itemExists = cartItems.some(item => item.product.sku === sku);
             let newCartItems: CartItem[] = [];
 
             if (itemExists) {
                 // Increase quantity of existing item
-                newCartItems = cartItems.map((item) => (item.product.sku === sku ? { ...item, quantity: item.quantity + qtd } : item));
+                newCartItems = cartItems.map(item =>
+                    item.product.sku === sku
+                        ? { ...item, quantity: item.quantity + qtd }
+                        : item,
+                );
             } else {
                 // Add new item (without UID and name initially)
-                newCartItems = [...cartItems, { product: { sku }, quantity: qtd }];
+                newCartItems = [
+                    ...cartItems,
+                    { product: { sku }, quantity: qtd },
+                ];
             }
 
             // Set the optimistic cart state
@@ -45,14 +56,14 @@ const useCartUpdater = () => {
             }
             flagCartUpdate(false);
         },
-        [cartItems, setCart]
+        [cartItems, setCart],
     );
 
     const removeFromCart = useCallback(
-        async (uid) => {
+        async uid => {
             flagCartUpdate(true);
             // Optimistically update the cart by removing the item (setting its quantity to 0)
-            const newCartItems = cartItems.filter((item) => item.uid !== uid); // Filter out items with zero quantity.
+            const newCartItems = cartItems.filter(item => item.uid !== uid); // Filter out items with zero quantity.
 
             // Set the optimistic cart state
             setCart(newCartItems);
@@ -67,13 +78,13 @@ const useCartUpdater = () => {
             }
             flagCartUpdate(false);
         },
-        [cartItems, setCart]
+        [cartItems, setCart],
     );
 
     const decrementCart = useCallback(
         async (cartItemUid, decrementAmount = 1) => {
             flagCartUpdate(true);
-            const targetItem = cartItems.find((item) => item.uid === cartItemUid);
+            const targetItem = cartItems.find(item => item.uid === cartItemUid);
 
             // Check if the decrement amount is greater than or equal to the item's quantity
             if (targetItem && decrementAmount >= targetItem.quantity) {
@@ -82,20 +93,26 @@ const useCartUpdater = () => {
             } else {
                 // Decrement the quantity of the item
                 const newCartItems = cartItems
-                    .map((item) => {
+                    .map(item => {
                         if (item.uid === cartItemUid) {
-                            return { ...item, quantity: item.quantity - decrementAmount };
+                            return {
+                                ...item,
+                                quantity: item.quantity - decrementAmount,
+                            };
                         }
                         return item;
                     })
-                    .filter((item) => item.quantity > 0); // Ensure we don't include items with zero or negative quantities
+                    .filter(item => item.quantity > 0); // Ensure we don't include items with zero or negative quantities
 
                 // Optimistically update the cart
                 setCart(newCartItems);
 
                 try {
                     // Call API to update the cart quantity on the backend
-                    await setNumItemsInCart(cartItemUid, targetItem?.quantity - decrementAmount);
+                    await setNumItemsInCart(
+                        cartItemUid,
+                        targetItem?.quantity - decrementAmount,
+                    );
                 } catch (err) {
                     // Revert to original items if API call fails
                     setCart(cartItems);
@@ -104,7 +121,7 @@ const useCartUpdater = () => {
             }
             flagCartUpdate(false);
         },
-        [cartItems, setCart, removeFromCart] // Ensure removeFromCart is included as a dependency
+        [cartItems, setCart, removeFromCart], // Ensure removeFromCart is included as a dependency
     );
 
     const fetchTotal = async () => {
@@ -113,13 +130,23 @@ const useCartUpdater = () => {
             const total = await getCartTotal();
             setCartTotal(total);
         } catch (err) {
-            setCartTotal({ value: 'There has been an error calculating the total. Please reload the page.' });
+            setCartTotal({
+                value: 'There has been an error calculating the total. Please reload the page.',
+            });
         }
         flagCartUpdate(false);
     };
 
     const optimisticallyUpdateTotal = () => {
-        const total = cartItems.reduce((acc, curr) => acc + curr.product.price_range.minimum_price.final_price.value * curr.quantity, 0).toFixed(2);
+        const total = cartItems
+            .reduce(
+                (acc, curr) =>
+                    acc +
+                    curr.product.price_range.minimum_price.final_price.value *
+                        curr.quantity,
+                0,
+            )
+            .toFixed(2);
         setCartTotal({
             ...cartTotal,
             value: total,

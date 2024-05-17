@@ -45,7 +45,7 @@ const HeroSlider = () => {
                                 <h3>{username}</h3>
                                 <h1>{tagline}</h1>
                                 <h4 className="hero_price">
-                                    Tickets From {newPrice} &nbsp;
+                                    Tickets {newPrice} &nbsp;
                                     <small><del>{oldPrice}</del></small>
                                 </h4>
                                 <Link to={`/u/${username}`} className="btn">Browse Competitions</Link>

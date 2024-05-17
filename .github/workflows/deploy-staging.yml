@@ -3,7 +3,7 @@ name: Deploy Frontend to Staging
 on:
   push:
     branches:
-      - main
+      - staging
 
 jobs:
   deploy:
@@ -24,7 +24,9 @@ jobs:
         run: pnpm install
 
       - name: Create .env.production
-        run: echo "VITE_API_BASE_URL=https://${{ vars.BACKEND_DOMAIN }}\nVITE_BOODIL_WIDGET_URL=https://widget.boodil.com/prod.js" > .env.production
+        run: |
+          echo "VITE_API_BASE_URL=https://${{ vars.BACKEND_DOMAIN }}" > .env.production
+          echo "VITE_BOODIL_WIDGET_URL=https://widget.boodil.com/prod.js" >> .env.production
 
       - name: Build Project
         run: pnpm run build
