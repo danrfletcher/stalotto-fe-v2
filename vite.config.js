@@ -8,20 +8,6 @@ export default ({ mode }) => {
 
   return defineConfig({
     plugins: [react(),graphql()],
-    server: {
-      proxy: {
-        '/graphql': {
-          target: process.env.VITE_API_PROXY_URL,
-          changeOrigin: true,
-          secure: false,
-          rewrite: (path) => path.replace(/^\/api/, "/api"),
-        }
-      },
-      host: 'stalotto.test',
-      https: {
-        key: process.env.VITE_MKCERT_KEY,
-        cert: process.env.VITE_MKCERT_CERT
-      },
-    },
+    server: {},
   })
 };

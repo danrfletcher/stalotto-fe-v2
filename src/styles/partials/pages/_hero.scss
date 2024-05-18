@@ -24,7 +24,7 @@
     &::before {
         @include pseudo($top: 10%);
         font-size: clamp(5rem, 18vw, 12rem);
-        max-width: 100%; 
+        max-width: 100%;
         font-weight: 700;
         opacity: 0.15;
         overflow-wrap: break-word;
@@ -39,11 +39,11 @@
     }
 
     &.hero_slide-0::before {
-        content: "Scotty Fairno";
+        content: 'Scotty Fairno';
     }
 
     &.hero_slide-1::before {
-        content: "Connalls Raiments";
+        content: 'conalls Raiments';
     }
 
     @include devices(lg) {
@@ -101,7 +101,6 @@
             @include margin-y(1.5rem, 2rem);
         }
     }
-
 }
 
 .hero_item_img {

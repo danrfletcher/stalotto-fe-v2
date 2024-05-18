@@ -39,6 +39,7 @@
     },
     "scripts": {
         "dev": "vite",
+        "dev-stage": "cross-env NODE_ENV=staging pnpm run dev",
         "build": "vite build",
         "test": "jest",
         "eject": "vite eject",
