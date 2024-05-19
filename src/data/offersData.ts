@@ -10,11 +10,11 @@ export const offersData = [
                     {
                         parameterId: 1,
                         title: 'discount',
-                        type: 'number'
-                    }
-                ]
-            }
-        ]
+                        type: 'number',
+                    },
+                ],
+            },
+        ],
     },
     {
         id: 2,
@@ -27,21 +27,20 @@ export const offersData = [
                     {
                         parameterId: 1,
                         title: 'quantity',
-                        type: 'number'
+                        type: 'number',
                     },
                     {
                         parameterId: 2,
                         title: 'length',
-                        type: 'number'
+                        type: 'number',
                     },
                     {
                         parameterId: 3,
                         title: 'timescale',
                         type: 'string',
-                    }
-                ]
-            }
-            
-        ]
-    }
-]
+                    },
+                ],
+            },
+        ],
+    },
+];

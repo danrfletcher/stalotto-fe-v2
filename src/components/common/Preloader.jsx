@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import useScrollDisable from '../../hooks/useScrollDisable';
 
-
 const Preloader = () => {
     const [isLoading, setIsLoading] = useState(true);
 
@@ -19,18 +18,14 @@ const Preloader = () => {
         };
     }, []);
 
-
     return (
         <>
-            {
-                isLoading && (
-                    <div id="preloader">
-                        <div className="loader"></div>
-                        <span className="loader_text">Loading...</span>
-                    </div>
-                )
-
-            }
+            {isLoading && (
+                <div id="preloader">
+                    <div className="loader"></div>
+                    <span className="loader_text">Loading...</span>
+                </div>
+            )}
         </>
     );
 };

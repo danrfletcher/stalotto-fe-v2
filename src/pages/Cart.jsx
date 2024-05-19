@@ -6,7 +6,12 @@ import CartItem from '../components/cart/CartItem';
 import EmptyView from '../components/common/EmptyView';
 import { Checkout } from '../components/cart/Checkout.tsx';
 import loadingContext from '../contexts/loading/loadingContext.jsx';
-import { BarLoader, BounceLoader, PropagateLoader, PulseLoader } from 'react-spinners';
+import {
+    BarLoader,
+    BounceLoader,
+    PropagateLoader,
+    PulseLoader,
+} from 'react-spinners';
 import { getCartTotal, getSavedAddresses } from '../services/cartApi.ts';
 import useCartUpdater from '../hooks/useCartUpdater.ts';
 import { displayMoney } from '../utils/currency.js';
@@ -15,9 +20,26 @@ import userContext from '../contexts/user/userContext.jsx';
 const Cart = () => {
     useDocTitle('Cart');
 
-    const { cartItems, cartSyncedState, flagCartUpdate, displayPayments, displayCheckout, toggleDisplayCheckout, setCartSyncedState, cartIsUpdating, toggleDisplayPayments } = useContext(cartContext);
-    const { isFirstLoad, toggleIsFirstLoad, isCartDataLoaded } = useContext(loadingContext);
-    const { cartQuantity, setCartQuantity, cartTotal, setCartTotal, optimisticallyUpdateTotal } = useCartUpdater();
+    const {
+        cartItems,
+        cartSyncedState,
+        flagCartUpdate,
+        displayPayments,
+        displayCheckout,
+        toggleDisplayCheckout,
+        setCartSyncedState,
+        cartIsUpdating,
+        toggleDisplayPayments,
+    } = useContext(cartContext);
+    const { isFirstLoad, toggleIsFirstLoad, isCartDataLoaded } =
+        useContext(loadingContext);
+    const {
+        cartQuantity,
+        setCartQuantity,
+        cartTotal,
+        setCartTotal,
+        optimisticallyUpdateTotal,
+    } = useCartUpdater();
     const { isLoggedIn } = useContext(userContext);
 
     //load cart data, set cart quantity & display total
@@ -27,7 +49,9 @@ const Cart = () => {
             const total = await getCartTotal();
             setCartTotal(total);
         } catch (err) {
-            setCartTotal({ value: 'There has been an error calculating the total. Please reload the page.' });
+            setCartTotal({
+                value: 'There has been an error calculating the total. Please reload the page.',
+            });
         }
         flagCartUpdate(false);
     };
@@ -46,14 +70,15 @@ const Cart = () => {
         fetchTotal(); //load price on first component mount
     }, []);
 
-    useEffect(() => { //close open components if the user logs in or out
+    useEffect(() => {
+        //close open components if the user logs in or out
         if (displayCheckout) {
             toggleDisplayCheckout();
         }
         if (displayPayments) {
             toggleDisplayPayments();
         }
-    }, [localStorage.userToken])
+    }, [localStorage.userToken]);
 
     //wait before proceeding if cart is updating
     const [loadCheckoutComponent, setLoadCheckoutComponent] = useState(false);
@@ -67,11 +92,11 @@ const Cart = () => {
         } else {
             setDisableCartUpdates(true);
             setCartSyncedState(false); //trigger cart updater
-            setLoadCheckoutComponent(true); 
+            setLoadCheckoutComponent(true);
             try {
                 const total = await getCartTotal(); //check price
                 setCartTotal(total);
-                
+
                 if (isLoggedIn) {
                     const savedAddresses = await getSavedAddresses();
                     setCustomerSavedAddresses(savedAddresses);
@@ -82,7 +107,8 @@ const Cart = () => {
         }
     };
 
-    useEffect(() => { //open the checkout card when the cart sync has completed
+    useEffect(() => {
+        //open the checkout card when the cart sync has completed
         if (cartSyncedState === true && loadCheckoutComponent === true) {
             toggleDisplayCheckout();
             setLoadCheckoutComponent(false);
@@ -91,7 +117,7 @@ const Cart = () => {
 
     useEffect(() => {
         setLoadCheckoutComponent(false);
-    },[localStorage.userToken])
+    }, [localStorage.userToken]);
 
     return isFirstLoad ? (
         <div className="loading-spinner">
@@ -104,7 +130,12 @@ const Cart = () => {
             <section id="cart" className="section">
                 <div className="container">
                     {cartQuantity === 0 ? (
-                        <EmptyView icon={<BsCartX />} msg="Your Cart is Empty" link="/competitions" btnText="Start Shopping" />
+                        <EmptyView
+                            icon={<BsCartX />}
+                            msg="Your Cart is Empty"
+                            link="/competitions"
+                            btnText="Start Shopping"
+                        />
                     ) : (
                         <div className="wrapper cart_wrapper">
                             <div className="cart_left_col">
@@ -114,8 +145,13 @@ const Cart = () => {
                                         cartItemUid={item.uid}
                                         id={item.product.uid}
                                         title={item.product.name}
-                                        finalPrice={item.product.price_range.minimum_price.final_price.value}
-                                        originalPrice={item.product.original_price}
+                                        finalPrice={
+                                            item.product.price_range
+                                                .minimum_price.final_price.value
+                                        }
+                                        originalPrice={
+                                            item.product.original_price
+                                        }
                                         quantity={item.quantity}
                                         thumbnail={item.product.thumbnail.url}
                                         creator={item.product.creator}
@@ -129,7 +165,8 @@ const Cart = () => {
                             <div className="cart_right_col">
                                 <div className="order_summary">
                                     <h3>
-                                        Order Summary &nbsp; ( {cartQuantity} {cartQuantity > 1 ? 'items' : 'item'} )
+                                        Order Summary &nbsp; ( {cartQuantity}{' '}
+                                        {cartQuantity > 1 ? 'items' : 'item'} )
                                     </h3>
                                     <div className="order_summary_details">
                                         {/* <div className="price">
@@ -149,16 +186,42 @@ const Cart = () => {
                                             <b>
                                                 <small>Total Price</small>
                                             </b>
-                                            <b>{displayMoney(cartTotal.value)}</b>
+                                            <b>
+                                                {displayMoney(cartTotal.value)}
+                                            </b>
                                         </div>
                                     </div>
                                     {!displayPayments && (
-                                        <button type="button" className="btn checkout_btn" style={displayCheckout ? { backgroundColor: '#3067F2' } : {}} onClick={handleProceedToCheckout}>
-                                            {displayCheckout ? 'Back to Cart' : 'Checkout'}
+                                        <button
+                                            type="button"
+                                            className="btn checkout_btn"
+                                            style={
+                                                displayCheckout
+                                                    ? {
+                                                          backgroundColor:
+                                                              '#3067F2',
+                                                      }
+                                                    : {}
+                                            }
+                                            onClick={handleProceedToCheckout}
+                                        >
+                                            {displayCheckout
+                                                ? 'Back to Cart'
+                                                : 'Checkout'}
                                         </button>
                                     )}
                                     {loadCheckoutComponent && (
-                                        <BarLoader color="#ffffff" cssOverride={{ textAlign: 'center', width: '100%', borderRadius: 5, marginTop: '-4px', backgroundColor: 'rgba(0, 0, 0, 0)' }} />
+                                        <BarLoader
+                                            color="#ffffff"
+                                            cssOverride={{
+                                                textAlign: 'center',
+                                                width: '100%',
+                                                borderRadius: 5,
+                                                marginTop: '-4px',
+                                                backgroundColor:
+                                                    'rgba(0, 0, 0, 0)',
+                                            }}
+                                        />
                                     )}
                                 </div>
                             </div>
@@ -166,7 +229,9 @@ const Cart = () => {
                     )}
                 </div>
             </section>
-            {displayCheckout && <Checkout savedAddresses={customerSavedAddresses} />}
+            {displayCheckout && (
+                <Checkout savedAddresses={customerSavedAddresses} />
+            )}
         </>
     );
 };

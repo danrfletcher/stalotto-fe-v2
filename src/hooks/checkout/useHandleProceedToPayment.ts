@@ -114,7 +114,7 @@ const useHandleProceedToPayments = ({
                             postcode: postcode,
                             countryCode: (() => {
                                 const countryRecord = countryCodes.find(
-                                    listedCountry =>
+                                    (listedCountry) =>
                                         listedCountry.name === country,
                                 );
                                 return countryRecord?.code || 'GB';

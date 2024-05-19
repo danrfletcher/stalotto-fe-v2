@@ -132,10 +132,10 @@ export const Checkout: React.FC<CheckoutProps> = ({ savedAddresses }) => {
                             displayPayments && !isLoggedIn
                                 ? 'ct_payment_visible'
                                 : displayPayments && isLoggedIn
-                                ? 'ct_payment_visible_logged_in'
-                                : !displayPayments && isLoggedIn
-                                ? 'logged_in'
-                                : ''
+                                  ? 'ct_payment_visible_logged_in'
+                                  : !displayPayments && isLoggedIn
+                                    ? 'logged_in'
+                                    : ''
                         }`}
                     >
                         {isLoggedIn && (
@@ -184,7 +184,7 @@ export const Checkout: React.FC<CheckoutProps> = ({ savedAddresses }) => {
                                                 }`}
                                                 required
                                                 value={email}
-                                                onChange={e => {
+                                                onChange={(e) => {
                                                     setCheckoutItem(
                                                         'email',
                                                         e.target.value,
@@ -226,7 +226,7 @@ export const Checkout: React.FC<CheckoutProps> = ({ savedAddresses }) => {
                                             }`}
                                             required
                                             value={callingCode}
-                                            onChange={e => {
+                                            onChange={(e) => {
                                                 setCheckoutItem(
                                                     'callingCode',
                                                     e.target.value,
@@ -265,7 +265,7 @@ export const Checkout: React.FC<CheckoutProps> = ({ savedAddresses }) => {
                                             }`}
                                             required
                                             value={telephone}
-                                            onChange={e => {
+                                            onChange={(e) => {
                                                 setCheckoutItem(
                                                     'telephone',
                                                     e.target.value,
@@ -323,7 +323,7 @@ export const Checkout: React.FC<CheckoutProps> = ({ savedAddresses }) => {
                                     }`}
                                     required
                                     value={country}
-                                    onChange={e => {
+                                    onChange={(e) => {
                                         setCheckoutItem(
                                             'country',
                                             e.target.value,
@@ -354,7 +354,7 @@ export const Checkout: React.FC<CheckoutProps> = ({ savedAddresses }) => {
                                         }`}
                                         required
                                         value={firstName}
-                                        onChange={e => {
+                                        onChange={(e) => {
                                             setCheckoutItem(
                                                 'firstName',
                                                 e.target.value,
@@ -381,7 +381,7 @@ export const Checkout: React.FC<CheckoutProps> = ({ savedAddresses }) => {
                                         }`}
                                         required
                                         value={lastName}
-                                        onChange={e => {
+                                        onChange={(e) => {
                                             setCheckoutItem(
                                                 'lastName',
                                                 e.target.value,
@@ -407,7 +407,7 @@ export const Checkout: React.FC<CheckoutProps> = ({ savedAddresses }) => {
                                     }`}
                                     required
                                     value={company}
-                                    onChange={e => {
+                                    onChange={(e) => {
                                         setCheckoutItem(
                                             'company',
                                             e.target.value,
@@ -434,7 +434,7 @@ export const Checkout: React.FC<CheckoutProps> = ({ savedAddresses }) => {
                                     }`}
                                     required
                                     value={addressLine1}
-                                    onChange={e => {
+                                    onChange={(e) => {
                                         setCheckoutItem(
                                             'addressLine1',
                                             e.target.value,
@@ -461,7 +461,7 @@ export const Checkout: React.FC<CheckoutProps> = ({ savedAddresses }) => {
                                     }`}
                                     required
                                     value={addressLine2}
-                                    onChange={e => {
+                                    onChange={(e) => {
                                         setCheckoutItem(
                                             'addressLine2',
                                             e.target.value,
@@ -486,7 +486,7 @@ export const Checkout: React.FC<CheckoutProps> = ({ savedAddresses }) => {
                                     }`}
                                     required
                                     value={city}
-                                    onChange={e => {
+                                    onChange={(e) => {
                                         setCheckoutItem('city', e.target.value);
                                         setCheckoutItem(
                                             'savedAddressIsSelected',
@@ -509,7 +509,7 @@ export const Checkout: React.FC<CheckoutProps> = ({ savedAddresses }) => {
                                         }`}
                                         required
                                         value={postcode}
-                                        onChange={e => {
+                                        onChange={(e) => {
                                             setCheckoutItem(
                                                 'postcode',
                                                 e.target.value,
@@ -534,7 +534,7 @@ export const Checkout: React.FC<CheckoutProps> = ({ savedAddresses }) => {
                                         }`}
                                         required
                                         value={region}
-                                        onChange={e => {
+                                        onChange={(e) => {
                                             setCheckoutItem(
                                                 'region',
                                                 e.target.value,
@@ -631,8 +631,8 @@ export const Checkout: React.FC<CheckoutProps> = ({ savedAddresses }) => {
                             !isFormComplete
                                 ? { backgroundColor: '#6c757d' }
                                 : isFormComplete && !displayPayments
-                                ? {}
-                                : { backgroundColor: '#3067F2' }
+                                  ? {}
+                                  : { backgroundColor: '#3067F2' }
                         }
                         className="btn checkout_btn"
                         onClick={handleFetchDataForPayment}

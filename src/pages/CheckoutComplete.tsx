@@ -37,10 +37,10 @@ export const CheckoutComplete = () => {
                 state.matches('createOrderError')
                     ? 'create-order-error'
                     : state.matches('createPaymentError')
-                    ? 'create-payment-error'
-                    : state.matches('createTransactionError')
-                    ? 'create-transaction-error'
-                    : 'unknown'
+                      ? 'create-payment-error'
+                      : state.matches('createTransactionError')
+                        ? 'create-transaction-error'
+                        : 'unknown'
             }`,
         );
     }
@@ -89,10 +89,10 @@ export const CheckoutComplete = () => {
                             {completingPayment
                                 ? 'Completing Payment'
                                 : placingOrder
-                                ? 'Securing Your Tickets'
-                                : orderCompleted
-                                ? 'Order Completed'
-                                : 'Something Went Wrong'}
+                                  ? 'Securing Your Tickets'
+                                  : orderCompleted
+                                    ? 'Order Completed'
+                                    : 'Something Went Wrong'}
                         </h1>
                         <br />
                     </div>

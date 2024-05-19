@@ -6,10 +6,9 @@ import useScrollDisable from '../../hooks/useScrollDisable';
 import competitionsData from '../../data/competitionData.tsx';
 // import { AiOutlineSearch } from 'react-icons/ai';
 
-
 const SearchBar = () => {
-
-    const { isSearchOpen, toggleSearch, searchResults, setSearchResults } = useContext(commonContext);
+    const { isSearchOpen, toggleSearch, searchResults, setSearchResults } =
+        useContext(commonContext);
 
     const searchRef = useRef();
 
@@ -23,63 +22,59 @@ const SearchBar = () => {
 
     useScrollDisable(isSearchOpen);
 
-
     // handling Search
     const handleSearching = (e) => {
         const searchedTerm = e.target.value.toLowerCase().trim();
 
-        const updatedSearchResults = competitionsData.filter(item => item.title.toLowerCase().includes(searchedTerm));
+        const updatedSearchResults = competitionsData.filter((item) =>
+            item.title.toLowerCase().includes(searchedTerm),
+        );
 
-        searchedTerm === '' ? setSearchResults([]) : setSearchResults(updatedSearchResults);
+        searchedTerm === ''
+            ? setSearchResults([])
+            : setSearchResults(updatedSearchResults);
     };
-
 
     return (
         <>
-            {
-                isSearchOpen && (
-                    <div id="searchbar" className="backdrop">
-                        <div className="searchbar_content" ref={searchRef}>
-                            <div className="search_box">
-                                <input
-                                    type="search"
-                                    className="input_field"
-                                    placeholder="Search is currently disabled. Available soon..."
-                                    onChange={handleSearching}
-                                />
-                                {/* <button
+            {isSearchOpen && (
+                <div id="searchbar" className="backdrop">
+                    <div className="searchbar_content" ref={searchRef}>
+                        <div className="search_box">
+                            <input
+                                type="search"
+                                className="input_field"
+                                placeholder="Search is currently disabled. Available soon..."
+                                onChange={handleSearching}
+                            />
+                            {/* <button
                                     type="button"
                                     className="btn"
                                     disabled={searchResults.length === 0}
                                 >
                                     <AiOutlineSearch />
                                 </button> */}
-                            </div>
-
-                            {
-                                searchResults.length !== 0 && (
-                                    <div className="search_results">
-                                        {
-                                            searchResults.map(item => {
-                                                const { id, title, path } = item;
-                                                return (
-                                                    <Link
-                                                        to={`${path}${id}`}
-                                                        onClick={closeSearch}
-                                                        key={id}
-                                                    >
-                                                        {title}
-                                                    </Link>
-                                                );
-                                            })
-                                        }
-                                    </div>
-                                )
-                            }
                         </div>
+
+                        {searchResults.length !== 0 && (
+                            <div className="search_results">
+                                {searchResults.map((item) => {
+                                    const { id, title, path } = item;
+                                    return (
+                                        <Link
+                                            to={`${path}${id}`}
+                                            onClick={closeSearch}
+                                            key={id}
+                                        >
+                                            {title}
+                                        </Link>
+                                    );
+                                })}
+                            </div>
+                        )}
                     </div>
-                )
-            }
+                </div>
+            )}
         </>
     );
 };

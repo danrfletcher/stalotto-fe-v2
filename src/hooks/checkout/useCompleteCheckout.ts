@@ -11,7 +11,6 @@ import { useCheckoutApi } from '../../services/checkoutApi';
 //----------------------------------------------------------------------------------------------------
 
 const useCompleteCheckout = () => {
-    
     // Hook Call / State Machine Initialization
     const [state, send] = useMachine(checkoutCompletionMachine);
     const {

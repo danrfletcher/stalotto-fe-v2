@@ -1,10 +1,10 @@
-import { Boodil } from "../components/cart/Boodil";
+import { Boodil } from '../components/cart/Boodil';
 
 const paymentProviderButtons = [
     {
-        code: "boodil",
-        component: <Boodil />
-    }
-]
+        code: 'boodil',
+        component: <Boodil />,
+    },
+];
 
 export default paymentProviderButtons;

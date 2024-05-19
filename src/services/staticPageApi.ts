@@ -4,7 +4,9 @@ import { StaticPageDataClass } from '../models/staticPages';
 
 const baseURL = import.meta.env.VITE_API_BASE_URL;
 
-export const getStaticPage = async (pageIdentifier): Promise<StaticPageDataClass | Error> => {
+export const getStaticPage = async (
+    pageIdentifier,
+): Promise<StaticPageDataClass | Error> => {
     try {
         const page = await axios.post(`${baseURL}/graphql`, {
             query: getStaticPageQuery,

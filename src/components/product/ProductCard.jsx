@@ -5,7 +5,17 @@ import useActive from '../../hooks/useActive';
 import useCartUpdater from '../../hooks/useCartUpdater.ts';
 
 const ProductCard = (props) => {
-    const { id, title, finalPrice, originalPrice, winningTicketIDs, thumbnail, creator, urlKey, sku } = props;
+    const {
+        id,
+        title,
+        finalPrice,
+        originalPrice,
+        winningTicketIDs,
+        thumbnail,
+        creator,
+        urlKey,
+        sku,
+    } = props;
 
     const { active, handleActive, activeClass } = useActive(false);
 
@@ -37,9 +47,13 @@ const ProductCard = (props) => {
                     </Link>
                 </figure>
                 <div className="products_details">
-                    {winningTicketIDs ? `Winning Ticket${winningTicketIDs.length > 1 ? `s` : ``}: #${winningTicketIDs.join(', #')}` : null}
+                    {winningTicketIDs
+                        ? `Winning Ticket${winningTicketIDs.length > 1 ? `s` : ``}: #${winningTicketIDs.join(', #')}`
+                        : null}
                     <h3 className="products_title">
-                        <Link to={`/competition/${sku}-${creator}-${urlKey}`}>{title}</Link>
+                        <Link to={`/competition/${sku}-${creator}-${urlKey}`}>
+                            {title}
+                        </Link>
                     </h3>
                     <h5 className="products_info">{creator}</h5>
                     <div className="separator"></div>
@@ -49,7 +63,11 @@ const ProductCard = (props) => {
                             <del>{oldPrice}</del>
                         </small>
                     </h2>
-                    <button type="button" className={`btn products_btn ${activeClass(id)}`} onClick={handleAddItem}>
+                    <button
+                        type="button"
+                        className={`btn products_btn ${activeClass(id)}`}
+                        onClick={handleAddItem}
+                    >
                         {active ? 'Added' : 'Add tickets to cart'}
                     </button>
                 </div>

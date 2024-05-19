@@ -1,14 +1,14 @@
 const usersData = [
     {
         id: 1,
-        type: "creator",
-        username: "scottyfairno",
-        profileImg: "/images/users/scottyfairno-p.jpeg",
-        tag: "featured-creator",
-        tagline: "Win Veg Oil Burners & Crazy Automotive Experiences",
-        heroImage: "/images/users/scottyfairno.png",
-        heroVideo: "/videos/users/scottyfairno.mp4",
-        finalPrice: 1.90,
+        type: 'creator',
+        username: 'scottyfairno',
+        profileImg: '/images/users/scottyfairno-p.jpeg',
+        tag: 'featured-creator',
+        tagline: 'Win Veg Oil Burners & Crazy Automotive Experiences',
+        heroImage: '/images/users/scottyfairno.png',
+        heroVideo: '/videos/users/scottyfairno.mp4',
+        finalPrice: 1.9,
         originalPrice: 10,
     },
     // {
@@ -25,22 +25,22 @@ const usersData = [
     // },
     {
         id: 3,
-        type: "user",
-        username: "uncle_buzzcocks",
-        profileImg: "/images/users/uncle_buzzcocks.jpeg"
+        type: 'user',
+        username: 'uncle_buzzcocks',
+        profileImg: '/images/users/uncle_buzzcocks.jpeg',
     },
     {
         id: 4,
-        type: "administrator",
-        username: "danrfletcher",
-        profileImg: "/images/users/danrfletcher.jpg"
+        type: 'administrator',
+        username: 'danrfletcher',
+        profileImg: '/images/users/danrfletcher.jpg',
     },
     {
         id: 5,
-        type: "user",
-        username: "mrbodge",
-        profileImg: "/images/users/mrbodge.jpeg"
+        type: 'user',
+        username: 'mrbodge',
+        profileImg: '/images/users/mrbodge.jpeg',
     },
-]
+];
 
 export default usersData;

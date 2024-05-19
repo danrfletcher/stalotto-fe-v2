@@ -18,18 +18,11 @@ const LaunchHome = () => {
 
     //first page load logic for loading spinner
     useEffect(() => {
-        if (
-            isUserDataLoaded &&
-            isCartDataLoaded &&
-            isFirstLoad
-        ) {
+        if (isUserDataLoaded && isCartDataLoaded && isFirstLoad) {
             toggleItemsLoaded(['isHomeLoaded']);
             toggleIsFirstLoad();
         }
-    }, [
-        isCartDataLoaded,
-        isUserDataLoaded,
-    ]);
+    }, [isCartDataLoaded, isUserDataLoaded]);
 
     return isFirstLoad ? (
         <div className="loading-spinner">
@@ -38,9 +31,7 @@ const LaunchHome = () => {
     ) : (
         <>
             <Helmet>
-                <title>
-                    Stalotto | Rust to Mexico Launch Special
-                </title>
+                <title>Stalotto | Rust to Mexico Launch Special</title>
             </Helmet>
             <main
                 className={isFirstLoad ? 'content-hidden' : 'content-visible'}

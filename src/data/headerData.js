@@ -1,8 +1,8 @@
 export const dropdownMenu = [
     {
         id: 1,
-        link: "Please check your emails to find order information. Check back here soon to manage your account!",
-        path: ""
+        link: 'Please check your emails to find order information. Check back here soon to manage your account!',
+        path: '',
     },
     // {
     //     id: 1,

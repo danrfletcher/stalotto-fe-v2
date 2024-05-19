@@ -160,7 +160,7 @@ export const featuredCompetitionsResponse_200 = `
         }
     }
 }
-`
+`;
 
 export const featuredCompetitionsResponse_204 = `
 {
@@ -172,7 +172,7 @@ export const featuredCompetitionsResponse_204 = `
         }
     }
 }
-`
+`;
 
 export const featuredCompetitionsResponse_200_TreatAs400 = `
 {
@@ -180,7 +180,7 @@ export const featuredCompetitionsResponse_200_TreatAs400 = `
         "errors": []
     }
 }
-`
+`;
 
 export const featuredCompetitionsResponse_500_TreatAs400 = `
 {
@@ -188,8 +188,7 @@ export const featuredCompetitionsResponse_500_TreatAs400 = `
         "errors": []
     }
 }
-
-`
+`;
 
 export const featuredCompetitionsResponse_500 = `
 {
@@ -252,4 +251,4 @@ export const featuredCompetitionsResponse_500 = `
     },
     "request": {}
 }
-`
+`;

@@ -14,9 +14,9 @@ import {
     featuredCompetitionsResponse_200_TreatAs400,
     featuredCompetitionsResponse_500_TreatAs400,
     featuredCompetitionsResponse_500,
-  } from '../mocks/servicesMockQueriesAndResponses.js';
+} from '../mocks/servicesMockQueriesAndResponses.js';
 
-const baseURL = "https://magento.stalotto.test";
+const baseURL = 'https://magento.stalotto.test';
 
 describe('FeaturedSlider', () => {
     let mock;
@@ -31,51 +31,77 @@ describe('FeaturedSlider', () => {
 
     it('On Load: renders Spinner component before data is received', async () => {
         render(<FeaturedSlider />);
-        await waitFor(() => expect(screen.getByTestId('spinner-component')).toBeInTheDocument());
+        await waitFor(() =>
+            expect(screen.getByTestId('spinner-component')).toBeInTheDocument(),
+        );
     });
 
     it('200 (204): renders empty featured competitions component when Magento responds with an empty featuredCompetitions array', async () => {
         mock.onPost(`${baseURL}/graphql`, {
-          query: featuredCompetitionDataQuery_ShouldSucceed
+            query: featuredCompetitionDataQuery_ShouldSucceed,
         }).reply(200, featuredCompetitionsResponse_204);
-    
+
         render(<FeaturedSlider />);
-        await waitFor(() => expect(screen.getByText("No featured competitions at the moment!")).toBeInTheDocument());
-      });
-    
+        await waitFor(() =>
+            expect(
+                screen.getByText('No featured competitions at the moment!'),
+            ).toBeInTheDocument(),
+        );
+    });
+
     it('500 (400): renders error text when Magento responds with 500 status referencing a known bad request error', async () => {
         mock.onPost(`${baseURL}/graphql`, {
-        query: featuredCompetitionDataQuery_ShouldFail500_TreatAs400
+            query: featuredCompetitionDataQuery_ShouldFail500_TreatAs400,
         }).reply(500, featuredCompetitionsResponse_500_TreatAs400);
 
         render(<FeaturedSlider />);
-        await waitFor(() => expect(screen.getByText("Request malformed. We're having trouble fetching featured competitions. Try reloading your browser or clearing the browser cache.")).toBeInTheDocument());
+        await waitFor(() =>
+            expect(
+                screen.getByText(
+                    "Request malformed. We're having trouble fetching featured competitions. Try reloading your browser or clearing the browser cache.",
+                ),
+            ).toBeInTheDocument(),
+        );
     });
 
     it('200 (400): renders error text when Magento responds with 200 status referencing a known bad request error', async () => {
         mock.onPost(`${baseURL}/graphql`, {
-        query: featuredCompetitionDataQuery_ShouldFail200_TreatAs400
+            query: featuredCompetitionDataQuery_ShouldFail200_TreatAs400,
         }).reply(500, featuredCompetitionsResponse_200_TreatAs400);
 
         render(<FeaturedSlider />);
-        await waitFor(() => expect(screen.getByText("Request malformed. We're having trouble fetching featured competitions. Try reloading your browser or clearing the browser cache.")).toBeInTheDocument());
+        await waitFor(() =>
+            expect(
+                screen.getByText(
+                    "Request malformed. We're having trouble fetching featured competitions. Try reloading your browser or clearing the browser cache.",
+                ),
+            ).toBeInTheDocument(),
+        );
     });
 
     it('500: renders error text when Magento responds with 500 status code referencing an unhandled error', async () => {
         mock.onPost(`${baseURL}/graphql`, {
-        query: featuredCompetitionDataQuery_ShouldFail500
+            query: featuredCompetitionDataQuery_ShouldFail500,
         }).reply(500, featuredCompetitionsResponse_500);
 
         render(<FeaturedSlider />);
-        await waitFor(() => expect(screen.getByText("We're having trouble fetching featured competitions. Please try again later.")).toBeInTheDocument());
+        await waitFor(() =>
+            expect(
+                screen.getByText(
+                    "We're having trouble fetching featured competitions. Please try again later.",
+                ),
+            ).toBeInTheDocument(),
+        );
     });
 
     it('200: renders legitimate Swiper component component when Magento responds with a valid featuredCompetitions array', async () => {
         mock.onPost(`${baseURL}/graphql`, {
-        query: featuredCompetitionDataQuery_ShouldSucceed
+            query: featuredCompetitionDataQuery_ShouldSucceed,
         }).reply(500, featuredCompetitionsResponse_200);
 
         render(<FeaturedSlider />);
-        await waitFor(() => expect(screen.getByTestId('featured-swiper')).toBeInTheDocument());
+        await waitFor(() =>
+            expect(screen.getByTestId('featured-swiper')).toBeInTheDocument(),
+        );
     });
-})
+});

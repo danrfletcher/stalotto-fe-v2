@@ -4,7 +4,7 @@ import { componentErrorData } from '../data/errorData';
 
 const ErrorPage = () => {
     const { errorKey } = useParams();
-    
+
     const [camelCaseError, setCamelCaseError] = useState('');
     const [error, setError] = useState({});
     useEffect(() => {
@@ -12,18 +12,18 @@ const ErrorPage = () => {
         const errorKeyParts = errorKey.split('-');
         errorParts.push(errorKeyParts[0]);
         errorKeyParts.shift();
-    
-        errorKeyParts.forEach(part => {
-            const capitalizedPart = part.charAt(0).toUpperCase() + part.slice(1);
+
+        errorKeyParts.forEach((part) => {
+            const capitalizedPart =
+                part.charAt(0).toUpperCase() + part.slice(1);
             errorParts.push(capitalizedPart);
         });
-    
+
         setCamelCaseError(errorParts.join(''));
         setError(componentErrorData[errorParts.join('')] || {});
+    }, []);
 
-    },[])
-
-    const { name, information } = error
+    const { name, information } = error;
 
     return (
         <>

@@ -153,7 +153,7 @@ const useUserAccounts = () => {
             const satisfiedConditions = pwValidationConditions.map(
                 (condition) => {
                     const satisfiesCondition = condition.regex.test(
-                        inputValues.password
+                        inputValues.password,
                     );
                     if (satisfiesCondition) {
                         return {
@@ -166,10 +166,10 @@ const useUserAccounts = () => {
                             ...condition,
                         };
                     }
-                }
+                },
             );
             const allConditionsSatisfied = satisfiedConditions.every(
-                (condition) => condition.satisfied === true
+                (condition) => condition.satisfied === true,
             );
             return {
                 match: true,
