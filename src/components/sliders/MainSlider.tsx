@@ -1,6 +1,7 @@
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Pagination, A11y, Autoplay } from 'swiper';
 import { Helmet } from 'react-helmet-async';
+import { useNavigate } from 'react-router';
 
 import 'swiper/scss';
 import 'swiper/scss/autoplay';
@@ -9,6 +10,7 @@ import useCartUpdater from '../../hooks/useCartUpdater';
 
 const MainSlider = () => {
     const { addToCart } = useCartUpdater();
+    const naviagate = useNavigate();
 
     // handling Add-to-cart Actions
     const handleAddItem = () => {
@@ -52,7 +54,7 @@ const MainSlider = () => {
                         </video>
                     </div>
                     <div className="hero_item_txt">
-                        <h3>
+                        <h3 style={{ cursor: 'pointer !important' }}>
                             scottyfairno, conallbdoyle and{' '}
                             <a
                                 target="_blank"
@@ -71,8 +73,19 @@ const MainSlider = () => {
                                 <del>£4.99</del>
                             </small>
                         </h4>
+                        <button
+                            onClick={() =>
+                                naviagate(
+                                    '/competition/5-scottyfairno,%20conallbdoyle,%20rust2rome-rust-to-rome-launch-special',
+                                )
+                            }
+                            className="btn"
+                            style={{ marginRight: '16px' }}
+                        >
+                            View Experience
+                        </button>
                         <button onClick={handleAddItem} className="btn">
-                            Enter Now
+                            Add to Cart
                         </button>
                     </div>
                     <figure className="hero_item_img">
