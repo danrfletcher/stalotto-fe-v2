@@ -151,7 +151,8 @@ const useCartUpdater = () => {
             .reduce(
                 (acc, curr) =>
                     acc +
-                    curr.product.price_range.minimum_price.final_price.value *
+                    curr.product?.price_range?.minimum_price?.final_price
+                        ?.value *
                         curr.quantity,
                 0,
             )
