@@ -8,54 +8,52 @@ const userContext = createContext();
 export const userInitialState = {
     isLoggedIn: false,
     token: null,
-    loginWorkflowState: "None",
+    loginWorkflowState: 'None',
     user: {
         firstName: null,
         lastName: null,
-        email: null
+        email: null,
     },
 };
 
 // User-Provider Component
 const UserProvider = ({ children }) => {
-
     const [state, dispatch] = useReducer(userReducer, userInitialState);
-    
+
     // Actions
     const setToken = (token) => {
-
         return dispatch({
             type: 'SET_TOKEN',
-            payload: { token }
+            payload: { token },
         });
     };
 
     const toggleLoggedIn = (bool) => {
         return dispatch({
             type: 'TOGGLE_LOGGED_IN',
-            payload: { bool }
-        })
+            payload: { bool },
+        });
     };
 
     const modifyLoginWorkflowState = (workflow) => {
         return dispatch({
             type: 'MODIFY_LOGIN_WF_STATE',
-            payload: { workflow }
-        })
+            payload: { workflow },
+        });
     };
 
     const modifyUser = (user) => {
         return dispatch({
             type: 'MODIFY_USER',
-            payload: { user }
-        })
+            payload: { user },
+        });
     };
 
     const setUserDefaults = () => {
         return dispatch({
-            type: 'RESET'
-        })
-    }
+            type: 'RESET',
+        });
+    };
 
     // Context values
     const values = {
@@ -64,13 +62,11 @@ const UserProvider = ({ children }) => {
         toggleLoggedIn,
         modifyLoginWorkflowState,
         modifyUser,
-        setUserDefaults
+        setUserDefaults,
     };
 
     return (
-        <userContext.Provider value={values}>
-            {children}
-        </userContext.Provider>
+        <userContext.Provider value={values}>{children}</userContext.Provider>
     );
 };
 

@@ -1,7 +1,6 @@
 import { useEffect } from 'react';
 
 const useOutsideClose = (ref, handler) => {
-
     useEffect(() => {
         const outsideClose = (e) => {
             if (ref.current && !ref.current.contains(e.target)) {
@@ -15,7 +14,6 @@ const useOutsideClose = (ref, handler) => {
             window.removeEventListener('mousedown', outsideClose);
         };
     }, [ref, handler]);
-
 };
 
 export default useOutsideClose;

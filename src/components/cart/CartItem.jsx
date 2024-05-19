@@ -7,7 +7,18 @@ import useCartUpdater from '../../hooks/useCartUpdater.ts';
 import cartContext from '../../contexts/cart/cartContext.jsx';
 
 const CartItem = (props) => {
-    const { title, finalPrice, originalPrice, quantity, thumbnail, creator, sku, urlKey, cartItemUid, disableCartUpdates } = props;
+    const {
+        title,
+        finalPrice,
+        originalPrice,
+        quantity,
+        thumbnail,
+        creator,
+        sku,
+        urlKey,
+        cartItemUid,
+        disableCartUpdates,
+    } = props;
     const { displayCheckout } = useContext(cartContext);
 
     const newPrice = displayMoney(finalPrice);
@@ -26,7 +37,9 @@ const CartItem = (props) => {
                 <div className="cart_item_info">
                     <div className="cart_item_head">
                         <h4 className="cart_item_title">
-                            <Link to={`/competition/${sku}-${creator}-${urlKey}`}>
+                            <Link
+                                to={`/competition/${sku}-${creator}-${urlKey}`}
+                            >
                                 <strong>{title}</strong> Competition Entry
                             </Link>
                         </h4>
@@ -37,10 +50,18 @@ const CartItem = (props) => {
                             }}
                         >
                             <div className="cart_item_del">
-                                <span style={displayCheckout ? { color: '#6c757d' } : {}}>
+                                <span
+                                    style={
+                                        displayCheckout
+                                            ? { color: '#6c757d' }
+                                            : {}
+                                    }
+                                >
                                     <TbTrash />
                                 </span>
-                                {!displayCheckout && <div className="tooltip">Remove Item</div>}
+                                {!displayCheckout && (
+                                    <div className="tooltip">Remove Item</div>
+                                )}
                             </div>
                         </button>
                     </div>
@@ -55,7 +76,12 @@ const CartItem = (props) => {
                         )}
                     </h2>
 
-                    <QuantityBox sku={sku} itemQuantity={quantity} cartItemUid={cartItemUid} disableCartUpdates={disableCartUpdates} />
+                    <QuantityBox
+                        sku={sku}
+                        itemQuantity={quantity}
+                        cartItemUid={cartItemUid}
+                        disableCartUpdates={disableCartUpdates}
+                    />
                 </div>
             </div>
         </>

@@ -32,10 +32,10 @@ interface RawMagentoShippingAddress {
     region: {
         region: string;
         region_code: string;
-    }
+    };
     postcode: string;
     country_code: string;
-    telephone: string; 
+    telephone: string;
     default_billing: boolean;
 }
 

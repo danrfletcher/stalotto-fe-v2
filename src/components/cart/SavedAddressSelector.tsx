@@ -10,7 +10,7 @@ interface SavedAddressSelectorProps {
 const SavedAddressSelector: React.FC<SavedAddressSelectorProps> = (props) => {
     const disable =
         props && props.disable !== undefined ? props.disable : false;
-    
+
     // State Variables
     const [savedAddresses, setSavedAddresses] = useState<
         ShippingAddressFormEntry[]
@@ -42,7 +42,7 @@ const SavedAddressSelector: React.FC<SavedAddressSelectorProps> = (props) => {
             setSavedAddresses(() => {
                 return (
                     getSavedCustomerAddressesData.customer?.addresses?.map(
-                        address => {
+                        (address) => {
                             const street = address?.street || ['', ''];
                             const telephoneParts = (
                                 address?.telephone || '~'
@@ -59,7 +59,7 @@ const SavedAddressSelector: React.FC<SavedAddressSelectorProps> = (props) => {
                                 country:
                                     (function () {
                                         const country = countryCodes.find(
-                                            country =>
+                                            (country) =>
                                                 country.code ===
                                                 address?.country_code,
                                         );
@@ -79,7 +79,7 @@ const SavedAddressSelector: React.FC<SavedAddressSelectorProps> = (props) => {
 
     const handleSelectSavedAddress = (address: ShippingAddressFormEntry) => {
         //set checkout state
-        Object.keys(address).forEach(key => {
+        Object.keys(address).forEach((key) => {
             if (key in address) {
                 const value = address[key as keyof ShippingAddressFormEntry];
                 setCheckoutItem(key, value);
@@ -93,7 +93,9 @@ const SavedAddressSelector: React.FC<SavedAddressSelectorProps> = (props) => {
             disabled={disable}
             name="saved_addresses"
             className={`input_field`}
-            onChange={e => handleSelectSavedAddress(JSON.parse(e.target.value))}
+            onChange={(e) =>
+                handleSelectSavedAddress(JSON.parse(e.target.value))
+            }
         >
             {getSavedCustomerAddressesIsLoading ? (
                 <option value="">Loading your saved addresses...</option>
@@ -108,7 +110,7 @@ const SavedAddressSelector: React.FC<SavedAddressSelectorProps> = (props) => {
                             key={i}
                         >{`${(() => {
                             let addressToDisplay: string = '';
-                            Object.values(address).forEach(property => {
+                            Object.values(address).forEach((property) => {
                                 if (property !== '') {
                                     addressToDisplay = addressToDisplay.concat(
                                         ', ',

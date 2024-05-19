@@ -12,11 +12,19 @@ const QuantityBox = (props) => {
     return (
         <>
             <div className="quantity_box">
-                <button disabled={disableCartUpdates} type="button" onClick={() => decrementCart(cartItemUid)}>
+                <button
+                    disabled={disableCartUpdates}
+                    type="button"
+                    onClick={() => decrementCart(cartItemUid)}
+                >
                     <FaMinus />
                 </button>
                 <span className="quantity_count">{itemQuantity}</span>
-                <button disabled={disableCartUpdates} type="button" onClick={() => addToCart(sku, 1, true)}>
+                <button
+                    disabled={disableCartUpdates}
+                    type="button"
+                    onClick={() => addToCart(sku, 1, true)}
+                >
                     <FaPlus />
                 </button>
             </div>

@@ -68,17 +68,19 @@ const AnimText = keyframes`
 `;
 
 const ParentDiv = styled.div`
-    background: ${props => props.background};
-    font: 400 16px 'Varela Round', sans-serif;
+    background: ${(props) => props.background};
+    font:
+        400 16px 'Varela Round',
+        sans-serif;
     display: flex;
     flex-direction: column;
-    padding: ${props => props.paddingPassed}px;
+    padding: ${(props) => props.paddingPassed}px;
 `;
 
 const StyledDiv = styled.div`
-    background: ${props => props.background};
-    width: ${props => props.passedSize}px;
-    height: ${props => props.passedSize}px;
+    background: ${(props) => props.background};
+    width: ${(props) => props.passedSize}px;
+    height: ${(props) => props.passedSize}px;
     border-radius: 50px;
     position: relative;
     display: flex;
@@ -94,16 +96,16 @@ const StyledSVG = styled.svg`
 `;
 
 const StyledSVGOuter = styled(StyledSVG)`
-    height: ${props => props.passedSize}px;
-    width: ${props => props.passedSize}px;
+    height: ${(props) => props.passedSize}px;
+    width: ${(props) => props.passedSize}px;
 `;
 const StyledSVGMiddle = styled(StyledSVG)`
-    height: ${props => props.passedSize}px;
-    width: ${props => props.passedSize}px;
+    height: ${(props) => props.passedSize}px;
+    width: ${(props) => props.passedSize}px;
 `;
 const StyledSVGInner = styled(StyledSVG)`
-    height: ${props => props.passedSize}px;
-    width: ${props => props.passedSize}px;
+    height: ${(props) => props.passedSize}px;
+    width: ${(props) => props.passedSize}px;
 `;
 
 const StyledSVGCircle = styled.circle`
@@ -121,11 +123,11 @@ const StyledSVGCircleOuter = styled(StyledSVGCircle)`
 `;
 const StyledSVGCircleOuterBack = styled(StyledSVGCircleOuter)`
     animation: ${AnimCircleOuter} 1.8s ease infinite 0.3s;
-    stroke: ${props => props.backColor};
+    stroke: ${(props) => props.backColor};
 `;
 const StyledSVGCircleOuterFront = styled(StyledSVGCircleOuter)`
     animation: ${AnimCircleOuter} 1.8s ease infinite 0.15s;
-    stroke: ${props => props.frontColor};
+    stroke: ${(props) => props.frontColor};
 `;
 
 const StyledSVGCircleMiddle = styled(StyledSVGCircle)`
@@ -133,11 +135,11 @@ const StyledSVGCircleMiddle = styled(StyledSVGCircle)`
 `;
 const StyledSVGCircleMiddleBack = styled(StyledSVGCircleMiddle)`
     animation: ${AnimCircleMiddle} 1.8s ease infinite 0.25s;
-    stroke: ${props => props.backColor};
+    stroke: ${(props) => props.backColor};
 `;
 const StyledSVGCircleMiddleFront = styled(StyledSVGCircleMiddle)`
     animation: ${AnimCircleMiddle} 1.8s ease infinite 0.1s;
-    stroke: ${props => props.frontColor};
+    stroke: ${(props) => props.frontColor};
 `;
 
 const StyledSVGCircleInner = styled(StyledSVGCircle)`
@@ -145,11 +147,11 @@ const StyledSVGCircleInner = styled(StyledSVGCircle)`
 `;
 const StyledSVGCircleInnerBack = styled(StyledSVGCircleInner)`
     animation: ${AnimCircleInner} 1.8s ease infinite 0.2s;
-    stroke: ${props => props.backColor};
+    stroke: ${(props) => props.backColor};
 `;
 const StyledSVGCircleInnerFront = styled(StyledSVGCircleInner)`
     animation: ${AnimCircleInner} 1.8s ease infinite 0.05s;
-    stroke: ${props => props.frontColor};
+    stroke: ${(props) => props.frontColor};
 `;
 
 const StyledText = styled.div`
@@ -158,16 +160,16 @@ const StyledText = styled.div`
     justify-content: center;
     align-items: center;
     font-weight: 500;
-    font-size: ${props => props.passedSize}px;
+    font-size: ${(props) => props.passedSize}px;
     letter-spacing: 0.2px;
-    margin-top: ${props => props.passedMargin}px;
+    margin-top: ${(props) => props.passedMargin}px;
     ::before {
         content: attr(data-text);
-        color: ${props => props.textColor};
+        color: ${(props) => props.textColor};
     }
     ::after {
         content: attr(data-text);
-        color: ${props => props.frontColor};
+        color: ${(props) => props.frontColor};
         animation: ${AnimText} 3.6s ease infinite;
         position: absolute;
     }

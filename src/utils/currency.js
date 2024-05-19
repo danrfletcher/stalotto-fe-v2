@@ -1,4 +1,3 @@
-
 // Display Money in local Format
 export const displayMoney = (n) => {
     const isInteger = Number.isInteger(n);
@@ -7,7 +6,7 @@ export const displayMoney = (n) => {
         style: 'currency',
         currency: 'GBP',
         minimumFractionDigits: isInteger ? 0 : 2,
-        maximumFractionDigits: isInteger ? 0 : 2
+        maximumFractionDigits: isInteger ? 0 : 2,
     });
 
     return numFormat.format(n);
@@ -19,7 +18,6 @@ export const calculateDiscount = (discountedPrice, originalPrice) => {
 
     return Math.round(discountedPercent);
 };
-
 
 // Calculate Total Amount
 export const calculateTotal = (arr) => {

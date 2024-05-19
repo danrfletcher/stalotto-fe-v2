@@ -2,7 +2,9 @@ const cartReducer = (state, action) => {
     switch (action.type) {
         case 'ADD_TO_CART':
             const newItemIdToAdd = action.payload.item.id;
-            const itemToAddExist = state.cartItems.some((item) => item.id === newItemIdToAdd);
+            const itemToAddExist = state.cartItems.some(
+                (item) => item.id === newItemIdToAdd,
+            );
 
             let updatedCartItems = null;
 
@@ -29,7 +31,9 @@ const cartReducer = (state, action) => {
         case 'REMOVE_FROM_CART':
             return {
                 ...state,
-                cartItems: state.cartItems.filter((item) => item.id !== action.payload.itemId),
+                cartItems: state.cartItems.filter(
+                    (item) => item.id !== action.payload.itemId,
+                ),
             };
 
         case 'INCREMENT_ITEM':
@@ -70,7 +74,9 @@ const cartReducer = (state, action) => {
 
         case 'SET_ITEM_QTD':
             const newItemToChange = action.payload.item.id;
-            const itemToChangeExist = state.cartItems.some((item) => item.id === newItemToChange);
+            const itemToChangeExist = state.cartItems.some(
+                (item) => item.id === newItemToChange,
+            );
 
             let updatedQtdCartItems = null;
 
@@ -91,7 +97,9 @@ const cartReducer = (state, action) => {
 
             return {
                 ...state,
-                cartItems: updatedQtdCartItems.filter((item) => item.quantity !== 0),
+                cartItems: updatedQtdCartItems.filter(
+                    (item) => item.quantity !== 0,
+                ),
             };
 
         case 'SET_CART':

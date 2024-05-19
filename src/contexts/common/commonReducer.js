@@ -1,37 +1,33 @@
 const commonReducer = (state, action) => {
     switch (action.type) {
-
         case 'TOGGLE_FORM':
             return {
                 ...state,
-                isFormOpen: action.payload.toggle
+                isFormOpen: action.payload.toggle,
             };
-
 
         case 'SET_FORM_USER_INFO':
             return {
                 ...state,
-                formUserInfo: action.payload.info
+                formUserInfo: action.payload.info,
             };
-
 
         case 'TOGGLE_SEARCH':
             return {
                 ...state,
-                isSearchOpen: action.payload.toggle
+                isSearchOpen: action.payload.toggle,
             };
-
 
         case 'SET_SEARCH_RESULTS':
             return {
                 ...state,
-                searchResults: action.payload.results
+                searchResults: action.payload.results,
             };
 
         case 'SET_HASH':
             return {
                 ...state,
-                currentHash: action.payload.hash
+                currentHash: action.payload.hash,
             };
 
         //Home page data actions

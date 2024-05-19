@@ -1,34 +1,43 @@
 {
-  "compilerOptions": {
-    "target": "ES2020",
-    "useDefineForClassFields": true,
-    "lib": ["ES2020", "DOM", "DOM.Iterable"],
-    "module": "ESNext",
-    "skipLibCheck": true,
-    "esModuleInterop": true,
+    "compilerOptions": {
+        "target": "ES2020",
+        "useDefineForClassFields": true,
+        "lib": ["ES2020", "DOM", "DOM.Iterable"],
+        "module": "ESNext",
+        "skipLibCheck": true,
+        "esModuleInterop": true,
 
-    // Allow js files during TypeScript migration
-    "allowJs": true,
-    "noImplicitAny": true,
+        // Allow js files during TypeScript migration
+        "allowJs": true,
+        "noImplicitAny": true,
 
-    /* Bundler mode */
-    "moduleResolution": "node",
-    // Removed "allowImportingTsExtensions": true, as it's not a valid TypeScript compiler option
-    "resolveJsonModule": true,
-    "isolatedModules": true,
-    "noEmit": true,
-    "jsx": "react-jsx",
+        /* Bundler mode */
+        "moduleResolution": "node",
+        // Removed "allowImportingTsExtensions": true, as it's not a valid TypeScript compiler option
+        "resolveJsonModule": true,
+        "isolatedModules": true,
+        "noEmit": true,
+        "jsx": "react-jsx",
 
-    /* Linting */
-    "strict": true,
-    "noUnusedLocals": true,
-    "noUnusedParameters": true,
-    "noFallthroughCasesInSwitch": true,
+        /* Linting */
+        "strict": true,
+        "noUnusedLocals": true,
+        "noUnusedParameters": true,
+        "noFallthroughCasesInSwitch": true,
 
-    /* Type Roots */
-    "typeRoots": ["./node_modules/@types", "./src/types"],
-    "types": ["node", "jest", "@testing-library/jest-dom", "@jest/globals"]
-  },
-  "include": ["src/**/*.ts", "src/**/*.d.ts", "src/**/*.tsx", "src/**/*.vue", "src/__tests__/services.test.tsx", "src/contexts/user/userContext.jsx", "src/contexts/cart/cartContext.jsx", "src/lib/WifiLoader.jsx"],
-  "references": [{ "path": "./tsconfig.node.json" }]
+        /* Type Roots */
+        "typeRoots": ["./node_modules/@types", "./src/types"],
+        "types": ["node", "jest", "@testing-library/jest-dom", "@jest/globals"]
+    },
+    "include": [
+        "src/**/*.ts",
+        "src/**/*.d.ts",
+        "src/**/*.tsx",
+        "src/**/*.vue",
+        "src/__tests__/services.test.tsx",
+        "src/contexts/user/userContext.jsx",
+        "src/contexts/cart/cartContext.jsx",
+        "src/lib/WifiLoader.jsx"
+    ],
+    "references": [{ "path": "./tsconfig.node.json" }]
 }

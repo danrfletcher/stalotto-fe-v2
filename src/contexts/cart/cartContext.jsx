@@ -124,7 +124,9 @@ const CartProvider = ({ children }) => {
                     payload: { keyToSet, value },
                 });
             } else {
-                throw new Error(`The specified checkout field '${keyToSet}' does not exist in this context`);
+                throw new Error(
+                    `The specified checkout field '${keyToSet}' does not exist in this context`,
+                );
             }
         } catch (err) {
             console.error('Error: ', err);
@@ -148,7 +150,9 @@ const CartProvider = ({ children }) => {
         setCheckoutItem,
     };
 
-    return <cartContext.Provider value={values}>{children}</cartContext.Provider>;
+    return (
+        <cartContext.Provider value={values}>{children}</cartContext.Provider>
+    );
 };
 
 export default cartContext;

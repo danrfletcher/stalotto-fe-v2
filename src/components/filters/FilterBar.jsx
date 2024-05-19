@@ -3,8 +3,8 @@ import filtersContext from '../../contexts/filters/filtersContext.jsx';
 
 const FilterBar = () => {
     //Sort & filter is currently disabled
-    const { handleMobSortVisibility, handleMobFilterVisibility } = useContext(filtersContext);
-
+    const { handleMobSortVisibility, handleMobFilterVisibility } =
+        useContext(filtersContext);
 
     return (
         <>

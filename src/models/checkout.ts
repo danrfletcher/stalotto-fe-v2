@@ -18,7 +18,10 @@ export class ShippingAddressDto implements ShippingAddress {
     }
 }
 
-export class FormattedMagentoShippingAddressDto extends ShippingAddressDto implements FormattedMagentoShippingAddress {
+export class FormattedMagentoShippingAddressDto
+    extends ShippingAddressDto
+    implements FormattedMagentoShippingAddress
+{
     street: string[];
     countryCode: string;
     company: string | null;
@@ -27,11 +30,14 @@ export class FormattedMagentoShippingAddressDto extends ShippingAddressDto imple
         super(data);
         this.street = data.street;
         this.countryCode = data.countryCode;
-        this.company = data.company
+        this.company = data.company;
     }
 }
 
-export class ShippingAddressFormEntryDto extends ShippingAddressDto implements ShippingAddressFormEntry {
+export class ShippingAddressFormEntryDto
+    extends ShippingAddressDto
+    implements ShippingAddressFormEntry
+{
     company?: string;
     addressLine1: string;
     addressLine2?: string;

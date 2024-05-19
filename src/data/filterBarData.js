@@ -1,40 +1,40 @@
 export const sortMenu = [
     {
         id: 1,
-        title: "Latest",
+        title: 'Latest',
     },
     {
         id: 2,
-        title: "Featured",
+        title: 'Featured',
     },
     {
         id: 3,
-        title: "Top Rated",
+        title: 'Top Rated',
     },
     {
         id: 4,
-        title: "Price(Lowest First)",
+        title: 'Price(Lowest First)',
     },
     {
         id: 5,
-        title: "Price(Highest First)"
+        title: 'Price(Highest First)',
     },
 ];
 
 export const brandsMenu = [
     {
         id: 1,
-        label: "JBL",
+        label: 'JBL',
         checked: false,
     },
     {
         id: 2,
-        label: "BoAt",
+        label: 'BoAt',
         checked: false,
     },
     {
         id: 3,
-        label: "Sony",
+        label: 'Sony',
         checked: false,
     },
 ];
@@ -42,22 +42,22 @@ export const brandsMenu = [
 export const categoryMenu = [
     {
         id: 1,
-        label: "Headphones",
+        label: 'Headphones',
         checked: false,
     },
     {
         id: 2,
-        label: "Earbuds",
+        label: 'Earbuds',
         checked: false,
     },
     {
         id: 3,
-        label: "Earphones",
+        label: 'Earphones',
         checked: false,
     },
     {
         id: 4,
-        label: "Neckbands",
+        label: 'Neckbands',
         checked: false,
     },
 ];

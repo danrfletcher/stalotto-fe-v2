@@ -294,9 +294,7 @@ const CompetitionDetails = () => {
                                                 ) : (
                                                     <div className="countdown_time">
                                                         <FlipClockCountdown
-                                                            to={
-                                                                closes.getTime()
-                                                            }
+                                                            to={closes.getTime()}
                                                             digitBlockStyle={{
                                                                 width: 30,
                                                                 height: 40,

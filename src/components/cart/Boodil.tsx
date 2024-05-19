@@ -42,7 +42,7 @@ export const Boodil = () => {
                 style={{
                     backgroundColor: '#444444',
                 }}
-                onClick={e => {
+                onClick={(e) => {
                     e.preventDefault();
                     handleCreateBoodilTransaction({
                         cartId: localStorage.cartId,

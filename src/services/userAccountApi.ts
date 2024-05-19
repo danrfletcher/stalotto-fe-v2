@@ -1,5 +1,10 @@
 import axios from 'axios';
-import { createUserAccountQuery, getUserInfoQuery, getUserLoginQuery, logoutUserQuery } from './userAccountQueries';
+import {
+    createUserAccountQuery,
+    getUserInfoQuery,
+    getUserLoginQuery,
+    logoutUserQuery,
+} from './userAccountQueries';
 import { CartItem } from './cartApi';
 
 interface User {
@@ -21,7 +26,10 @@ export interface LoginParameters {
     password: string;
 }
 
-export const loginUser = async ({ email, password }: LoginParameters): Promise<string | false> => {
+export const loginUser = async ({
+    email,
+    password,
+}: LoginParameters): Promise<string | false> => {
     try {
         const response = await axios.post(`${baseURL}/graphql`, {
             query: getUserLoginQuery({ email, password }),
@@ -49,7 +57,7 @@ export const logoutUser = async (token) => {
                     Authorization: `Bearer ${token}`,
                     'Content-Type': 'application/json',
                 },
-            }
+            },
         );
 
         if (response.data.data.revokeCustomerToken.result) {
@@ -74,7 +82,7 @@ export const getUserInfo = async (token): Promise<User | Error> => {
                     Authorization: `Bearer ${token}`,
                     'Content-Type': 'application/json',
                 },
-            }
+            },
         );
 
         if (response.data.data.customer && response.data.data.customerCart) {
@@ -88,8 +96,10 @@ export const getUserInfo = async (token): Promise<User | Error> => {
 };
 
 export const signupUser = async ({ firstName, lastName, email, password }) => {
-    const unknownError = 'Something went wrong when creating your account. Please try again.';
-    const userAlreadyExists = 'A user with the same email address is already registered.';
+    const unknownError =
+        'Something went wrong when creating your account. Please try again.';
+    const userAlreadyExists =
+        'A user with the same email address is already registered.';
     try {
         const response = await axios.post(`${baseURL}/graphql`, {
             query: createUserAccountQuery({
@@ -111,7 +121,10 @@ export const signupUser = async ({ firstName, lastName, email, password }) => {
                 },
             };
         } else if (response.data.errors) {
-            if (response.data.errors[0].message === 'A customer with the same email address already exists in an associated website.') {
+            if (
+                response.data.errors[0].message ===
+                'A customer with the same email address already exists in an associated website.'
+            ) {
                 return { userAlreadyExists };
             } else {
                 return { unknownError };
