@@ -24,7 +24,6 @@ const AllProducts = () => {
 
     const { filteredCompetitions, setFilteredCompetitions } =
         useContext(commonContext);
-    const [setInitialLoad] = useState(true);
 
     useEffect(() => {
         const fetchTopProducts = async () => {
@@ -33,17 +32,19 @@ const AllProducts = () => {
                 const data = await getFilteredCompetitionData();
                 setFilteredCompetitions(data);
 
-                //set context state for this component to loaded after data is received
-                setInitialLoad(false);
                 if (isFirstLoad) {
                     toggleIsFirstLoad();
                 }
             } catch (err) {
-                setInitialLoad(false);
+                console.error("Error: ", err)
             }
         };
         fetchTopProducts();
     }, []);
+
+    useEffect(() => {
+        console.log("⚡ ~ isFirstLoad:", isFirstLoad)
+    },[isFirstLoad])
 
     return isFirstLoad && !isUserDataLoaded && !isCartDataLoaded ? (
         <div className="loading-spinner">

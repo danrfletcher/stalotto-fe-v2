@@ -30,7 +30,7 @@ const CartItem = (props) => {
         <>
             <div className="cart_item">
                 <figure className="cart_item_img">
-                    <Link to={`/competition/${sku}-${creator}-${urlKey}`}>
+                    <Link to={`/competition/${sku}-${urlKey}`}>
                         <img src={thumbnail} alt="product-img" />
                     </Link>
                 </figure>
@@ -38,7 +38,7 @@ const CartItem = (props) => {
                     <div className="cart_item_head">
                         <h4 className="cart_item_title">
                             <Link
-                                to={`/competition/${sku}-${creator}-${urlKey}`}
+                                to={`/competition/${sku}-${urlKey}`}
                             >
                                 <strong>{title}</strong> Competition Entry
                             </Link>
