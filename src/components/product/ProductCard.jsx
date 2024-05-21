@@ -42,7 +42,7 @@ const ProductCard = (props) => {
         <>
             <div className="card products_card">
                 <figure className="products_img">
-                    <Link to={`/competition/${sku}-${creator}-${urlKey}`}>
+                    <Link to={`/competition/${sku}-${urlKey}`}>
                         <img src={thumbnail.src} alt="product-img" />
                     </Link>
                 </figure>
@@ -51,7 +51,7 @@ const ProductCard = (props) => {
                         ? `Winning Ticket${winningTicketIDs.length > 1 ? `s` : ``}: #${winningTicketIDs.join(', #')}`
                         : null}
                     <h3 className="products_title">
-                        <Link to={`/competition/${sku}-${creator}-${urlKey}`}>
+                        <Link to={`/competition/${sku}-${urlKey}`}>
                             {title}
                         </Link>
                     </h3>

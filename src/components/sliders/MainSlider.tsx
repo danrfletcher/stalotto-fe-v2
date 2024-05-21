@@ -14,7 +14,7 @@ const MainSlider = () => {
 
     // handling Add-to-cart Actions
     const handleAddItem = () => {
-        addToCart(5, 1);
+        addToCart(6, 1);
     };
 
     return (
@@ -64,8 +64,8 @@ const MainSlider = () => {
                             </a>
                         </h3>
                         <h1>
-                            10 Days with Scotty & conall on The Best Banger
-                            Rally Of All Time
+                            42 Winners, 10 Days with Scotty & conall on The Best Banger
+                            Rally Of All Time + Other Exclusive Prizes
                         </h1>
                         <h4 className="hero_price">
                             Tickets £3.99 &nbsp;
@@ -76,7 +76,7 @@ const MainSlider = () => {
                         <button
                             onClick={() =>
                                 naviagate(
-                                    '/competition/5-scottyfairno,%20conallbdoyle,%20rust2rome-rust-to-rome-launch-special',
+                                    '/competitions',
                                 )
                             }
                             className="btn"
@@ -85,7 +85,7 @@ const MainSlider = () => {
                             View Experience
                         </button>
                         <button onClick={handleAddItem} className="btn">
-                            Add to Cart
+                            Add tickets to Cart
                         </button>
                     </div>
                     <figure className="hero_item_img">
