@@ -300,7 +300,7 @@ const CompetitionDetails = () => {
                                                                 height: 40,
                                                                 fontSize:
                                                                     '1.5rem',
-                                                                color: '#a9afc3',
+                                                                color: '#F6F8F8',
                                                                 backgroundColor:
                                                                     '#ed1d24',
                                                             }}

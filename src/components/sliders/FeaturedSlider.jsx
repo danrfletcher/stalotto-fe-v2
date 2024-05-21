@@ -81,7 +81,7 @@ const FeaturedSlider = () => {
                         <div className="featured_title">{title}</div>
                         <figure className="featured_img">
                             <Link
-                                to={`/competition/${sku}-${creator}-${urlKey}`}
+                                to={`/competition/${sku}-${urlKey}`}
                             >
                                 <img src={src} alt={label} />
                             </Link>

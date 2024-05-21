@@ -1,6 +1,7 @@
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Pagination, A11y, Autoplay } from 'swiper';
 import { Helmet } from 'react-helmet-async';
+import { useNavigate } from 'react-router';
 
 import 'swiper/scss';
 import 'swiper/scss/autoplay';
@@ -9,10 +10,11 @@ import useCartUpdater from '../../hooks/useCartUpdater';
 
 const MainSlider = () => {
     const { addToCart } = useCartUpdater();
+    const naviagate = useNavigate();
 
     // handling Add-to-cart Actions
     const handleAddItem = () => {
-        addToCart(5, 1);
+        addToCart(6, 1);
     };
 
     return (
@@ -52,7 +54,7 @@ const MainSlider = () => {
                         </video>
                     </div>
                     <div className="hero_item_txt">
-                        <h3>
+                        <h3 style={{ cursor: 'pointer !important' }}>
                             scottyfairno, conallbdoyle and{' '}
                             <a
                                 target="_blank"
@@ -62,8 +64,8 @@ const MainSlider = () => {
                             </a>
                         </h3>
                         <h1>
-                            10 Days with Scotty & conall on The Best Banger
-                            Rally Of All Time
+                            42 Winners, 10 Days with Scotty & conall on The Best Banger
+                            Rally Of All Time + Other Exclusive Prizes
                         </h1>
                         <h4 className="hero_price">
                             Tickets £3.99 &nbsp;
@@ -71,8 +73,19 @@ const MainSlider = () => {
                                 <del>£4.99</del>
                             </small>
                         </h4>
+                        <button
+                            onClick={() =>
+                                naviagate(
+                                    '/competitions',
+                                )
+                            }
+                            className="btn"
+                            style={{ marginRight: '16px' }}
+                        >
+                            View Experience
+                        </button>
                         <button onClick={handleAddItem} className="btn">
-                            Enter Now
+                            Add tickets to Cart
                         </button>
                     </div>
                     <figure className="hero_item_img">
