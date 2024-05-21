@@ -393,9 +393,7 @@ export const useCartApi = () => {
 
     //getSavedCustomerAddresses
     const [getSavedCustomerAddresses, getSavedCustomerAddressesStates] =
-        useLazyQuery<
-            GetSavedCustomerAddressesQuery
-        >(GetSavedCustomerAddresses);
+        useLazyQuery<GetSavedCustomerAddressesQuery>(GetSavedCustomerAddresses);
 
     const getSavedCustomerAddressesData = getSavedCustomerAddressesStates.data;
     const getSavedCustomerAddressesIsLoading =

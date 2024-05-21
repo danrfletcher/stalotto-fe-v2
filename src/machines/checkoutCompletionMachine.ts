@@ -63,19 +63,19 @@ export const checkoutCompletionMachine = createMachine(
                         'createPaymentError',
                     ],
                     CREATE_PAYMENT_FAILED: 'createPaymentError',
-                    PAYMENT_CREATED: 'createOrder'
+                    PAYMENT_CREATED: 'createOrder',
                 },
             },
 
             createOrder: {
                 on: {
-                    CREATE_ORDER_ANIMATION_STARTED: 'creatingOrder'
+                    CREATE_ORDER_ANIMATION_STARTED: 'creatingOrder',
                 },
             },
 
             creatingOrder: {
                 on: {
-                    ORDER_CREATED: 'orderComplete'
+                    ORDER_CREATED: 'orderComplete',
                 },
             },
 
@@ -91,7 +91,7 @@ export const checkoutCompletionMachine = createMachine(
 
             orderComplete: {
                 type: 'final',
-            }
+            },
         },
     },
     //----------------------------------------------------------------------------------------------------

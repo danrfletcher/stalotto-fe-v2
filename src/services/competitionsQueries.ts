@@ -1,29 +1,34 @@
-import { CompetitionFilters } from "./competitionsApi";
+import { CompetitionFilters } from './competitionsApi';
 
 type sku = string;
 
 export const competitionFilters = {
-	featured: `feature_this_competition: { eq: "1" }`,
-	setOfProducts: function(skus: sku[]) {
-		return `sku: {in: ${JSON.stringify(skus)}}`
-	}
+    featured: `feature_this_competition: { eq: "1" }`,
+    setOfProducts: function (skus: sku[]) {
+        return `sku: {in: ${JSON.stringify(skus)}}`;
+    },
 };
 
 export const competitionSorts = {
-	newestToOldest: `sort: { posted: DESC }`
-}
+    newestToOldest: `sort: { posted: DESC }`,
+};
 
-export const getCompetitionGraphQLQuery = ({baseFilter, pageSize, currentPage, skus}: CompetitionFilters): string => {
-	if (skus) {
-		baseFilter = competitionFilters.setOfProducts(skus);
-	}
+export const getCompetitionGraphQLQuery = ({
+    baseFilter,
+    pageSize,
+    currentPage,
+    skus,
+}: CompetitionFilters): string => {
+    if (skus) {
+        baseFilter = competitionFilters.setOfProducts(skus);
+    }
 
-	const query = `
+    const query = `
 		{
 			products(
-				filter: { ${baseFilter ? baseFilter : ""} }
-				${pageSize ? `pageSize: ${pageSize}` : ""}
-				${currentPage ? `currentPage: ${currentPage}` : ""}
+				filter: { ${baseFilter ? baseFilter : ''} }
+				${pageSize ? `pageSize: ${pageSize}` : ''}
+				${currentPage ? `currentPage: ${currentPage}` : ''}
 			) {
 			items {
 				uid
@@ -34,12 +39,16 @@ export const getCompetitionGraphQLQuery = ({baseFilter, pageSize, currentPage, s
 						url
 						label
 					}
-					${baseFilter === competitionFilters.featured ? `` : (`
+					${
+                        baseFilter === competitionFilters.featured
+                            ? ``
+                            : `
 					media_gallery_entries {
 						label
 						file
 					  }
-					`)}
+					`
+                    }
 					... on VirtualProduct {
 						original_price
 						competition_closes_on
@@ -61,5 +70,5 @@ export const getCompetitionGraphQLQuery = ({baseFilter, pageSize, currentPage, s
 		}
 	`;
 
-	return query;
-}
+    return query;
+};

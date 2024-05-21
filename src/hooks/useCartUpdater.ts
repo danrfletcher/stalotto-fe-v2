@@ -1,6 +1,11 @@
 import { useContext, useCallback, useState } from 'react';
 import cartContext from '../contexts/cart/cartContext';
-import { CartItem, addProductToCart, getCartTotal, setNumItemsInCart } from '../services/cartApi';
+import {
+    CartItem,
+    addProductToCart,
+    getCartTotal,
+    setNumItemsInCart,
+} from '../services/cartApi';
 
 type CartTotalType = {
     value: number | null | string;
@@ -20,12 +25,14 @@ const useCartUpdater = () => {
         async (sku, qtd = 1, optimistic = false) => {
             // Optimistically update the cart
             flagCartUpdate(true);
-            const itemExists = cartItems.some(item => item.product.sku === sku);
+            const itemExists = cartItems.some(
+                (item) => item.product.sku === sku,
+            );
             let newCartItems: CartItem[] = [];
 
             if (itemExists) {
                 // Increase quantity of existing item
-                newCartItems = cartItems.map(item =>
+                newCartItems = cartItems.map((item) =>
                     item.product.sku === sku
                         ? { ...item, quantity: item.quantity + qtd }
                         : item,
@@ -60,10 +67,10 @@ const useCartUpdater = () => {
     );
 
     const removeFromCart = useCallback(
-        async uid => {
+        async (uid) => {
             flagCartUpdate(true);
             // Optimistically update the cart by removing the item (setting its quantity to 0)
-            const newCartItems = cartItems.filter(item => item.uid !== uid); // Filter out items with zero quantity.
+            const newCartItems = cartItems.filter((item) => item.uid !== uid); // Filter out items with zero quantity.
 
             // Set the optimistic cart state
             setCart(newCartItems);
@@ -84,7 +91,9 @@ const useCartUpdater = () => {
     const decrementCart = useCallback(
         async (cartItemUid, decrementAmount = 1) => {
             flagCartUpdate(true);
-            const targetItem = cartItems.find(item => item.uid === cartItemUid);
+            const targetItem = cartItems.find(
+                (item) => item.uid === cartItemUid,
+            );
 
             // Check if the decrement amount is greater than or equal to the item's quantity
             if (targetItem && decrementAmount >= targetItem.quantity) {
@@ -93,7 +102,7 @@ const useCartUpdater = () => {
             } else {
                 // Decrement the quantity of the item
                 const newCartItems = cartItems
-                    .map(item => {
+                    .map((item) => {
                         if (item.uid === cartItemUid) {
                             return {
                                 ...item,
@@ -102,7 +111,7 @@ const useCartUpdater = () => {
                         }
                         return item;
                     })
-                    .filter(item => item.quantity > 0); // Ensure we don't include items with zero or negative quantities
+                    .filter((item) => item.quantity > 0); // Ensure we don't include items with zero or negative quantities
 
                 // Optimistically update the cart
                 setCart(newCartItems);
@@ -142,7 +151,8 @@ const useCartUpdater = () => {
             .reduce(
                 (acc, curr) =>
                     acc +
-                    curr.product.price_range.minimum_price.final_price.value *
+                    curr.product?.price_range?.minimum_price?.final_price
+                        ?.value *
                         curr.quantity,
                 0,
             )

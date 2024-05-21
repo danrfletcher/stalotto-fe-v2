@@ -10,16 +10,16 @@ interface ProductOffer {
 export const OffersList = ({ offers }) => {
     const [offersList, setOffersList] = useState<string[]>([]);
     const interpolateOffers = (
-        offersToInterpolate: ProductOffer[]
+        offersToInterpolate: ProductOffer[],
     ): string[] => {
         return offersToInterpolate.map((offerToInterpolate) => {
             // Get offer category from data
             const offerCategory = offersData.filter(
                 (currOfferFromData) =>
-                    currOfferFromData.category === offerToInterpolate.category
+                    currOfferFromData.category === offerToInterpolate.category,
             )[0];
             const offer = offerCategory.offers.filter(
-                (offer) => offer.offerId === offerToInterpolate.offerId
+                (offer) => offer.offerId === offerToInterpolate.offerId,
             )[0];
             let offerText = offer.title;
 
@@ -27,7 +27,7 @@ export const OffersList = ({ offers }) => {
             offer.parameters.forEach((parameter, i) => {
                 offerText = offerText.replace(
                     `$${parameter.parameterId}`,
-                    String(offerToInterpolate.parameters[i])
+                    String(offerToInterpolate.parameters[i]),
                 );
             });
 

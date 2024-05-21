@@ -1,28 +1,28 @@
 export const dropdownMenu = [
     {
         id: 1,
-        link: "Orders",
-        path: "*",
+        link: 'Orders',
+        path: '*',
     },
     {
         id: 2,
-        link: "Wishlist",
-        path: "*",
+        link: 'Wishlist',
+        path: '*',
     },
     {
         id: 3,
-        link: "Gift Cards",
-        path: "*",
+        link: 'Gift Cards',
+        path: '*',
     },
     {
         id: 4,
-        link: "Saved Cards",
-        path: "*",
+        link: 'Saved Cards',
+        path: '*',
     },
     {
         id: 5,
-        link: "Saved Addresses",
-        path: "*",
+        link: 'Saved Addresses',
+        path: '*',
     },
 ];
 
@@ -50,5 +50,5 @@ export interface NavPagesObject {
 }
 
 export const getNavPages = async (): Promise<NavPagesObject> => {
-    return {navPages: navPages};
-}
+    return { navPages: navPages };
+};

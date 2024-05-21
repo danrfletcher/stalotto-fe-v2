@@ -5,7 +5,8 @@ const useDocTitle = (title) => {
         if (title) {
             document.title = `${title} | Stalotto`;
         } else {
-            document.title = 'Stalotto | Competitions by your favourite creators & brnads';
+            document.title =
+                'Stalotto | Competitions by your favourite creators & brnads';
         }
     }, [title]);
 

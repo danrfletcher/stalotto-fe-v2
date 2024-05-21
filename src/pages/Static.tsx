@@ -14,7 +14,8 @@ const Static: React.FC = () => {
         toggleIsFirstLoad, //first load logic for loading spinner
     } = useContext(loadingContext);
 
-    const [isStaticDataLoaded, setIsStaticDataLoaded] = useState<Boolean>(false);
+    const [isStaticDataLoaded, setIsStaticDataLoaded] =
+        useState<Boolean>(false);
 
     useEffect(() => {
         if (isStaticDataLoaded) toggleIsFirstLoad(); //toggle first load off, allowing page to load
@@ -32,7 +33,7 @@ const Static: React.FC = () => {
             metaTitle: '',
             metaDescription: '',
             metaKeywords: '',
-        })
+        }),
     );
 
     const fetchStaticPageData = async () => {
@@ -61,16 +62,28 @@ const Static: React.FC = () => {
             <Helmet>
                 <title>{`Stalotto | ${isStaticDataLoaded ? (pageContent instanceof StaticPageDataClass ? pageContent.title : 'Error Getting Data') : 'Info Page'}`}</title>
             </Helmet>
-            <main className={isFirstLoad ? 'content-hidden' : 'content-visible'}>
+            <main
+                className={isFirstLoad ? 'content-hidden' : 'content-visible'}
+            >
                 <section id="hero">
                     <div className="container">
                         {isStaticDataLoaded &&
                             (pageContent instanceof StaticPageDataClass ? (
-                                <article className="static_content" dangerouslySetInnerHTML={{ __html: pageContent.innerHtml }}></article>
+                                <article
+                                    className="static_content"
+                                    dangerouslySetInnerHTML={{
+                                        __html: pageContent.innerHtml,
+                                    }}
+                                ></article>
                             ) : (
                                 <p>{pageContent.message}</p>
                             ))}
-                        {!isStaticDataLoaded && <PulseLoader color="#a9afc3" className="static_pulse_loader" />}
+                        {!isStaticDataLoaded && (
+                            <PulseLoader
+                                color="#a9afc3"
+                                className="static_pulse_loader"
+                            />
+                        )}
                     </div>
                 </section>
             </main>

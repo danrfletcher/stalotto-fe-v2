@@ -14,26 +14,25 @@ const initialState = {
 
     //Home page data
     featuredCompetitions: null,
-    filteredCompetitions: null
+    filteredCompetitions: null,
 };
 
 // Common-Provider Component
 const CommonProvider = ({ children }) => {
-
     const [state, dispatch] = useReducer(commonReducer, initialState);
 
     // Form actions
     const toggleForm = (toggle) => {
         return dispatch({
             type: 'TOGGLE_FORM',
-            payload: { toggle }
+            payload: { toggle },
         });
     };
 
     const setFormUserInfo = (info) => {
         return dispatch({
             type: 'SET_FORM_USER_INFO',
-            payload: { info }
+            payload: { info },
         });
     };
 
@@ -41,14 +40,14 @@ const CommonProvider = ({ children }) => {
     const toggleSearch = (toggle) => {
         return dispatch({
             type: 'TOGGLE_SEARCH',
-            payload: { toggle }
+            payload: { toggle },
         });
     };
 
     const setSearchResults = (results) => {
         return dispatch({
             type: 'SET_SEARCH_RESULTS',
-            payload: { results }
+            payload: { results },
         });
     };
 
@@ -56,7 +55,7 @@ const CommonProvider = ({ children }) => {
     const setCurrentHash = (hash) => {
         return dispatch({
             type: 'SET_HASH',
-            payload: { hash }
+            payload: { hash },
         });
     };
 
@@ -64,14 +63,14 @@ const CommonProvider = ({ children }) => {
     const setFeaturedCompetitions = (featuredCompetitions) => {
         return dispatch({
             type: 'SET_FEATURED_COMPETITIONS',
-            payload: { featuredCompetitions }
+            payload: { featuredCompetitions },
         });
     };
 
     const setFilteredCompetitions = (filteredCompetitions) => {
         return dispatch({
             type: 'SET_FILTERED_COMPETITIONS',
-            payload: { filteredCompetitions }
+            payload: { filteredCompetitions },
         });
     };
 
@@ -86,7 +85,7 @@ const CommonProvider = ({ children }) => {
 
         // Home page data actions
         setFeaturedCompetitions,
-        setFilteredCompetitions
+        setFilteredCompetitions,
     };
 
     return (

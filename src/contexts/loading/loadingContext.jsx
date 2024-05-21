@@ -37,7 +37,7 @@ const LoadingProvider = ({ children }) => {
     };
 
     //Item Load Actions
-    const toggleItemsLoaded = loader => {
+    const toggleItemsLoaded = (loader) => {
         return dispatch({
             type: 'TOGGLE_LOADER_TRUE',
             payload: { loader },

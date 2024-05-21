@@ -6,7 +6,6 @@ import filtersReducer from './filtersReducer';
 // Filters-Context
 const filtersContext = createContext();
 
-
 // Initial State
 const initialState = {
     allProducts: [],
@@ -16,7 +15,7 @@ const initialState = {
     selectedPrice: {
         price: 0,
         minPrice: 0,
-        maxPrice: 0
+        maxPrice: 0,
     },
     mobFilterBar: {
         isMobSortVisible: false,
@@ -24,58 +23,61 @@ const initialState = {
     },
 };
 
-
 // Filters-Provider Component
 const FiltersProvider = ({ children }) => {
-
     const [state, dispatch] = useReducer(filtersReducer, initialState);
-
 
     /* Loading All Products on the initial render */
     useEffect(() => {
-
         // making a shallow copy of the original products data, because we should never mutate the orginal data.
         const products = [...competitionsData];
 
         // finding the Max and Min Price, & setting them into the state.
-        const priceArr = products.map(item => item.finalPrice);
+        const priceArr = products.map((item) => item.finalPrice);
         const minPrice = Math.min(...priceArr);
         const maxPrice = Math.max(...priceArr);
 
         dispatch({
             type: 'LOAD_ALL_PRODUCTS',
-            payload: { products, minPrice, maxPrice }
+            payload: { products, minPrice, maxPrice },
         });
-
     }, []);
-
 
     /* function for applying Filters - (sorting & filtering) */
     const applyFilters = () => {
-
         let updatedProducts = [...competitionsData];
 
         /*==== Sorting ====*/
         if (state.sortedValue) {
             switch (state.sortedValue) {
                 case 'Latest':
-                    updatedProducts = updatedProducts.slice(0, 6).map(item => item);
+                    updatedProducts = updatedProducts
+                        .slice(0, 6)
+                        .map((item) => item);
                     break;
 
                 case 'Featured':
-                    updatedProducts = updatedProducts.filter(item => item.tag === 'featured-product');
+                    updatedProducts = updatedProducts.filter(
+                        (item) => item.tag === 'featured-product',
+                    );
                     break;
 
                 case 'Top Rated':
-                    updatedProducts = updatedProducts.filter(item => item.rateCount > 4);
+                    updatedProducts = updatedProducts.filter(
+                        (item) => item.rateCount > 4,
+                    );
                     break;
 
                 case 'Price(Lowest First)':
-                    updatedProducts = updatedProducts.sort((a, b) => a.finalPrice - b.finalPrice);
+                    updatedProducts = updatedProducts.sort(
+                        (a, b) => a.finalPrice - b.finalPrice,
+                    );
                     break;
 
                 case 'Price(Highest First)':
-                    updatedProducts = updatedProducts.sort((a, b) => b.finalPrice - a.finalPrice);
+                    updatedProducts = updatedProducts.sort(
+                        (a, b) => b.finalPrice - a.finalPrice,
+                    );
                     break;
 
                 default:
@@ -86,62 +88,73 @@ const FiltersProvider = ({ children }) => {
         /*==== Filtering ====*/
 
         // filter by Brands
-        const checkedBrandItems = state.updatedBrandsMenu.filter(item => {
-            return item.checked;
-        }).map(item => item.label.toLowerCase());
+        const checkedBrandItems = state.updatedBrandsMenu
+            .filter((item) => {
+                return item.checked;
+            })
+            .map((item) => item.label.toLowerCase());
 
         if (checkedBrandItems.length) {
-            updatedProducts = updatedProducts.filter(item => checkedBrandItems.includes(item.brand.toLowerCase()));
+            updatedProducts = updatedProducts.filter((item) =>
+                checkedBrandItems.includes(item.brand.toLowerCase()),
+            );
         }
 
         // filter by Category
-        const checkedCategoryItems = state.updatedCategoryMenu.filter(item => {
-            return item.checked;
-        }).map(item => item.label.toLowerCase());
+        const checkedCategoryItems = state.updatedCategoryMenu
+            .filter((item) => {
+                return item.checked;
+            })
+            .map((item) => item.label.toLowerCase());
 
         if (checkedCategoryItems.length) {
-            updatedProducts = updatedProducts.filter(item => checkedCategoryItems.includes(item.category.toLowerCase()));
+            updatedProducts = updatedProducts.filter((item) =>
+                checkedCategoryItems.includes(item.category.toLowerCase()),
+            );
         }
 
         // filter by Price
         if (state.selectedPrice) {
-            updatedProducts = updatedProducts.filter(item => {
+            updatedProducts = updatedProducts.filter((item) => {
                 return item.finalPrice <= state.selectedPrice.price;
             });
         }
 
         dispatch({
             type: 'FILTERED_PRODUCTS',
-            payload: { updatedProducts }
+            payload: { updatedProducts },
         });
     };
 
     useEffect(() => {
         applyFilters();
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [state.sortedValue, state.updatedBrandsMenu, state.updatedCategoryMenu, state.selectedPrice]);
-
-
+    }, [
+        state.sortedValue,
+        state.updatedBrandsMenu,
+        state.updatedCategoryMenu,
+        state.selectedPrice,
+    ]);
 
     // Dispatched Actions
     const setSortedValue = (sortValue) => {
         return dispatch({
             type: 'SET_SORTED_VALUE',
-            payload: { sortValue }
+            payload: { sortValue },
         });
     };
 
     const handleBrandsMenu = (id) => {
         return dispatch({
             type: 'CHECK_BRANDS_MENU',
-            payload: { id }
+            payload: { id },
         });
     };
 
     const handleCategoryMenu = (id) => {
         return dispatch({
             type: 'CHECK_CATEGORY_MENU',
-            payload: { id }
+            payload: { id },
         });
     };
 
@@ -150,30 +163,29 @@ const FiltersProvider = ({ children }) => {
 
         return dispatch({
             type: 'HANDLE_PRICE',
-            payload: { value }
+            payload: { value },
         });
     };
 
     const handleMobSortVisibility = (toggle) => {
         return dispatch({
             type: 'MOB_SORT_VISIBILITY',
-            payload: { toggle }
+            payload: { toggle },
         });
     };
 
     const handleMobFilterVisibility = (toggle) => {
         return dispatch({
             type: 'MOB_FILTER_VISIBILITY',
-            payload: { toggle }
+            payload: { toggle },
         });
     };
 
     const handleClearFilters = () => {
         return dispatch({
-            type: 'CLEAR_FILTERS'
+            type: 'CLEAR_FILTERS',
         });
     };
-
 
     // Context values
     const values = {
@@ -186,7 +198,6 @@ const FiltersProvider = ({ children }) => {
         handleMobFilterVisibility,
         handleClearFilters,
     };
-
 
     return (
         <filtersContext.Provider value={values}>

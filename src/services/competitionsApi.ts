@@ -83,7 +83,7 @@ export const getFilteredCompetitionData = async ({
         if (response.data.errors) {
             throw new GraphQLError('GraphQL error');
         }
-        const items = response.data.data.products.items.map(item => {
+        const items = response.data.data.products.items.map((item) => {
             const result: Competition = {
                 id: item.uid,
                 sku: item.sku,
@@ -104,7 +104,7 @@ export const getFilteredCompetitionData = async ({
                         let idList: string[] = [];
                         item.winning_ticket_ids
                             .split(',')
-                            .forEach(ticketId => idList.push(ticketId));
+                            .forEach((ticketId) => idList.push(ticketId));
                         return idList;
                     }
                 })(),
@@ -112,7 +112,7 @@ export const getFilteredCompetitionData = async ({
 
             if (tag === 'none') {
                 result.images = (function () {
-                    return item.media_gallery_entries.map(image => {
+                    return item.media_gallery_entries.map((image) => {
                         return {
                             src: `${baseURL}/pub/media/catalog/product${image.file}`,
                             label: image.label,
